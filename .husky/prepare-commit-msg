@@ -1,0 +1,20 @@
+#!/usr/bin/env sh
+
+if [ ! -f "$1" ]; then
+    echo "commit message file not found"
+    exit 1
+fi
+
+if ! read -r commit_msg <"$1"; then
+    echo "failed to read commit message"
+    exit 1
+fi
+
+case "$commit_msg" in
+"chore(release):"*)
+    echo "Release commit, skipping linting..."
+    exit 0
+    ;;
+esac
+
+exec </dev/tty && node_modules/.bin/cz --hook || true

@@ -1,0 +1,4 @@
+[ReportGenerator]
+    reports = "./test/*/*.xml"
+    targetdir = "./coverage/"
+    reporttypes = Html

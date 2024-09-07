@@ -1,0 +1,10 @@
+buid/
+bin/
+.vscode/
+obj/
+docs/
+.idea/
+.git/
+node_modules/
+coverage/
+coverage.cobertura.xml

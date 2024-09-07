@@ -1,0 +1,72 @@
+name: CI/CD_PUSH_MAIN_RELEASE
+run-name: ${{ github.actor }}
+
+on:
+    push:
+        branches:
+            - 'main'
+
+permissions:
+    contents: write
+    issues: write
+    pull-requests: write
+    id-token: write
+
+jobs:
+    validate-code:
+        name: Relase New Version
+        strategy:
+            matrix:
+                os: [ubuntu-latest]
+                dotnet_version: [8.0.x]
+                node_version: [22.4.0]
+                pnpm_version: [9.4.0]
+            fail-fast: false
+        runs-on: ${{ matrix.os }}
+
+        steps:
+            - name: Generate token
+              id: generate_token
+              uses: tibdex/github-app-token@v2
+              with:
+                  app_id: ${{ secrets.APP_ID }}
+                  private_key: ${{ secrets.APP_PRIVATE_KEY }}
+
+            - name: Get the last commit
+              uses: actions/checkout@v4
+              with:
+                  fetch-depth: 1
+
+            - name: Setup .NET
+              uses: actions/setup-dotnet@v4
+              with:
+                  dotnet-version: ${{ matrix.dotnet_version }}
+
+            - name: Restore dependencies
+              run: dotnet restore
+
+            - name: Build
+              run: dotnet build --no-restore
+
+            - name: test
+              run: dotnet test --no-restore --verbosity normal
+
+            - name: Setup pnpm
+              uses: pnpm/action-setup@v4
+              with:
+                  version: ${{ matrix.pnpm_version }}
+                  run_install: false
+
+            - name: Use Node.js ${{ matrix.node_version }}
+              uses: actions/setup-node@v4
+              with:
+                  node-version: ${{ matrix.node_version }}
+                  cache: 'pnpm'
+
+            - name: Install Node dependencies
+              run: pnpm install
+
+            - name: Semantic release
+              run: pnpx semantic-release
+              env:
+                  GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}

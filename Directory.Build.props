@@ -1,0 +1,28 @@
+<Project>
+  <PropertyGroup>
+    <!-- .NET SDK -->
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>preview</LangVersion>
+    <!-- Code Analysis -->
+    <AnalysisMode>AllEnabledByDefault</AnalysisMode>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <!-- Code Coverage -->
+    <CollectCoverage>true</CollectCoverage>
+    <CoverletOutputFormat>cobertura</CoverletOutputFormat>
+    <Threshold>80</Threshold>
+    <ThresholdType>line,branch,method</ThresholdType>
+    <ThresholdStat>total</ThresholdStat>
+    <Exclude>[DistributionCenter.Api]*DistributionCenter.Api.Program,[DistributionCenter.Api]*DistributionCenter.Api.Startup,[DistributionCenter.Api]*DistributionCenter.Api.Configurations*</Exclude>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- Analyzers -->
+    <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+</Project>

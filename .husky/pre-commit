@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+
+echo "Running pre-commit hook - Building and testing project... 🚀"
+
+dotnet build
+dotnet test

@@ -1,0 +1,92 @@
+{
+    "name": "distribution-center",
+    "version": "0.0.0",
+    "private": false,
+    "description": "An API for a distribution center",
+    "keywords": [
+        "API",
+        "distribution center",
+        "C#",
+        "ASP.NET Core",
+        "Clean Architecture",
+        "CQRS",
+        "MediatR",
+        "Result",
+        "Dapper ORM",
+        "PostgreSQL",
+        "Docker Compose",
+        "Swagger",
+        "FluentValidation",
+        "AutoMapper",
+        "Serilog"
+    ],
+    "licenese": "MIT",
+    "author": {
+        "email": "morales.patty.jose@gmail.com",
+        "name": "Los Curiosos"
+    },
+    "contributors": [
+        {
+            "name": "Jose Manuel Morales Patty",
+            "email": "morales.patty.jose@gmail.com"
+        },
+        {
+            "name": "Jefersson Coronel Lavadenz",
+            "email": "jefersson.coronel.13622689@usalesiana.edu.bo"
+        },
+        {
+            "name": "Karina Aguirre Janco",
+            "email": "karina.aguirre.9491656@usalesiana.edu.bo"
+        },
+        {
+            "name": "Mayerli Santander Sejas",
+            "email": "mayerlisantander0@gmail.com"
+        },
+        {
+            "name": "Miguel Angel Romero Sandoval",
+            "email": "miguel.romero@fundacion-jala.org"
+        },
+        {
+            "name": "Jorge Heredia Bazoalto",
+            "email": "jorge.heredia@fundacion-jala.org"
+        }
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Programming6-projects/LosCuriosos.git"
+    },
+    "bugs": {
+        "url": "https://github.com/Programming6-projects/LosCuriosos/issues"
+    },
+    "homepage": "https://github.com/Programming6-projects/LosCuriosos#readme",
+    "scripts": {
+        "start:db": "docker compose down && docker volume rm --force los-curiosos_postgres_data && docker compose up -d",
+        "start:dev": "pnpm start:db && dotnet watch run --project ./src/DistributionCenter.Api",
+        "report:gen": "dotnet test && dotnet reportgenerator",
+        "report:show": "pnpm report:gen && xdg-open ./coverage/index.html",
+        "prepare": "husky"
+    },
+    "devDependencies": {
+        "@commitlint/cli": "^19.3.0",
+        "@semantic-release/changelog": "^6.0.3",
+        "@semantic-release/commit-analyzer": "^12.0.0",
+        "@semantic-release/git": "^10.0.1",
+        "@semantic-release/github": "^10.0.5",
+        "@semantic-release/npm": "^12.0.1",
+        "@semantic-release/release-notes-generator": "^13.0.0",
+        "commitizen": "^4.3.0",
+        "cz-conventional-changelog": "^3.3.0",
+        "husky": "^9.1.5",
+        "semantic-release": "^23.1.1"
+    },
+    "husky": {
+        "hooks": {
+            "prepare-commit-msg": "exec < /dev/tty && npx cz --hook || true"
+        }
+    },
+    "config": {
+        "commitizen": {
+            "path": "./node_modules/cz-conventional-changelog"
+        }
+    }
+}

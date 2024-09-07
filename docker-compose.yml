@@ -1,0 +1,41 @@
+services:
+    db:
+        image: postgres:16.0
+        container_name: distribution-center-db
+        restart: always
+        environment:
+            POSTGRES_DB: distribution_center
+            POSTGRES_USER: ${POSTGRES_USER}
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+            TZ: 'UTC-4'
+        ports:
+            - 3030:3030
+        command: -p 3030
+        volumes:
+            - postgres_data:/var/lib/postgresql/data
+            - ./scripts/init.sql:/docker-entrypoint-initdb.d/1.sql
+        healthcheck:
+            test: ['CMD-SHELL', 'pg_isready -h localhost -p 3030 -d distribution_center']
+            interval: 5s
+            timeout: 5s
+            retries: 5
+
+    admin:
+        image: dpage/pgadmin4:7.8
+        container_name: distribution-center-admin
+        restart: always
+        environment:
+            PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
+            PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
+            PGADMIN_LISTEN_PORT: 4040
+        ports:
+            - 4040:4040
+        volumes:
+            - pgadmin_data:/var/lib/pgadmin
+        depends_on:
+            db:
+                condition: service_healthy
+
+volumes:
+    pgadmin_data:
+    postgres_data:

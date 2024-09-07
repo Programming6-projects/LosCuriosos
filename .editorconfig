@@ -1,0 +1,60 @@
+root = true
+
+[*]
+charset = utf-8
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 4
+end_of_line = lf
+max_line_length = 120
+
+[**/Program.cs]
+# Remove warning about making Program class static
+dotnet_diagnostic.CA1052.severity = none
+
+[**/*.cs]
+# Dotnet conventions
+dotnet_sort_system_directives_first = true
+# CSharp conventions
+csharp_using_directive_placement = inside_namespace
+csharp_style_namespace_declarations = file_scoped
+# Incorrecte Namespace name
+dotnet_diagnostic.IDE0130.severity = warning
+# Expression value not used
+dotnet_diagnostic.IDE0058.severity = warning
+# Naming conventions
+dotnet_diagnostic.IDE1006.severity = warning
+# New expression simplified
+dotnet_diagnostic.IDE0090.severity = warning
+# Use explicit type instead of var
+dotnet_diagnostic.IDE0008.severity = warning
+# File Scoped Namespace
+dotnet_diagnostic.IDE0161.severity = warning
+# Using inside namespace
+dotnet_diagnostic.IDE0065.severity = warning
+# Remove unnecessary value assignment
+dotnet_diagnostic.IDE0059.severity = warning
+# Remove unnecessary usings
+dotnet_diagnostic.IDE0005.severity = warning
+# Prefer primary constructors
+dotnet_diagnostic.IDE0290.severity = warning
+# Remove never readed members
+dotnet_diagnostic.IDE0052.severity = warning
+# Remove if statement simplification
+dotnet_diagnostic.IDE0046.severity = none
+# Remove warning about formatting : CSharp will do it
+dotnet_diagnostic.IDE0055.severity = none
+# Remove warning about missing documentation
+dotnet_diagnostic.CS1591.severity = none
+# Remove warning about using a resource table - Multilang
+dotnet_diagnostic.CA1303.severity = none
+
+[**/GlobalUsings.cs]
+# Disable warning about global usings
+dotnet_diagnostic.IDE0005.severity = none
+dotnet_diagnostic.CS8019.severity = none
+
+[test/**/*.cs]
+# Remove warning about test method name
+dotnet_diagnostic.CA1707.severity = none
