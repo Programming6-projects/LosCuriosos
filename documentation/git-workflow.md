@@ -1,4 +1,4 @@
-# Git Flow
+# Git Workflow
 
 Our Git Flow strategy ensures a smooth and organized development process,
 facilitating collaboration and efficient feature integration. Here is a detailed
