@@ -1,26 +1,26 @@
 #!/usr/bin/env sh
 
 if [ ! -f "$1" ]; then
-    echo -e "commit message file not found\n\n"
+    echo -e "commit message file not found\n"
     exit 1
 fi
 
 if ! read -r commit_msg <"$1"; then
-    echo -e "failed to read commit message\n\n"
+    echo -e "failed to read commit message\n"
     exit 1
 fi
 
 case "$commit_msg" in
 "chore(release):"*)
-    echo -e "Release commit, skipping linting...\n\n"
+    echo -e "Release commit, skipping linting...\n"
     exit 0
     ;;
 esac
 
 if exec </dev/tty; then
-    echo -e "Running commitizen... 🎁\n\n"
+    echo -e "Running commitizen... 🎁\n"
     node_modules/.bin/cz --hook
 else
-    echo -e "cz not running in a tty, skipping...\n\n"
+    echo -e "cz not running in a tty, skipping...\n"
     true
 fi
