@@ -7,9 +7,7 @@ using DistributionCenter.Commons.Errors.Interfaces;
 public readonly record struct Error : IError
 {
     public string Code { get; }
-
     public string Description { get; }
-
     public ErrorType Type { get; }
 
     private Error(string code, string description, ErrorType type)

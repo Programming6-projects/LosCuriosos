@@ -45,7 +45,9 @@ If you find a bug, please open an issue on GitHub and include:
 
 With these steps, you have the project set up and ready to start development.
 
-## Building all the Modules
+## Commands for Development
+
+### Building all the Modules
 
 Build all the modules with the following command:
 
@@ -53,7 +55,19 @@ Build all the modules with the following command:
 dotnet build
 ```
 
-## Running the API
+### Running the Database
+
+```bash
+pnpm start:db
+```
+
+### Reset the Database
+
+```bash
+pnpm db:restore
+```
+
+### Running the API
 
 Run the API do it with the following command:
 
@@ -61,7 +75,7 @@ Run the API do it with the following command:
 pnpm start:dev
 ```
 
-## Testing
+### Testing
 
 Run the tests suite with the following command:
 
@@ -71,12 +85,87 @@ dotnet test
 
 Add new tests to cover the changes you make.
 
+### Open Coverage Report (Web)
+
+First, you need to run the tests with the previous command and then you can open
+the coverage report with the following command:
+
+```bash
+pnpm report
+```
+
 ## Test Coverage
 
 We aim to maintain a high level of test coverage to ensure the reliability and
 stability of our codebase. When adding new features or making changes, please
 ensure that you include the necessary tests to cover the changes. We want to
 achieve a test coverage of at least 80% for our codebase.
+
+## Docker Compose Services
+
+Docker Compose is used to manage the services required for the project. The main
+services are:
+
+### PostgreSQL
+
+PostgreSQL database is used to store the data for the API. The database is
+created with the following configuration:
+
+```yaml
+db:
+  image: postgres:16.0
+  container_name: distribution-center-db
+  restart: always
+  environment:
+    POSTGRES_DB: distribution_center
+    POSTGRES_USER: ${POSTGRES_USER}
+    POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    TZ: 'UTC-4'
+  ports:
+    - 3030:3030
+  command: -p 3030
+  volumes:
+    - postgres_data:/var/lib/postgresql/data
+    - ./scripts/init.sql:/docker-entrypoint-initdb.d/1.sql
+  healthcheck:
+    test:
+      ['CMD-SHELL', 'pg_isready -h localhost -p 3030 -d distribution_center']
+    interval: 5s
+    timeout: 5s
+    retries: 5
+```
+
+The initialization script is in the `scripts/init.sql` file.
+
+You can connect to the database with the following url:
+`postgresql://localhost:3030/distribution_center` and the credentials are in the
+`.env` file.
+
+### PgAdmin
+
+PgAdmin is a web-based interface for managing the PostgreSQL database. PGAdmin
+is created with the following configuration:
+
+```yaml
+admin:
+  image: dpage/pgadmin4:7.8
+  container_name: distribution-center-admin
+  restart: always
+  environment:
+    PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
+    PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
+    PGADMIN_LISTEN_PORT: 4040
+  ports:
+    - 4040:4040
+  volumes:
+    - pgadmin_data:/var/lib/pgadmin
+  depends_on:
+    db:
+      condition: service_healthy
+```
+
+You can access the PgAdmin interface at `http://localhost:4040` and the
+credentials are in the `.env` file.
 
 ## Development Guidelines
 
@@ -159,3 +248,7 @@ under its [MIT License](LICENSE).
 
 Thank you for your interest in contributing to this API! We look forward to your
 contributions.
+
+```
+
+```
