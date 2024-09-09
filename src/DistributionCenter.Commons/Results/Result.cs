@@ -1,11 +1,12 @@
 namespace DistributionCenter.Commons.Results;
 
+using System.Collections.ObjectModel;
 using DistributionCenter.Commons.Errors.Interfaces;
 using DistributionCenter.Commons.Results.Interfaces;
 
 public partial class Result : IResult
 {
-    private readonly ICollection<IError>? _errors;
+    private readonly Collection<IError>? _errors;
 
     protected Result() { }
 
@@ -14,13 +15,13 @@ public partial class Result : IResult
         _errors = [error];
     }
 
-    protected Result(ICollection<IError> errors)
+    protected Result(Collection<IError> errors)
     {
         _errors = errors;
     }
 
     public bool IsSuccess => _errors is null || _errors.Count == 0;
-    public ICollection<IError> Errors
+    public Collection<IError> Errors
     {
         get
         {
@@ -46,7 +47,7 @@ public partial class Result<T> : Result, IResult<T>
     private Result(IError error)
         : base(error) { }
 
-    private Result(ICollection<IError> errors)
+    private Result(Collection<IError> errors)
         : base(errors) { }
 
     public T Value

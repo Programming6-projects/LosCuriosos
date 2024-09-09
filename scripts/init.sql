@@ -1,8 +1,8 @@
 CREATE TABLE IF NOT EXISTS client (
-    id TEXT PRIMARY KEY DEFAULT gen_random_uuid(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name TEXT NOT NULL,
     last_name TEXT NOT NULL,
-    phone_number TEXT NOT NULL,
+    email TEXT NOT NULL,
     is_active BOOLEAN NOT NULL DEFAULT TRUE,
     created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMPTZ DEFAULT NULL
@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS client (
 
 CREATE TABLE IF NOT EXISTS transport
 (
-    id TEXT PRIMARY KEY DEFAULT gen_random_uuid(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name TEXT NOT NULL,
     capacity_gr INTEGER NOT NULL,
     available_units INTEGER NOT NULL,
@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS transport
 );
 
 CREATE TABLE IF NOT EXISTS client_order_status (
-    id TEXT PRIMARY KEY DEFAULT gen_random_uuid(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name TEXT NOT NULL,
     is_active BOOLEAN NOT NULL DEFAULT TRUE,
     created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS client_order_status (
 );
 
 CREATE TABLE IF NOT EXISTS product (
-    id TEXT PRIMARY KEY DEFAULT gen_random_uuid(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name TEXT NOT NULL,
     weight_gr INTEGER NOT NULL,
     is_active BOOLEAN NOT NULL DEFAULT TRUE,
@@ -37,78 +37,78 @@ CREATE TABLE IF NOT EXISTS product (
 );
 
 CREATE TABLE IF NOT EXISTS client_order (
-    id TEXT PRIMARY KEY DEFAULT gen_random_uuid(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     is_active BOOLEAN NOT NULL DEFAULT TRUE,
     created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMPTZ DEFAULT NULL,
-    client_id TEXT REFERENCES client(id),
-    transport_id TEXT REFERENCES transport(id),
-    order_status_id TEXT REFERENCES client_order_status(id)
+    client_id UUID REFERENCES client(id),
+    transport_id UUID REFERENCES transport(id),
+    client_order_status_id UUID REFERENCES client_order_status(id)
 );
 
 CREATE TABLE IF NOT EXISTS delivery_point (
-    id TEXT PRIMARY KEY DEFAULT gen_random_uuid(),
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     latitude DOUBLE PRECISION NOT NULL,
     longitude DOUBLE PRECISION NOT NULL,
     is_active BOOLEAN NOT NULL DEFAULT TRUE,
     created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMPTZ DEFAULT NULL,
-    order_id TEXT REFERENCES client_order(id)
+    client_order_id UUID REFERENCES client_order(id)
 );
 
 CREATE TABLE IF NOT EXISTS client_order_products(
-    order_id TEXT REFERENCES client_order(id),
-    product_id TEXT REFERENCES product(id),
+    client_order_id UUID REFERENCES client_order(id),
+    product_id UUID REFERENCES product(id),
     quantity INTEGER NOT NULL,
     created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMPTZ DEFAULT NULL,
-    PRIMARY KEY (order_id, product_id)
+    PRIMARY KEY (client_order_id, product_id)
 );
 
-INSERT INTO client (id, name, last_name, phone_number) VALUES
-('c1d3e678-9b6f-47e1-b0b6-a5f11e7e67a1', 'Carlos', 'Pérez', '789456123'),
-('a2b6e412-4b7e-45c9-a78e-58f0e4e54b2d', 'Maria', 'Lopez', '654321987'),
-('b3f7d489-5b9f-42ea-bc6b-691d98c983a2', 'Jorge', 'Gonzalez', '321987654'),
-('d4e8f594-6c3f-46ea-abc6-792f09d9c8b3', 'Ana', 'Mendoza', '987456321'),
-('e5f9g624-7d8e-48ea-bf7b-893fa0e0b9b4', 'Luis', 'Martinez', '123789456');
+INSERT INTO client (id, name, last_name, email) VALUES
+('c1d3e678-9b6f-47e1-b0b6-a5f11e7e67a1', 'Carlos', 'Pérez', 'carlos.perez@gmail.com'),
+('a2b6e412-4b7e-45c9-a78e-58f0e4e54b2d', 'Maria', 'Lopez', 'maria.lopez@gmail.com'),
+('b3f7d489-5b9f-42ea-bc6b-691d98c983a2', 'Jorge', 'Gonzalez', 'jorge.gonzalez@gmail.com'),
+('d4e8f594-6c3f-46ea-abc6-792f09d9c8b3', 'Ana', 'Mendoza', 'ana.mendoza@gmail.com'),
+('e5f96224-7d8e-48ea-bf7b-893fa0e0b9b4', 'Luis', 'Martinez', 'luis.martinez@gmail.com');
 
 INSERT INTO transport (id, name, capacity_gr, available_units) VALUES
-('f1a2b3c4-1234-5678-9101-112131415161', 'Truck - Large', 10000000, 3),
-('f2a3b4c5-2234-5678-9201-112131415162', 'Truck - Medium', 7000000, 4),
-('f3a4b5c6-3234-5678-9301-112131415163', 'Van', 3500000, 5);
+('f1a2b3c4-d234-5678-9101-112131415161', 'Truck - Large', 10000000, 3),
+('f2a3b4c5-e234-5678-9201-112131415162', 'Truck - Medium', 7000000, 4),
+('f3a4b5c6-f234-5678-9301-112131415163', 'Van', 3500000, 5);
 
 INSERT INTO client_order_status (id, name) VALUES
-('g1h2i3j4-1234-5678-9401-112131415164', 'Pending'),
-('g2h3i4j5-2234-5678-9501-112131415165', 'Shipped'),
-('g3h4i5j6-3234-5678-9601-112131415166', 'Delivered'),
-('g4h5i6j7-4234-5678-9701-112131415167', 'Cancelled');
+('8487d2c0-93db-418f-a9c8-ac3fc422428b', 'Pending'),
+('7683ba92-0f00-4000-b86c-f51273ce34b8', 'Shipped'),
+('315427f7-e8ff-4b2e-ba25-d50c08260b18', 'Delivered'),
+('ba80ef87-df15-4266-9450-d446a1f43de4', 'Cancelled');
 
 INSERT INTO product (id, name, weight_gr) VALUES
-('p1a2b3c4-1234-5678-0801-112131415178', 'Pepsi', 500),
-('p2a3b4c5-2234-5678-0901-112131415179', 'Pepsi Black', 500),
-('p3a4b5c6-3234-5678-1001-112131415180', 'Guarana', 600),
-('p4a5b6c7-4234-5678-1101-112131415181', 'Pacena', 1000),
-('p5a6b7c8-5234-5678-1201-112131415182', 'Chicha', 2000),
-('p6a7b8c9-6234-5678-1301-112131415183', 'Huari', 1000);
+('3842f419-4c13-4880-827b-e784d9ad0b07', 'Pepsi', 500),
+('da27b4cb-94c1-42d0-a914-e600559ade80', 'Pepsi Black', 500),
+('5d609b2d-99b0-4c1d-bd25-7cc7984feba7', 'Guarana', 600),
+('f55b772e-fbf8-494d-9b9a-8bd7a028f9e4', 'Pacena', 1000),
+('07580c62-faaa-42f3-b69d-1e03c3a0cc62', 'Chicha', 2000),
+('fe1198c3-4496-45b3-bdf3-93b7e13a54b5', 'Huari', 1000);
 
-INSERT INTO client_order (id, client_id, transport_id, order_status_id) VALUES
-('h1i2j3k4-1234-5678-9801-112131415168', 'c1d3e678-9b6f-47e1-b0b6-a5f11e7e67a1', 'f1a2b3c4-1234-5678-9101-112131415161', 'g1h2i3j4-1234-5678-9401-112131415164'),
-('h2i3j4k5-2234-5678-9901-112131415169', 'a2b6e412-4b7e-45c9-a78e-58f0e4e54b2d', 'f2a3b4c5-2234-5678-9201-112131415162', 'g2h3i4j5-2234-5678-9501-112131415165'),
-('h3i4j5k6-3234-5678-0001-112131415170', 'b3f7d489-5b9f-42ea-bc6b-691d98c983a2', 'f3a4b5c6-3234-5678-9301-112131415163', 'g1h2i3j4-1234-5678-9401-112131415164'),
-('h4i5j6k7-4234-5678-0101-112131415171', 'd4e8f594-6c3f-46ea-abc6-792f09d9c8b3', 'f1a2b3c4-1234-5678-9101-112131415161', 'g3h4i5j6-3234-5678-9601-112131415166'),
-('h5i6j7k8-5234-5678-0201-112131415172', 'e5f9g624-7d8e-48ea-bf7b-893fa0e0b9b4', 'f2a3b4c5-2234-5678-9201-112131415162', 'g2h3i4j5-2234-5678-9501-112131415165');
+INSERT INTO client_order (id, client_id, transport_id, client_order_status_id) VALUES
+('cfe6ef50-da1b-4173-8f7a-45e9307956dc', 'c1d3e678-9b6f-47e1-b0b6-a5f11e7e67a1', 'f1a2b3c4-d234-5678-9101-112131415161', '8487d2c0-93db-418f-a9c8-ac3fc422428b'),
+('135df060-afd2-4c50-8fd8-30742f048b62', 'a2b6e412-4b7e-45c9-a78e-58f0e4e54b2d', 'f2a3b4c5-e234-5678-9201-112131415162', '7683ba92-0f00-4000-b86c-f51273ce34b8'),
+('aad9f084-8043-498a-87ef-ce2c2fe76ded', 'b3f7d489-5b9f-42ea-bc6b-691d98c983a2', 'f3a4b5c6-f234-5678-9301-112131415163', '8487d2c0-93db-418f-a9c8-ac3fc422428b'),
+('561d618f-46c2-4bee-b55e-ee23ddc3290b', 'd4e8f594-6c3f-46ea-abc6-792f09d9c8b3', 'f1a2b3c4-d234-5678-9101-112131415161', '315427f7-e8ff-4b2e-ba25-d50c08260b18'),
+('439bac98-f558-491d-8ee4-5ce9f2486195', 'e5f96224-7d8e-48ea-bf7b-893fa0e0b9b4', 'f2a3b4c5-e234-5678-9201-112131415162', '7683ba92-0f00-4000-b86c-f51273ce34b8');
 
-INSERT INTO delivery_point (id, latitude, longitude, order_id) VALUES
-('i1j2k3l4-1234-5678-0301-112131415173', -16.500000, -68.150000, 'h1i2j3k4-1234-5678-9801-112131415168'),
-('i2j3k4l5-2234-5678-0401-112131415174', -17.393511, -66.145981, 'h2i3j4k5-2234-5678-9901-112131415169'),
-('i3j4k5l6-3234-5678-0501-112131415175', -19.033320, -65.262740, 'h3i4j5k6-3234-5678-0001-112131415170'),
-('i4j5k6l7-4234-5678-0601-112131415176', -17.783327, -63.182129, 'h4i5j6k7-4234-5678-0101-112131415171'),
-('i5j6k7l8-5234-5678-0701-112131415177', -18.478333, -66.486944, 'h5i6j7k8-5234-5678-0201-112131415172');
+INSERT INTO delivery_point (id, latitude, longitude, client_order_id) VALUES
+('e4eadcca-bd02-4f94-aae0-dd469300aa75', -16.500000, -68.150000, 'cfe6ef50-da1b-4173-8f7a-45e9307956dc'),
+('ca1d0420-defd-40fc-8e35-d1190ecc50f5', -17.393511, -66.145981, '135df060-afd2-4c50-8fd8-30742f048b62'),
+('3cefbb06-e2e2-48f0-a765-3eb98e696dca', -19.033320, -65.262740, 'aad9f084-8043-498a-87ef-ce2c2fe76ded'),
+('1404d8ab-092a-467d-9faa-491e7156e806', -17.783327, -63.182129, '561d618f-46c2-4bee-b55e-ee23ddc3290b'),
+('6b13b84c-6d92-4736-8fb6-d63ec45408dc', -18.478333, -66.486944, '439bac98-f558-491d-8ee4-5ce9f2486195');
 
-INSERT INTO client_order_products (order_id, product_id, quantity) VALUES
-('h1i2j3k4-1234-5678-9801-112131415168', 'p1a2b3c4-1234-5678-0801-112131415178', 200),
-('h1i2j3k4-1234-5678-9801-112131415168', 'p2a3b4c5-2234-5678-0901-112131415179', 150),
-('h2i3j4k5-2234-5678-9901-112131415169', 'p3a4b5c6-3234-5678-1001-112131415180', 400),
-('h3i4j5k6-3234-5678-0001-112131415170', 'p4a5b6c7-4234-5678-1101-112131415181', 300),
-('h4i5j6k7-4234-5678-0101-112131415171', 'p5a6b7c8-5234-5678-1201-112131415182', 100),
-('h5i6j7k8-5234-5678-0201-112131415172', 'p6a7b8c9-6234-5678-1301-112131415183', 500);
+INSERT INTO client_order_products (client_order_id, product_id, quantity) VALUES
+('cfe6ef50-da1b-4173-8f7a-45e9307956dc', '3842f419-4c13-4880-827b-e784d9ad0b07', 200),
+('cfe6ef50-da1b-4173-8f7a-45e9307956dc', 'da27b4cb-94c1-42d0-a914-e600559ade80', 150),
+('135df060-afd2-4c50-8fd8-30742f048b62', '5d609b2d-99b0-4c1d-bd25-7cc7984feba7', 400),
+('aad9f084-8043-498a-87ef-ce2c2fe76ded', 'f55b772e-fbf8-494d-9b9a-8bd7a028f9e4', 300),
+('561d618f-46c2-4bee-b55e-ee23ddc3290b', '07580c62-faaa-42f3-b69d-1e03c3a0cc62', 100),
+('439bac98-f558-491d-8ee4-5ce9f2486195', 'fe1198c3-4496-45b3-bdf3-93b7e13a54b5', 500);

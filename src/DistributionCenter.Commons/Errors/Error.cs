@@ -17,7 +17,7 @@ public readonly record struct Error : IError
         Type = type;
     }
 
-    public static IError Conflict(
+    public static Error Conflict(
         string code = "General.Conflict",
         string description = "A 'Conflict' error has occurred"
     )
@@ -25,7 +25,7 @@ public readonly record struct Error : IError
         return new Error(code, description, ErrorType.Conflict);
     }
 
-    public static IError Validation(
+    public static Error Validation(
         string code = "General.Validation",
         string description = "A 'Validation' error has occurred"
     )
@@ -33,7 +33,7 @@ public readonly record struct Error : IError
         return new Error(code, description, ErrorType.Validation);
     }
 
-    public static IError NotFound(
+    public static Error NotFound(
         string code = "General.NotFound",
         string description = "A 'Not Found' error has occurred"
     )
@@ -41,11 +41,19 @@ public readonly record struct Error : IError
         return new Error(code, description, ErrorType.NotFound);
     }
 
-    public static IError Unauthorized(
+    public static Error Unauthorized(
         string code = "General.Unauthorized",
         string description = "A 'Unauthorized' error has occurred"
     )
     {
         return new Error(code, description, ErrorType.Unauthorized);
+    }
+
+    public static Error Unexpected(
+        string code = "General.Unexpected",
+        string description = "An 'Unexpected' error has occurred"
+    )
+    {
+        return new Error(code, description, ErrorType.Unexpected);
     }
 }

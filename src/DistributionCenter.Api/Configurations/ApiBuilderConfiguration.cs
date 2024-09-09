@@ -1,12 +1,20 @@
 namespace DistributionCenter.Api.Configurations;
 
+using DistributionCenter.Application.Configurations;
+using DistributionCenter.Infraestructure.Configurations;
 using Microsoft.OpenApi.Models;
 
 public static class ApiBuilderConfiguration
 {
-    public static IServiceCollection ConfigureApi(this IServiceCollection services)
+    public static IServiceCollection ConfigureApi(this IServiceCollection services, IConfiguration configuration)
     {
-        return services.ConfigureControllers().AddEndpointsApiExplorer().ConfigureSwagger().AddProblemDetails();
+        return services
+            .ConfigureControllers()
+            .AddEndpointsApiExplorer()
+            .ConfigureSwagger()
+            .AddProblemDetails()
+            .ConfigureApplication(configuration)
+            .ConfigureInfraestructure();
     }
 
     private static IServiceCollection ConfigureControllers(this IServiceCollection services)

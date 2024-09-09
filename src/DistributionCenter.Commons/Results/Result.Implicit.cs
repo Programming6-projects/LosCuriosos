@@ -21,6 +21,11 @@ public partial class Result : IResult
     {
         return new Result(errors);
     }
+
+    public static implicit operator Result(Error[] errors)
+    {
+        return new Result([.. errors]);
+    }
 }
 
 public partial class Result<T> : Result, IResult<T>
@@ -38,5 +43,10 @@ public partial class Result<T> : Result, IResult<T>
     public static implicit operator Result<T>(Collection<IError> errors)
     {
         return new Result<T>(errors);
+    }
+
+    public static implicit operator Result<T>(Error[] errors)
+    {
+        return new Result<T>([.. errors]);
     }
 }
