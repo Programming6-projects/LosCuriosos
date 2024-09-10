@@ -1,0 +1,8 @@
+POST {{host}}/api/clients
+Content-Type: application/json
+
+{
+    "name": "Manuel",
+    "lastName": "Morales",
+    "email": "manuel.morales@gmail.com"
+}
