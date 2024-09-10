@@ -15,7 +15,7 @@ public class GetByIdDapperQuery<T>(IDbConnectionFactory dbConnectionFactory, str
     protected Guid Id { get; } = id;
     protected string Fields { get; } = fields;
 
-    protected override async Task<Result<T>> ExecuteAsync(IDbConnection connection)
+    protected override async Task<Result<T>> Execute(IDbConnection connection)
     {
         string query = $"SELECT {Fields} FROM {TableName} WHERE id = @Id";
 

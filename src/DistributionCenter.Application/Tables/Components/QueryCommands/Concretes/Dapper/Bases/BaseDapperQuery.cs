@@ -16,7 +16,7 @@ public abstract class BaseDapperQuery<T>(IDbConnectionFactory dbConnectionFactor
     {
         using IDbConnection connection = await DbConnectionFactory.CreateConnectionAsync();
 
-        Result<T> result = await ExecuteAsync(connection);
+        Result<T> result = await Execute(connection);
 
         if (result.IsSuccess)
         {
@@ -26,5 +26,5 @@ public abstract class BaseDapperQuery<T>(IDbConnectionFactory dbConnectionFactor
         return result.Errors;
     }
 
-    protected abstract Task<Result<T>> ExecuteAsync(IDbConnection connection);
+    protected abstract Task<Result<T>> Execute(IDbConnection connection);
 }

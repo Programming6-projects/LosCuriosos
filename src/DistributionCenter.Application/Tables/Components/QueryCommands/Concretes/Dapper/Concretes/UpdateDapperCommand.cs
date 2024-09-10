@@ -14,7 +14,7 @@ public class UpdateDapperCommand<T>(IDbConnectionFactory dbConnectionFactory, T 
 {
     protected string Fields { get; } = fields;
 
-    protected override async Task<Result> ExecuteAsync(IDbConnection connection)
+    protected override async Task<Result> Execute(IDbConnection connection)
     {
         Entity.UpdatedAt = DateTime.Now;
 

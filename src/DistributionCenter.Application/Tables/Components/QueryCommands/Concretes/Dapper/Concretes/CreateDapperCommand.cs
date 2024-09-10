@@ -20,7 +20,7 @@ public class CreateDapperCommand<T>(
     protected string Fields { get; } = fields;
     protected string Values { get; } = values;
 
-    protected override async Task<Result> ExecuteAsync(IDbConnection connection)
+    protected override async Task<Result> Execute(IDbConnection connection)
     {
         string query = $"INSERT INTO {TableName} ({Fields}) VALUES ({Values})";
 

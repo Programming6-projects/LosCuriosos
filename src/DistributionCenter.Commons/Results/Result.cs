@@ -8,7 +8,7 @@ public partial class Result : IResult
 {
     private readonly Collection<IError>? _errors;
 
-    protected Result() { }
+    public Result() { }
 
     protected Result(IError error)
     {
@@ -40,7 +40,7 @@ public partial class Result<T> : Result, IResult<T>
 {
     private readonly T? _value;
 
-    private Result(T value)
+    public Result(T value)
     {
         _value = value;
     }

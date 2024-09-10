@@ -17,10 +17,10 @@ public abstract class BaseDapperCommand<T>(IDbConnectionFactory dbConnectionFact
     {
         using IDbConnection connection = await DbConnectionFactory.CreateConnectionAsync();
 
-        Result result = await ExecuteAsync(connection);
+        Result result = await Execute(connection);
 
         return result;
     }
 
-    protected abstract Task<Result> ExecuteAsync(IDbConnection connection);
+    protected abstract Task<Result> Execute(IDbConnection connection);
 }
