@@ -1,6 +1,7 @@
 namespace DistributionCenter.Api.Controllers.Bases;
 
 using System.ComponentModel.DataAnnotations;
+using DistributionCenter.Api.Controllers.Extensions;
 using DistributionCenter.Api.Controllers.Interfaces;
 using DistributionCenter.Application.Repositories.Interfaces;
 using DistributionCenter.Commons.Results;
@@ -8,8 +9,9 @@ using DistributionCenter.Domain.Entities.Interfaces;
 using DistributionCenter.Infraestructure.DTOs.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
+[ApiController]
 public abstract class BaseEntityController<TEntity, TCreateDto, TUpdateDto>(IRepository<TEntity> repository)
-    : BaseApiController,
+    : ControllerBase,
         IEntityController<TEntity, TCreateDto, TUpdateDto>
     where TEntity : IEntity
     where TCreateDto : ICreateDto<TEntity>
@@ -24,7 +26,7 @@ public abstract class BaseEntityController<TEntity, TCreateDto, TUpdateDto>(IRep
 
         Result<TEntity> result = await Repository.CreateAsync(entity);
 
-        return result.Match(entity => Ok(entity), Problem);
+        return result.Match(entity => Ok(entity), this.ErrorsResponse);
     }
 
     [HttpGet("{id}")]
@@ -32,7 +34,7 @@ public abstract class BaseEntityController<TEntity, TCreateDto, TUpdateDto>(IRep
     {
         Result<TEntity> result = await Repository.GetByIdAsync(id);
 
-        return result.Match(entity => Ok(entity), Problem);
+        return result.Match(entity => Ok(entity), this.ErrorsResponse);
     }
 
     [HttpPut("{id}")]
@@ -42,14 +44,14 @@ public abstract class BaseEntityController<TEntity, TCreateDto, TUpdateDto>(IRep
 
         if (!searchEntity.IsSuccess)
         {
-            return Problem(searchEntity.Errors);
+            return this.ErrorsResponse(searchEntity.Errors);
         }
 
         TEntity entity = request.FromEntity(searchEntity.Value);
 
         Result<TEntity> result = await Repository.UpdateAsync(entity);
 
-        return result.Match(entity => Ok(entity), Problem);
+        return result.Match(entity => Ok(entity), this.ErrorsResponse);
     }
 
     [HttpPatch("{id}/disable")]
@@ -59,7 +61,7 @@ public abstract class BaseEntityController<TEntity, TCreateDto, TUpdateDto>(IRep
 
         if (!searchEntity.IsSuccess)
         {
-            return Problem(searchEntity.Errors);
+            return this.ErrorsResponse(searchEntity.Errors);
         }
 
         TEntity entity = searchEntity.Value;
@@ -68,6 +70,6 @@ public abstract class BaseEntityController<TEntity, TCreateDto, TUpdateDto>(IRep
 
         Result<TEntity> result = await Repository.UpdateAsync(entity);
 
-        return result.Match(entity => Ok(entity), Problem);
+        return result.Match(entity => Ok(entity), this.ErrorsResponse);
     }
 }

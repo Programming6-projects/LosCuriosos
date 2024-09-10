@@ -4,11 +4,11 @@ using DistributionCenter.Commons.Enums;
 using DistributionCenter.Commons.Errors.Interfaces;
 
 #pragma warning disable CA1716
-public readonly record struct Error : IError
+public record struct Error : IError
 {
-    public string Code { get; }
-    public string Description { get; }
-    public ErrorType Type { get; }
+    public string Code { get; set; }
+    public string Description { get; set; }
+    public ErrorType Type { get; set; }
 
     private Error(string code, string description, ErrorType type)
     {
