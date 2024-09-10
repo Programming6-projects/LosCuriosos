@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 [ApiController]
 public class BaseApiController : ControllerBase
 {
-    protected ActionResult Problem(ICollection<IError> errors)
+    protected IActionResult Problem(ICollection<IError> errors)
     {
         if (errors.All(static error => error.Type == ErrorType.Validation))
         {

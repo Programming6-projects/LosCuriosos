@@ -13,6 +13,14 @@ public partial class Result : IResult
 
         return IsSuccess ? success() : failure(Errors);
     }
+
+    public Task<TNext> MatchAsync<TNext>(Func<Task<TNext>> success, Func<Collection<IError>, Task<TNext>> failure)
+    {
+        ArgumentNullException.ThrowIfNull(success, nameof(success));
+        ArgumentNullException.ThrowIfNull(failure, nameof(failure));
+
+        return IsSuccess ? success() : failure(Errors);
+    }
 }
 
 public partial class Result<T> : Result, IResult<T>

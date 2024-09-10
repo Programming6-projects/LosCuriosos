@@ -1,7 +1,7 @@
 namespace DistributionCenter.Application.Contexts.Bases;
 
 using DistributionCenter.Application.Contexts.Interfaces;
-using DistributionCenter.Application.Tables.Interfaces;
+using DistributionCenter.Application.Tables.Core.Interfaces;
 using DistributionCenter.Domain.Entities.Interfaces;
 
 public abstract class BaseContext(IDictionary<Type, object> tables) : IContext

@@ -9,6 +9,7 @@ public interface IResult
     Collection<IError> Errors { get; }
 
     TNext Match<TNext>(Func<TNext> success, Func<Collection<IError>, TNext> failure);
+    Task<TNext> MatchAsync<TNext>(Func<Task<TNext>> success, Func<Collection<IError>, Task<TNext>> failure);
 }
 
 public interface IResult<T> : IResult

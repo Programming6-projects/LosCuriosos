@@ -12,21 +12,21 @@ public abstract class BaseRepository<T>(IContext context) : IRepository<T>
 
     public virtual async Task<Result<T>> GetByIdAsync(Guid id)
     {
-        Result<T> entity = await Context.SetTable<T>().GetByIdQuery(id).ExecuteAsync();
+        Result<T> entity = await Context.SetTable<T>().GetById(id).ExecuteAsync();
 
         return entity.Match(success => entity, errors => errors);
     }
 
     public async Task<Result<T>> CreateAsync(T entity)
     {
-        Result result = await Context.SetTable<T>().CreateCommand(entity).ExecuteAsync();
+        Result result = await Context.SetTable<T>().Create(entity).ExecuteAsync();
 
         return result.Match<Result<T>>(() => entity, errors => errors);
     }
 
     public async Task<Result<T>> UpdateAsync(T entity)
     {
-        Result result = await Context.SetTable<T>().UpdateCommand(entity).ExecuteAsync();
+        Result result = await Context.SetTable<T>().Update(entity).ExecuteAsync();
 
         return result.Match<Result<T>>(() => entity, errors => errors);
     }

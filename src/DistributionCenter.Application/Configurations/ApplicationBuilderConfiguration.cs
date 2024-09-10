@@ -1,13 +1,13 @@
 namespace DistributionCenter.Application.Configurations;
 
-using DistributionCenter.Application.Connections.Concretes;
-using DistributionCenter.Application.Connections.Interfaces;
 using DistributionCenter.Application.Constants;
 using DistributionCenter.Application.Contexts.Concretes;
 using DistributionCenter.Application.Contexts.Interfaces;
 using DistributionCenter.Application.Repositories.Concretes;
 using DistributionCenter.Application.Repositories.Interfaces;
-using DistributionCenter.Application.Tables.Concretes;
+using DistributionCenter.Application.Tables.Connections.Concretes;
+using DistributionCenter.Application.Tables.Connections.Interfaces;
+using DistributionCenter.Application.Tables.Core.Concretes;
 using DistributionCenter.Domain.Entities.Concretes;
 using Microsoft.Extensions.DependencyInjection;
 

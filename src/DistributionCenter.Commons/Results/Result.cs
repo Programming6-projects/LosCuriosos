@@ -21,6 +21,7 @@ public partial class Result : IResult
     }
 
     public bool IsSuccess => _errors is null || _errors.Count == 0;
+
     public Collection<IError> Errors
     {
         get

@@ -6,7 +6,6 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi"></PackageReference>
     <PackageReference Include="Swashbuckle.AspNetCore"></PackageReference>
-    <PackageReference Include="MediatR"></PackageReference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="../DistributionCenter.Commons/DistributionCenter.Commons.csproj"></ProjectReference>
