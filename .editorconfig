@@ -49,6 +49,8 @@ dotnet_diagnostic.IDE0055.severity = none
 dotnet_diagnostic.CS1591.severity = none
 # Remove warning about using a resource table - Multilang
 dotnet_diagnostic.CA1303.severity = none
+# Remove warning about implicit conversion
+dotnet_diagnostic.CA2225.severity = none
 
 [**/GlobalUsings.cs]
 # Disable warning about global usings

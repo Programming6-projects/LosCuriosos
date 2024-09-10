@@ -63,8 +63,7 @@
         "db:restore": "docker compose down && docker volume rm --force los-curiosos_postgres_data",
         "start:db": "docker compose down && docker compose up -d",
         "start:dev": "pnpm start:db && dotnet watch run --project ./src/DistributionCenter.Api",
-        "report:gen": "dotnet test && dotnet reportgenerator",
-        "report:show": "pnpm report:gen && xdg-open ./coverage/index.html",
+        "report": "dotnet reportgenerator && xdg-open ./coverage/index.html",
         "prepare": "husky"
     },
     "devDependencies": {
