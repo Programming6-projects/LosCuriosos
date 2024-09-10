@@ -94,6 +94,8 @@ the coverage report with the following command:
 pnpm report
 ```
 
+To see the html report you need to open the `coverage/index.html` file.
+
 ## Test Coverage
 
 We aim to maintain a high level of test coverage to ensure the reliability and
