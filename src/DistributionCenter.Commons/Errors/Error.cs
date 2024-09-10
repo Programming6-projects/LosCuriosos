@@ -43,7 +43,7 @@ public readonly record struct Error : IError
 
     public static Error Unauthorized(
         string code = "General.Unauthorized",
-        string description = "A 'Unauthorized' error has occurred"
+        string description = "An 'Unauthorized' error has occurred"
     )
     {
         return new Error(code, description, ErrorType.Unauthorized);
