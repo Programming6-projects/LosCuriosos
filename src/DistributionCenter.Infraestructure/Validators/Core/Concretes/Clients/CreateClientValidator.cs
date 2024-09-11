@@ -10,7 +10,7 @@ public class CreateClientValidator : BaseFluentValidator<CreateClientDto>
     {
         _ = RuleFor(static x => x.Name)
             .NotNullNotEmpty("Name is required")
-            .AddRule(static x => x.Length is >= 3 and <= 50, "Name must be between 3 and 50 characters")
+            .SizeRange(3, 50, "Name must be between 3 and 50 characters")
             .RegexValidator(@"^[a-zA-Z\s]+$", "Name must contain only letters and spaces");
 
         _ = RuleFor(static x => x.LastName)
@@ -19,7 +19,7 @@ public class CreateClientValidator : BaseFluentValidator<CreateClientDto>
             .RegexValidator(@"^[a-zA-Z\s]+$", "LastName must contain only letters and spaces");
 
         _ = RuleFor(static x => x.Email)
-            .AddRule(static x => !string.IsNullOrEmpty(x), "Email is required")
+            .NotNullNotEmpty("Email is required")
             .EmailValidator("Email is not valid email");
     }
 }

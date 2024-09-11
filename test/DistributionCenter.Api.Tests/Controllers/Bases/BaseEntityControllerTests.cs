@@ -46,6 +46,26 @@ public class BaseEntityControllerTests
     }
 
     [Fact]
+    public async Task Create_ReturnsProblems_When_Validate_Return_Errors()
+    {
+        // Define Input and Output
+        CreateClientDto dto =
+            new()
+            {
+                Name = "sadg#@!$",
+                LastName = "Te",
+                Email = ".com",
+            };
+
+        // Execute actual operation
+        IActionResult result = await _controllerMock.Object.Create(dto);
+
+        // Verify actual result
+        ObjectResult objectResult = Assert.IsType<ObjectResult>(result);
+        _ = Assert.IsType<ValidationProblemDetails>(objectResult.Value);
+    }
+
+    [Fact]
     public async Task GeyById_ReturnsOkResult()
     {
         // Define Input and Output
@@ -65,6 +85,27 @@ public class BaseEntityControllerTests
 
         // Verify actual result
         _ = Assert.IsType<OkObjectResult>(result);
+    }
+
+    [Fact]
+    public async Task Update_ReturnsValidationProblemDetails()
+    {
+        // Define Input and Output
+        Guid id = Guid.NewGuid();
+        UpdateClientDto dto =
+            new()
+            {
+                Name = "sadg#@!$",
+                LastName = "Te",
+                Email = ".com",
+            };
+
+        // Execute actual operation
+        IActionResult result = await _controllerMock.Object.Update(id, dto);
+
+        // Verify actual result
+        ObjectResult objectResult = Assert.IsType<ObjectResult>(result);
+        _ = Assert.IsType<ValidationProblemDetails>(objectResult.Value);
     }
 
     [Fact]

@@ -39,14 +39,9 @@ public abstract class BaseFluentValidator<T> : IFluentValidator<T>
             string fieldName = rule.Key;
             object validationBuilder = rule.Value;
 
-            object? fieldValue = value.GetType().GetProperty(fieldName)?.GetValue(value);
+            object fieldValue = value.GetType().GetProperty(fieldName)!.GetValue(value)!;
 
-            MethodInfo? method = validationBuilder.GetType().GetMethod("Validate");
-
-            if (method == null)
-            {
-                continue;
-            }
+            MethodInfo method = validationBuilder.GetType().GetMethod("Validate")!;
 
             if (method.Invoke(validationBuilder, [fieldValue]) is Collection<IError> errorCollection)
             {
