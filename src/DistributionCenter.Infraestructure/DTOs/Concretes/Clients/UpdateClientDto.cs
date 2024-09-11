@@ -1,7 +1,9 @@
 namespace DistributionCenter.Infraestructure.DTOs.Concretes.Clients;
 
+using DistributionCenter.Commons.Results;
 using DistributionCenter.Domain.Entities.Concretes;
 using DistributionCenter.Infraestructure.DTOs.Interfaces;
+using DistributionCenter.Infraestructure.Validators.Core.Concretes.Clients;
 
 public class UpdateClientDto : IUpdateDto<Client>
 {
@@ -18,5 +20,10 @@ public class UpdateClientDto : IUpdateDto<Client>
         entity.Email = Email ?? entity.Email;
 
         return entity;
+    }
+
+    public Result Validate()
+    {
+        return new UpdateClientValidator().Validate(this);
     }
 }

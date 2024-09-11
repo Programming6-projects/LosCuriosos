@@ -22,6 +22,13 @@ public abstract class BaseEntityController<TEntity, TCreateDto, TUpdateDto>(IRep
     [HttpPost]
     public async Task<IActionResult> Create(TCreateDto request)
     {
+        Result validateResult = request.Validate();
+
+        if (!validateResult.IsSuccess)
+        {
+            return this.ErrorsResponse(validateResult.Errors);
+        }
+
         TEntity entity = request.ToEntity();
 
         Result<TEntity> result = await Repository.CreateAsync(entity);
@@ -40,6 +47,13 @@ public abstract class BaseEntityController<TEntity, TCreateDto, TUpdateDto>(IRep
     [HttpPut("{id}")]
     public async Task<IActionResult> Update([FromRoute] [Required] Guid id, TUpdateDto request)
     {
+        Result validateResult = request.Validate();
+
+        if (!validateResult.IsSuccess)
+        {
+            return this.ErrorsResponse(validateResult.Errors);
+        }
+
         Result<TEntity> searchEntity = await Repository.GetByIdAsync(id);
 
         if (!searchEntity.IsSuccess)
