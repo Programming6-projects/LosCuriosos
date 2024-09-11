@@ -18,10 +18,11 @@ overview of our Git Flow:
 
 ## Branch Strategy
 
-- Format: `prefix/name/description`
+- Format: `prefix/taskId/username/taskName`
   - `prefix`: Indicates the type of work (e.g., feature, fix, chore).
-  - `name`: The last name of the developer in charge of the ticket.
-  - `description`: Brief description of the branch's purpose.
+  - `taskId`: The task ID or ticket number associated with the branch.
+  - `username`: The developer's username or last name.
+  - `taskName`: The task or feature name.
 - Allowed prefixes include: feature, stable, fix, chore, docs, feat, build, ci,
   test, refactor, perf.
 
