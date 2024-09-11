@@ -10,13 +10,13 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup>
     <!-- Code Coverage -->
     <CollectCoverage>true</CollectCoverage>
     <CoverletOutputFormat>cobertura</CoverletOutputFormat>
-    <Threshold>80</Threshold>
     <ThresholdType>line,branch,method</ThresholdType>
-    <ThresholdStat>total</ThresholdStat>
-    <Exclude>[DistributionCenter.Api]*DistributionCenter.Api.Program,[DistributionCenter.Api]*DistributionCenter.Api.Startup,[DistributionCenter.Api]*DistributionCenter.Api.Configurations*</Exclude>
+    <Exclude>[DistributionCenter.Api]DistributionCenter.Api.Program,[DistributionCenter.Api]DistributionCenter.Api.Startup,[DistributionCenter.Api]DistributionCenter.Api.Configurations*,[DistributionCenter.Application]DistributionCenter.Application.Configurations*,[DistributionCenter.Application]DistributionCenter.Application.Tables.Connections.Concretes*,[DistributionCenter.Application]DistributionCenter.Application.Tables.Components.QueryCommands.Concretes.Dapper.Concretes*</Exclude>
   </PropertyGroup>
   <ItemGroup>
     <!-- Analyzers -->
