@@ -1,7 +1,9 @@
 ﻿namespace DistributionCenter.Infraestructure.DTOs.Concretes.Products;
 
+using Commons.Results;
 using Domain.Entities.Concretes;
 using Interfaces;
+using Validators.Core.Concretes.Products;
 
 public class UpdateProductDto : IUpdateDto<Product>
 {
@@ -16,5 +18,10 @@ public class UpdateProductDto : IUpdateDto<Product>
         entity.Description = Description ?? entity.Description;
 
         return entity;
+    }
+
+    public Result Validate()
+    {
+        return new UpdateProductValidator().Validate(this);
     }
 }
