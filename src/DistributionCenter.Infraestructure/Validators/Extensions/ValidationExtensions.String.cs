@@ -5,9 +5,6 @@ using DistributionCenter.Infraestructure.Validators.Components.Builders.Interfac
 
 public static partial class ValidationExtensions
 {
-    [GeneratedRegex(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$")]
-    private static partial Regex EmailRegex();
-
     public static IValidationBuilder<string> WhenNotNull(this IValidationBuilder<string?> builder)
     {
         ArgumentNullException.ThrowIfNull(builder, nameof(builder));
@@ -49,6 +46,6 @@ public static partial class ValidationExtensions
     {
         ArgumentNullException.ThrowIfNull(builder, nameof(builder));
 
-        return builder.AddRule(static x => EmailRegex().IsMatch(x), message);
+        return builder.AddRule(static x => Regex.IsMatch(x, @"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$"), message);
     }
 }
