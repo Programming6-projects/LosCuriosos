@@ -5,7 +5,6 @@ using Application.Tables.Connections.Dapper.Interfaces;
 using DistributionCenter.Application.Tables.Components.Information.Concretes;
 using DistributionCenter.Application.Tables.Components.Information.Interfaces;
 using DistributionCenter.Application.Tables.Core.Concretes;
-using DistributionCenter.Application.Tables.Connections.Interfaces;
 
 public class ClientTableTests
 {

@@ -1,7 +1,8 @@
 ﻿namespace DistributionCenter.Application.Tests.Tables.Core.Concretes;
 
+using System.Data;
 using Application.Tables.Components.Information.Interfaces;
-using Application.Tables.Connections.Interfaces;
+using Application.Tables.Connections.Dapper.Interfaces;
 
 public class ProductTableTests
 {
@@ -9,7 +10,7 @@ public class ProductTableTests
     public void GetInformation_ShouldReturnProductTableInformation()
     {
         // Define Input and Output
-        Mock<IDbConnectionFactory> mockFactory = new();
+        Mock<IDbConnectionFactory<IDbConnection>> mockFactory = new();
         ProductTable table = new(mockFactory.Object);
 
         // Execute actual operation
