@@ -118,12 +118,12 @@ public class CreateProductValidatorTest
     }
 
     [Fact]
-    public void VerifyThanProductWeightHasALimitDecimalNumbers()
+    public void VerifyThanProductWeightHasALimit()
     {
         // Define Input and Output
         CreateProductValidator validator = new();
-        uint invalidWeight = 1492850;
-        uint validWeight = 149285;
+        int invalidWeight = 1492850;
+        int validWeight = 149285;
 
         // Execute actual operation
         CreateProductDto invalidDto = new()

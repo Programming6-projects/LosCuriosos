@@ -10,7 +10,7 @@ public class UpdateProductDtoTests
     public void FromEntity_UpdatesAndReturnsCorrectProduct()
     {
         // Define Input and Output
-        uint expectedWeight = 100;
+        int expectedWeight = 100;
         Product product =
             new()
             {
@@ -38,7 +38,7 @@ public class UpdateProductDtoTests
     public void FromEntity_UpdatesWithNullsAndReturnsCorrectProduct()
     {
         // Define Input and Output
-        uint expectedWeight = 10034;
+        int expectedWeight = 10034;
         Product product =
             new()
             {
