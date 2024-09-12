@@ -7,7 +7,7 @@ using Connections.File.Interfaces;
 using Domain.Entities.Interfaces;
 using Interfaces;
 
-public abstract class BaseJsonTable<T>(IFileConnectionFactory<T> fileConnectionFactory) : ITable<T>
+public abstract class BaseFileTable<T>(IFileConnectionFactory<T> fileConnectionFactory) : ITable<T>
     where T : IEntity
 {
     protected IFileConnectionFactory<T> FileConnectionFactory { get; } = fileConnectionFactory;

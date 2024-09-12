@@ -9,16 +9,16 @@ using Domain.Entities.Interfaces;
 using Moq;
 using Xunit;
 
-public class BaseJsonTableTests
+public class BaseFileTableTests
 {
     private readonly Mock<IFileConnectionFactory<IEntity>> _fileConnectionFactoryMock;
-    private readonly Mock<BaseJsonTable<IEntity>> _tableMock;
+    private readonly Mock<BaseFileTable<IEntity>> _tableMock;
     private readonly Mock<ITableInformation> _infoMock;
 
-    public BaseJsonTableTests()
+    public BaseFileTableTests()
     {
         _fileConnectionFactoryMock = new Mock<IFileConnectionFactory<IEntity>>();
-        _tableMock = new Mock<BaseJsonTable<IEntity>>(_fileConnectionFactoryMock.Object) { CallBase = true };
+        _tableMock = new Mock<BaseFileTable<IEntity>>(_fileConnectionFactoryMock.Object) { CallBase = true };
         _infoMock = new Mock<ITableInformation>();
     }
 
