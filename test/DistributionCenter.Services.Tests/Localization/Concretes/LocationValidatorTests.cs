@@ -166,4 +166,74 @@ public class LocationValidatorTests
         // Verify actual result
         Assert.False(result);
     }
+
+    [Fact]
+    public async Task IsLocationInCountryAsync_CountryPropertyMissing_ReturnsFalse()
+    {
+        // Define input and output
+        double latitude = -16.5;
+        double longitude = -68.15;
+        string jsonResponse = @"{
+            ""features"": [{
+                ""context"": [
+                    { ""id"": ""city:LaPaz"", ""text"": ""La Paz"" }
+                ]
+            }]
+        }"; // Missing "country" in context
+
+        Mock<HttpMessageHandler> mockHttpMessageHandler = new();
+        _ = mockHttpMessageHandler.Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.IsAny<HttpRequestMessage>(),
+                ItExpr.IsAny<CancellationToken>())
+            .ReturnsAsync(() => new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StringContent(jsonResponse)
+            });
+
+        using HttpClient httpClient = new(mockHttpMessageHandler.Object);
+        LocationValidator locationValidator = new(httpClient);
+
+        // Execute actual operation
+        bool result = await locationValidator.IsLocationInCountryAsync(latitude, longitude);
+
+        // Verify result
+        Assert.False(result);
+    }
+
+    [Fact]
+    public async Task IsLocationInCountryAsync_LocationInSpecifiedCountry_ReturnsFalse()
+    {
+        // Define Input and Output
+        double latitude = -16.5;
+        double longitude = -68.15;
+        string jsonResponse = @"{
+            ""features"": [{
+                ""context"": [
+                    { ""id"": ""country:US"", ""text"": ""United States"" }
+                ]
+            }]
+        }";
+
+        Mock<HttpMessageHandler> mockHttpMessageHandler = new();
+        _ = mockHttpMessageHandler.Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.IsAny<HttpRequestMessage>(),
+                ItExpr.IsAny<CancellationToken>())
+            .ReturnsAsync(() => new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StringContent(jsonResponse)
+            });
+
+        using HttpClient httpClient = new(mockHttpMessageHandler.Object);
+        LocationValidator locationValidator = new(httpClient);
+
+        // Execute actual operation
+        bool result = await locationValidator.IsLocationInCountryAsync(latitude, longitude);
+
+        // Verify actual result
+        Assert.False(result);
+    }
 }
