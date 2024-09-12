@@ -2,30 +2,30 @@ namespace DistributionCenter.Application.Tables.Components.Information.Concretes
 
 using Bases;
 
-public class ClientTableInformation : BaseEntityTableInformation
+public class TransportTableInformation : BaseEntityTableInformation
 {
     protected override string ObtainGetByIdFields()
     {
-        return "name, last_name AS LastName, email";
+        return "name, capacity, availableUnits";
     }
 
     protected override string ObtainTableName()
     {
-        return "client";
+        return "transport";
     }
 
     protected override string ObtainCreateFields()
     {
-        return "name, last_name, email";
+        return "name, capacity, availableUnits";
     }
 
     protected override string ObtainCreateValues()
     {
-        return "@Name, @LastName, @Email";
+        return "@Name, @Capacity, @AvailableUnits";
     }
 
     protected override string ObtainUpdateFields()
     {
-        return "name = @Name, last_name = @LastName, email = @Email";
+        return "name = @Name, capacity = @Capacity, availableUnits = @AvailableUnits";
     }
 }
