@@ -1,12 +1,13 @@
 namespace DistributionCenter.Application.Tables.Core.Concretes;
 
+using System.Data;
+using Connections.Interfaces;
 using DistributionCenter.Application.Tables.Components.Information.Concretes;
 using DistributionCenter.Application.Tables.Components.Information.Interfaces;
-using DistributionCenter.Application.Tables.Connections.Interfaces;
-using DistributionCenter.Application.Tables.Core.Bases;
+using Bases;
 using DistributionCenter.Domain.Entities.Concretes;
 
-public class ClientTable(IDbConnectionFactory dbConnectionFactory) : BaseDapperTable<Client>(dbConnectionFactory)
+public class ClientTable(IDbConnectionFactory<IDbConnection> dbConnectionFactory) : BaseDapperTable<Client>(dbConnectionFactory)
 {
     public override ITableInformation GetInformation()
     {
