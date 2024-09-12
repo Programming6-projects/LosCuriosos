@@ -1,15 +1,15 @@
 namespace DistributionCenter.Application.Tables.Components.QueryCommands.Concretes.Dapper.Concretes;
 
 using System.Data;
+using Bases;
+using Commons.Errors;
+using Commons.Results;
+using Connections.Interfaces;
+using Domain.Entities.Interfaces;
 using global::Dapper;
-using DistributionCenter.Application.Tables.Components.QueryCommands.Concretes.Dapper.Bases;
-using DistributionCenter.Application.Tables.Connections.Interfaces;
-using DistributionCenter.Commons.Errors;
-using DistributionCenter.Commons.Results;
-using DistributionCenter.Domain.Entities.Interfaces;
 
 public class CreateDapperCommand<T>(
-    IDbConnectionFactory dbConnectionFactory,
+    IDbConnectionFactory<IDbConnection> dbConnectionFactory,
     T entity,
     string tableName,
     string fields,

@@ -1,6 +1,6 @@
 namespace DistributionCenter.Application.Tables.Components.Information.Bases;
 
-using DistributionCenter.Application.Tables.Components.Information.Interfaces;
+using Interfaces;
 
 public abstract class BaseEntityTableInformation : ITableInformation
 {
