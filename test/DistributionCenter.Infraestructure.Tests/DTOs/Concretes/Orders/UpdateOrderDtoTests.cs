@@ -18,7 +18,6 @@ public class UpdateOrderDtoTests
         UpdateOrderDto dto =
             new()
             {
-                ClientId = Guid.NewGuid(),
                 OrderStatusId = Guid.NewGuid(),
             };
 
@@ -26,7 +25,6 @@ public class UpdateOrderDtoTests
         Order updatedOrder = dto.FromEntity(order);
 
         // Verify actual result
-        Assert.Equal(dto.ClientId, updatedOrder.ClientId);
         Assert.Equal(dto.OrderStatusId, updatedOrder.OrderStatusId);
     }
 

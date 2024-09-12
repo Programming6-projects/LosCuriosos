@@ -31,7 +31,7 @@ public class OrderTableInformationTests
         // Define Input and Output
         string result;
         string expected =
-            "id AS Id, client_id AS ClientId, order_status_id AS OrderStatusId, is_active AS IsActive, created_at AS CreatedAt, updated_at AS UpdatedAt";
+            "id AS Id, client_id AS ClientId, client_order_status_id AS OrderStatusId, is_active AS IsActive, created_at AS CreatedAt, updated_at AS UpdatedAt";
 
         // Execute actual operation
         result = _table.GetByIdFields;
@@ -45,7 +45,7 @@ public class OrderTableInformationTests
     {
         // Define Input and Output
         string result;
-        string expected = "id, client_id, order_status_id, is_active, created_at, updated_at";
+        string expected = "id, client_id, client_order_status_id, is_active, created_at, updated_at";
 
         // Execute actual operation
         result = _table.CreateFields;
@@ -74,7 +74,7 @@ public class OrderTableInformationTests
         // Define Input and Output
         string result;
         string expected =
-            "client_id = @ClientId, order_status_id = @OrderStatusId, is_active = @IsActive, updated_at = @UpdatedAt";
+            "client_id = @ClientId, client_order_status_id = @OrderStatusId, is_active = @IsActive, updated_at = @UpdatedAt";
 
         // Execute actual operation
         result = _table.UpdateFields;
