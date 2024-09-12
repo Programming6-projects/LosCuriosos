@@ -9,7 +9,7 @@ public class CreateProductDto : ICreateDto<Product>
 {
     public required string Name { get; init; }
     public required string Description { get; init; }
-    public required double Weight { get; init; }
+    public required int Weight { get; init; }
 
     public Product ToEntity()
     {

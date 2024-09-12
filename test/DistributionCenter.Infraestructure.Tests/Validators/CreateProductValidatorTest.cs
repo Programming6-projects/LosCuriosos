@@ -18,13 +18,13 @@ public class CreateProductValidatorTest
         {
             Name = invalidName,
             Description = "Some long and valid description",
-            Weight = 1234.45
+            Weight = 1234
         };
         CreateProductDto validDto = new()
         {
             Name = validName,
             Description = "Some long and valid description",
-            Weight = 1234.45
+            Weight = 1234
         };
 
         // Verify actual result
@@ -46,13 +46,13 @@ public class CreateProductValidatorTest
         {
             Name = invalidName,
             Description = "Some long and valid description",
-            Weight = 10.35
+            Weight = 10
         };
         CreateProductDto validDto = new()
         {
             Name = validName,
             Description = "Some long and valid description",
-            Weight = 10.43
+            Weight = 1867
         };
 
         // Verify actual result
@@ -73,13 +73,13 @@ public class CreateProductValidatorTest
         {
             Name = "Pepsi Zero 2Lts",
             Description = invalidDescription,
-            Weight = 10.23
+            Weight = 1000
         };
         CreateProductDto validDto = new()
         {
             Name = "Pepsi Zero 2Lts",
             Description = validDescription,
-            Weight = 10.35
+            Weight = 1000
         };
 
         // Verify actual result
@@ -103,13 +103,13 @@ public class CreateProductValidatorTest
         {
             Name = "Pepsi Zero 2Lts",
             Description = invalidDescription,
-            Weight = 10.53
+            Weight = 1000
         };
         CreateProductDto validDto = new()
         {
             Name = "Pepsi Zero 2Lts",
             Description = validDescription,
-            Weight = 10.34
+            Weight = 1000
         };
 
         // Verify actual result
@@ -118,12 +118,12 @@ public class CreateProductValidatorTest
     }
 
     [Fact]
-    public void VerifyThanProductWeightHasTwoDecimalNumbers()
+    public void VerifyThanProductWeightHasALimitDecimalNumbers()
     {
         // Define Input and Output
         CreateProductValidator validator = new();
-        double invalidWeight = 130.5243;
-        double validWeight = 130.52;
+        uint invalidWeight = 1492850;
+        uint validWeight = 149285;
 
         // Execute actual operation
         CreateProductDto invalidDto = new()

@@ -15,7 +15,7 @@ public class CreateProductDtoTests
             {
                 Name = "Pepsi Light Popular",
                 Description = "Some long description",
-                Weight = 1000f,
+                Weight = 1000,
             };
 
         // Execute actual operation
@@ -37,7 +37,7 @@ public class CreateProductDtoTests
             {
                 Name = "Sh",
                 Description = "or",
-                Weight = 13.5352342,
+                Weight = 532342,
             };
 
         CreateProductDto validDto =
@@ -45,7 +45,7 @@ public class CreateProductDtoTests
             {
                 Name = "Valid Name 2",
                 Description = "Valid Description",
-                Weight = 13.53,
+                Weight = 48253,
             };
 
         // Execute actual operation

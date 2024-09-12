@@ -10,7 +10,7 @@ public class ProductTests
         // Define Input and output
         string expectedName = "Pepsico Zero 2Lts.";
         string expectedDescription = "Fresh analcoholic beverage without sugar.";
-        double expectedWeight = 10.53;
+        uint expectedWeight = 15325;
 
         // Execute actual operation
         Product product = new()
@@ -34,8 +34,8 @@ public class ProductTests
         string editedName = "Pepsico Zero 3Lts.";
         string previousDescription = "Fresh analcoholic beverage without sugar.";
         string editedDescription = "Fresh analcoholic beverage without sugar for diabetics.";
-        double previousWeight = 10.53;
-        double editedWeight = 200f;
+        uint previousWeight = 234567;
+        uint editedWeight = 123;
 
         Product product = new()
         {

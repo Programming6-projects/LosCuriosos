@@ -33,6 +33,7 @@ public static class ApplicationBuilderConfiguration
             new Dictionary<Type, object>()
             {
                 { typeof(Client), new ClientTable(_.GetRequiredService<IDbConnectionFactory>()) },
+                { typeof(Product), new ProductTable(_.GetRequiredService<IDbConnectionFactory>()) },
             }
         ));
 
@@ -42,6 +43,7 @@ public static class ApplicationBuilderConfiguration
     private static IServiceCollection ConfigureRepositories(this IServiceCollection services)
     {
         _ = services.AddScoped<IRepository<Client>, ClientRepository>();
+        _ = services.AddScoped<IRepository<Product>, ProductRepository>();
 
         return services;
     }
