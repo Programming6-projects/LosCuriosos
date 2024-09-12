@@ -1,4 +1,4 @@
-namespace DistributionCenter.Application.Tables.Connections.Concretes;
+namespace DistributionCenter.Application.Tables.Connections.Dapper.Concretes;
 
 using System.Data;
 using Interfaces;

@@ -3,7 +3,7 @@ namespace DistributionCenter.Application.Tables.Components.QueryCommands.Concret
 using Bases;
 using Commons.Errors;
 using Commons.Results;
-using Connections.Interfaces;
+using Connections.File.Interfaces;
 using Domain.Entities.Interfaces;
 
 public class GetByIdJsonQuery<T>(IFileConnectionFactory<T> fileConnectionFactory, Guid id)

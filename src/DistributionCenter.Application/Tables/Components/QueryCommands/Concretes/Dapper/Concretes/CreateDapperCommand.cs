@@ -4,7 +4,7 @@ using System.Data;
 using Bases;
 using Commons.Errors;
 using Commons.Results;
-using Connections.Interfaces;
+using Connections.Dapper.Interfaces;
 using Domain.Entities.Interfaces;
 using global::Dapper;
 

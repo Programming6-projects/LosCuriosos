@@ -3,7 +3,7 @@ namespace DistributionCenter.Application.Tables.Core.Bases;
 using Components.Information.Interfaces;
 using Components.QueryCommands.Concretes.File.Concretes;
 using Components.QueryCommands.Interfaces;
-using Connections.Interfaces;
+using Connections.File.Interfaces;
 using Domain.Entities.Interfaces;
 using Interfaces;
 

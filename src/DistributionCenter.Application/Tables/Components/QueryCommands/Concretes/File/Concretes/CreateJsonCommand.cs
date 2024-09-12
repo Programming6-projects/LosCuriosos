@@ -1,7 +1,7 @@
 namespace DistributionCenter.Application.Tables.Components.QueryCommands.Concretes.File.Concretes;
 
 using Bases;
-using DistributionCenter.Application.Tables.Connections.Interfaces;
+using Connections.File.Interfaces;
 using DistributionCenter.Commons.Results;
 using DistributionCenter.Domain.Entities.Interfaces;
 

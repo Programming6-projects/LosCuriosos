@@ -1,4 +1,4 @@
-namespace DistributionCenter.Application.Tables.Connections.Interfaces;
+namespace DistributionCenter.Application.Tables.Connections.Dapper.Interfaces;
 
 public interface IDbConnectionFactory <T>
 {

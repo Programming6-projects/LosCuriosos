@@ -1,7 +1,7 @@
 namespace DistributionCenter.Application.Tables.Components.QueryCommands.Concretes.Dapper.Bases;
 
 using System.Data;
-using Connections.Interfaces;
+using Connections.Dapper.Interfaces;
 using DistributionCenter.Application.Tables.Components.QueryCommands.Bases;
 using DistributionCenter.Commons.Results;
 using DistributionCenter.Domain.Entities.Interfaces;
