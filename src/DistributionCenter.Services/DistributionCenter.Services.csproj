@@ -2,4 +2,7 @@
   <PropertyGroup>
     <OutputType>Library</OutputType>
   </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="RestSharp" />
+  </ItemGroup>
 </Project>
