@@ -1,22 +1,24 @@
 namespace DistributionCenter.Application.Tests.Tables.Core.Bases;
 
-using System.Data;
-using Application.Tables.Connections.Dapper.Interfaces;
+using Application.Tables.Connections.File.Interfaces;
 using DistributionCenter.Application.Tables.Components.Information.Interfaces;
+using DistributionCenter.Application.Tables.Components.QueryCommands.Concretes.File.Concretes;
 using DistributionCenter.Application.Tables.Components.QueryCommands.Interfaces;
 using DistributionCenter.Application.Tables.Core.Bases;
-using DistributionCenter.Domain.Entities.Interfaces;
+using Domain.Entities.Interfaces;
+using Moq;
+using Xunit;
 
-public class BaseDapperTableTests
+public class BaseFileTableTests
 {
-    private readonly Mock<IDbConnectionFactory<IDbConnection>> _factoryMock;
-    private readonly Mock<BaseDapperTable<IEntity>> _tableMock;
+    private readonly Mock<IFileConnectionFactory<IEntity>> _fileConnectionFactoryMock;
+    private readonly Mock<BaseFileTable<IEntity>> _tableMock;
     private readonly Mock<ITableInformation> _infoMock;
 
-    public BaseDapperTableTests()
+    public BaseFileTableTests()
     {
-        _factoryMock = new Mock<IDbConnectionFactory<IDbConnection>>();
-        _tableMock = new Mock<BaseDapperTable<IEntity>>(_factoryMock.Object) { CallBase = true };
+        _fileConnectionFactoryMock = new Mock<IFileConnectionFactory<IEntity>>();
+        _tableMock = new Mock<BaseFileTable<IEntity>>(_fileConnectionFactoryMock.Object) { CallBase = true };
         _infoMock = new Mock<ITableInformation>();
     }
 
@@ -25,7 +27,6 @@ public class BaseDapperTableTests
     {
         // Define Input and Output
         _ = _infoMock.Setup(static i => i.TableName).Returns("table");
-        _ = _infoMock.Setup(static i => i.GetByIdFields).Returns("fields");
         _ = _tableMock.Setup(static t => t.GetInformation()).Returns(_infoMock.Object);
 
         // Execute actual operation
@@ -33,6 +34,7 @@ public class BaseDapperTableTests
 
         // Verify actual result
         Assert.NotNull(query);
+        _ = Assert.IsType<GetByIdJsonQuery<IEntity>>(query);
     }
 
     [Fact]
@@ -40,15 +42,15 @@ public class BaseDapperTableTests
     {
         // Define Input and Output
         _ = _infoMock.Setup(static i => i.TableName).Returns("table");
-        _ = _infoMock.Setup(static i => i.CreateFields).Returns("fields");
-        _ = _infoMock.Setup(static i => i.CreateValues).Returns("values");
         _ = _tableMock.Setup(static t => t.GetInformation()).Returns(_infoMock.Object);
+        Mock<IEntity> entityMock = new();
 
         // Execute actual operation
-        ICommand command = _tableMock.Object.Create(new Mock<IEntity>().Object);
+        ICommand command = _tableMock.Object.Create(entityMock.Object);
 
         // Verify actual result
         Assert.NotNull(command);
+        _ = Assert.IsType<CreateJsonCommand<IEntity>>(command);
     }
 
     [Fact]
@@ -56,13 +58,15 @@ public class BaseDapperTableTests
     {
         // Define Input and Output
         _ = _infoMock.Setup(static i => i.TableName).Returns("table");
-        _ = _infoMock.Setup(static i => i.UpdateFields).Returns("fields");
         _ = _tableMock.Setup(static t => t.GetInformation()).Returns(_infoMock.Object);
+        Mock<IEntity> entityMock = new();
 
         // Execute actual operation
-        ICommand command = _tableMock.Object.Update(new Mock<IEntity>().Object);
+        ICommand command = _tableMock.Object.Update(entityMock.Object);
 
         // Verify actual result
         Assert.NotNull(command);
+        _ = Assert.IsType<UpdateJsonCommand<IEntity>>(command);
     }
 }
+

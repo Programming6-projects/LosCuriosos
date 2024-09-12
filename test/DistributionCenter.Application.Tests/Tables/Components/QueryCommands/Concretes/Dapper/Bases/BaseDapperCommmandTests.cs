@@ -1,8 +1,8 @@
 namespace DistributionCenter.Application.Tests.Tables.Components.QueryCommands.Concretes.Dapper.Bases;
 
 using System.Data;
+using Application.Tables.Connections.Dapper.Interfaces;
 using DistributionCenter.Application.Tables.Components.QueryCommands.Concretes.Dapper.Bases;
-using DistributionCenter.Application.Tables.Connections.Interfaces;
 using DistributionCenter.Commons.Results;
 using DistributionCenter.Domain.Entities.Interfaces;
 using Moq.Protected;
@@ -10,12 +10,12 @@ using Moq.Protected;
 public class BaseDapperCommandTests
 {
     private readonly Mock<BaseDapperCommand<IEntity>> _baseDapperCommand;
-    private readonly Mock<IDbConnectionFactory> _dbConnectionFactory;
+    private readonly Mock<IDbConnectionFactory<IDbConnection>> _dbConnectionFactory;
     private readonly Mock<IDbConnection> _dbConnection;
 
     public BaseDapperCommandTests()
     {
-        _dbConnectionFactory = new Mock<IDbConnectionFactory>();
+        _dbConnectionFactory = new Mock<IDbConnectionFactory<IDbConnection>>();
         _dbConnection = new Mock<IDbConnection>();
         _baseDapperCommand = new Mock<BaseDapperCommand<IEntity>>(
             _dbConnectionFactory.Object,

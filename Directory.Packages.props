@@ -17,6 +17,9 @@
     </PackageVersion>
     <PackageVersion Include="Npgsql" Version="8.0.3">
     </PackageVersion>
+    <!-- Json Version -->
+    <PackageVersion Include="Newtonsoft.Json" Version="13.0.3">
+    </PackageVersion>
     <!-- Testing -->
     <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.8">
     </PackageVersion>

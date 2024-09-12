@@ -1,14 +1,14 @@
 namespace DistributionCenter.Application.Tables.Components.QueryCommands.Concretes.Dapper.Concretes;
 
 using System.Data;
+using Bases;
+using Commons.Errors;
+using Commons.Results;
+using Connections.Dapper.Interfaces;
+using Domain.Entities.Interfaces;
 using global::Dapper;
-using DistributionCenter.Application.Tables.Components.QueryCommands.Concretes.Dapper.Bases;
-using DistributionCenter.Application.Tables.Connections.Interfaces;
-using DistributionCenter.Commons.Errors;
-using DistributionCenter.Commons.Results;
-using DistributionCenter.Domain.Entities.Interfaces;
 
-public class GetByIdDapperQuery<T>(IDbConnectionFactory dbConnectionFactory, string tableName, Guid id, string fields)
+public class GetByIdDapperQuery<T>(IDbConnectionFactory<IDbConnection> dbConnectionFactory, string tableName, Guid id, string fields)
     : BaseDapperQuery<T>(dbConnectionFactory, tableName)
     where T : IEntity
 {
