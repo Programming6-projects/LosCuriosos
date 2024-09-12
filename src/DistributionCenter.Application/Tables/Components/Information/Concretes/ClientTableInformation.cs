@@ -1,12 +1,9 @@
 namespace DistributionCenter.Application.Tables.Components.Information.Concretes;
 
-using DistributionCenter.Application.Tables.Components.Information.Bases;
+using Bases;
 
 public class ClientTableInformation : BaseEntityTableInformation
 {
-    public ClientTableInformation()
-        : base() { }
-
     protected override string ObtainGetByIdFields()
     {
         return "name, last_name AS LastName, email";
