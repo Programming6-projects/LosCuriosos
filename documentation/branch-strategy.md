@@ -19,10 +19,11 @@ Our branch naming strategy follows a specific format and uses prefixes to
 indicate the purpose of the branch. The naming convention is structured as
 follows:
 
-- **Format**: `prefix/name/description`
-  - **prefix**: Indicates the type of work being done.
-  - **name**: Provides the last name of the developer in charge of the ticket.
-  - **description**: A brief description of the branch's purpose.
+- Format: `prefix/taskId/username/taskName`
+  - `prefix`: Indicates the type of work (e.g., feature, fix, chore).
+  - `taskId`: The task ID or ticket number associated with the branch.
+  - `username`: The developer's username or last name.
+  - `taskName`: The task or feature name.
 
 ### Allowed Prefixes
 
@@ -54,7 +55,7 @@ to follow the naming rules:
 Branch names must adhere to the following length constraints:
 
 - **Minimum Length**: 4 characters
-- **Maximum Length**: 120 characters
+- **Maximum Length**: 150 characters
 
 By following this branch naming strategy, we ensure clarity and consistency in
 our workflow, making it easier to understand the purpose and context of each
