@@ -15,9 +15,9 @@ public class BaseDapperTableTests
 
     public BaseDapperTableTests()
     {
-        _factoryMock = new();
-        _tableMock = new(_factoryMock.Object) { CallBase = true };
-        _infoMock = new();
+        _factoryMock = new Mock<IDbConnectionFactory<IDbConnection>>();
+        _tableMock = new Mock<BaseDapperTable<IEntity>>(_factoryMock.Object) { CallBase = true };
+        _infoMock = new Mock<ITableInformation>();
     }
 
     [Fact]
