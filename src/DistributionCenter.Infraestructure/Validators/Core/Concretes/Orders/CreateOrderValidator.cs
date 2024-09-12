@@ -8,10 +8,10 @@ public class CreateOrderValidator : BaseFluentValidator<CreateOrderDto>
 {
     public CreateOrderValidator()
     {
-        _ = RuleFor<Guid?>(static x => x.ClientId)
+        _ = RuleFor<Guid>(static x => x.ClientId)
             .UuidNotNull("Client id is required");
 
-        _ = RuleFor<Guid?>(static x => x.OrderStatusId)
+        _ = RuleFor<Guid>(static x => x.OrderStatusId)
             .UuidNotNull("Order status id is required");
     }
 }
