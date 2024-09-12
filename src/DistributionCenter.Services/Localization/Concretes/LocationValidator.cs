@@ -7,12 +7,12 @@ using Interfaces;
 
 public class LocationValidator(HttpClient httpClient) : ILocationValidator
 {
-    private const string AccessToken = "pk.eyJ1IjoibG9zY3VyaW9zb3MiLCJhIjoiY20weHliN251MGkxYTJrcHkycGZ6anpsMSJ9.3UziwOkzp-3mkrqPkp2wiw";
+    private readonly string _accessToken = Environment.GetEnvironmentVariable("MAPBOX_ACCESS_TOKEN")!;
     private const string BaseUrl = "https://api.mapbox.com/";
 
     public async Task<bool> IsLocationInCountryAsync(double latitude, double longitude)
     {
-        Uri url = new($"{BaseUrl}geocoding/v5/mapbox.places/{longitude},{latitude}.json?access_token={AccessToken}");
+        Uri url = new($"{BaseUrl}geocoding/v5/mapbox.places/{longitude},{latitude}.json?access_token={_accessToken}");
         HttpResponseMessage response = await httpClient.GetAsync(url);
 
         if (!response.IsSuccessStatusCode)
