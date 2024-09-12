@@ -1,8 +1,8 @@
 namespace DistributionCenter.Application.Tests.Tables.Components.QueryCommands.Concretes.Dapper.Bases;
 
 using System.Data;
+using Application.Tables.Connections.Dapper.Interfaces;
 using DistributionCenter.Application.Tables.Components.QueryCommands.Concretes.Dapper.Bases;
-using DistributionCenter.Application.Tables.Connections.Interfaces;
 using DistributionCenter.Commons.Results;
 using DistributionCenter.Domain.Entities.Interfaces;
 using Moq.Protected;

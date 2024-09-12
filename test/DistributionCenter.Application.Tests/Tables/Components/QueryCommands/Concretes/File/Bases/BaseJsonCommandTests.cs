@@ -1,7 +1,7 @@
 namespace DistributionCenter.Application.Tests.Tables.Components.QueryCommands.Concretes.File.Bases;
 
 using Application.Tables.Components.QueryCommands.Concretes.File.Bases;
-using Application.Tables.Connections.Interfaces;
+using Application.Tables.Connections.File.Interfaces;
 using Commons.Results;
 using Domain.Entities.Interfaces;
 using Moq.Protected;

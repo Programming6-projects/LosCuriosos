@@ -2,7 +2,7 @@ namespace DistributionCenter.Application.Tests.Tables.Components.QueryCommands.C
 
 using System.Collections.ObjectModel;
 using System.Data;
-using Application.Tables.Connections.Interfaces;
+using Application.Tables.Connections.Dapper.Interfaces;
 using DistributionCenter.Application.Tables.Components.QueryCommands.Concretes.Dapper.Bases;
 using DistributionCenter.Commons.Errors;
 using DistributionCenter.Commons.Errors.Interfaces;
