@@ -1,5 +1,6 @@
 namespace DistributionCenter.Application.Tests.Tables.Core.Bases;
 
+using System.Data;
 using DistributionCenter.Application.Tables.Components.Information.Interfaces;
 using DistributionCenter.Application.Tables.Components.QueryCommands.Interfaces;
 using DistributionCenter.Application.Tables.Connections.Interfaces;
@@ -8,7 +9,7 @@ using DistributionCenter.Domain.Entities.Interfaces;
 
 public class BaseDapperTableTests
 {
-    private readonly Mock<IDbConnectionFactory> _factoryMock;
+    private readonly Mock<IDbConnectionFactory<IDbConnection>> _factoryMock;
     private readonly Mock<BaseDapperTable<IEntity>> _tableMock;
     private readonly Mock<ITableInformation> _infoMock;
 

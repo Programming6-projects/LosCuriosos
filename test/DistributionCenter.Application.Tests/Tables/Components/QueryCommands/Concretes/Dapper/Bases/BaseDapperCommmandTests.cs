@@ -10,12 +10,12 @@ using Moq.Protected;
 public class BaseDapperCommandTests
 {
     private readonly Mock<BaseDapperCommand<IEntity>> _baseDapperCommand;
-    private readonly Mock<IDbConnectionFactory> _dbConnectionFactory;
+    private readonly Mock<IDbConnectionFactory<IDbConnection>> _dbConnectionFactory;
     private readonly Mock<IDbConnection> _dbConnection;
 
     public BaseDapperCommandTests()
     {
-        _dbConnectionFactory = new Mock<IDbConnectionFactory>();
+        _dbConnectionFactory = new Mock<IDbConnectionFactory<IDbConnection>>();
         _dbConnection = new Mock<IDbConnection>();
         _baseDapperCommand = new Mock<BaseDapperCommand<IEntity>>(
             _dbConnectionFactory.Object,
