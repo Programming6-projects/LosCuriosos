@@ -14,7 +14,7 @@ public abstract class BaseJsonTable<T>(IFileConnectionFactory<T> fileConnectionF
 
     public IQuery<T> GetById(Guid id)
     {
-        throw new NotImplementedException();
+        return new GetByIdJsonQuery<T>(FileConnectionFactory, id);
     }
 
     public ICommand Create(T entity)
@@ -26,7 +26,9 @@ public abstract class BaseJsonTable<T>(IFileConnectionFactory<T> fileConnectionF
 
     public ICommand Update(T entity)
     {
-        throw new NotImplementedException();
+        return new UpdateJsonCommand<T>(
+            FileConnectionFactory,
+            entity);
     }
 
     public abstract ITableInformation GetInformation();

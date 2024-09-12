@@ -6,8 +6,8 @@ using Commons.Results;
 using Connections.Interfaces;
 using Domain.Entities.Interfaces;
 
-public class GetByIdJsonQuery<T>(IFileConnectionFactory<T> fileConnectionFactory, Guid id, T entity)
-    : BaseJsonQuery<T>(fileConnectionFactory, entity)
+public class GetByIdJsonQuery<T>(IFileConnectionFactory<T> fileConnectionFactory, Guid id)
+    : BaseJsonQuery<T>(fileConnectionFactory)
     where T : IEntity
 {
     private Guid Id { get; } = id;

@@ -19,5 +19,3 @@ public abstract class BaseJsonCommand<T>(IFileConnectionFactory<T> fileConnectio
 
     protected abstract Task<Result> Execute(IEnumerable<T> data);
 }
-
-

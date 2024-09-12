@@ -5,12 +5,10 @@ using DistributionCenter.Application.Tables.Connections.Interfaces;
 using DistributionCenter.Commons.Results;
 using DistributionCenter.Domain.Entities.Interfaces;
 
-public abstract class BaseJsonQuery<T>(IFileConnectionFactory<T> fileConnectionFactory, T entity) :
+public abstract class BaseJsonQuery<T>(IFileConnectionFactory<T> fileConnectionFactory) :
     BaseQuery<T>
     where T : IEntity
 {
-    public T Entity { get; } = entity;
-
     public override async Task<Result<T>> ExecuteAsync()
     {
         List<T> data = await fileConnectionFactory.LoadDataAsync();
