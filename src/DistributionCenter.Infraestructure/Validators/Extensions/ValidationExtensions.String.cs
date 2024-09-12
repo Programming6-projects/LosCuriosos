@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Text.RegularExpressions;
 using DistributionCenter.Infraestructure.Validators.Components.Builders.Interfaces;
 
-public static partial class ValidationExtensions
+public static class ValidationExtensions
 {
     public static IValidationBuilder<string> WhenNotNull(this IValidationBuilder<string?> builder)
     {
@@ -59,12 +59,10 @@ public static partial class ValidationExtensions
 
         return builder.AddRule(x =>
         {
-            int decimalNumbers = x
-                .ToString("F99", new NumberFormatInfo())
-                .TrimEnd('0')
-                .IndexOf('.', StringComparison.Ordinal);
+            string number = x.ToString(CultureInfo.InvariantCulture);
 
-            return (decimalNumbers != decimalQuantity);
+            return Regex.IsMatch(number, $@"^\d+(\.\d{{{decimalQuantity}}})?$");
+
         }, message);
     }
 }

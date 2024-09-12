@@ -12,7 +12,7 @@ public class UpdateProductValidator : BaseFluentValidator<UpdateProductDto>
             .WhenNotNull()
             .SizeRange(3, 64, "Name must be between 3 and 64 characters")
             .RegexValidator(
-                @"^[a-zA-Z0-9\s\.-_]+$",
+                @"^[a-zA-Z0-9\s\.]+$",
                 "Name must contain letters, decimal and the follow characters: .,-_");
 
         _ = RuleFor(static product => product.Description)!
