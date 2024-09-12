@@ -52,6 +52,7 @@ public static class ApplicationBuilderConfiguration
     private static IServiceCollection ConfigureRepositories(this IServiceCollection services)
     {
         _ = services.AddScoped<IRepository<Client>, ClientRepository>();
+        _ = services.AddScoped<IRepository<Order>, OrderRepository>();
 
         return services;
     }
