@@ -4,6 +4,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Dapper"></PackageReference>
+    <PackageReference Include="Newtonsoft.Json"></PackageReference>
     <PackageReference Include="Npgsql"></PackageReference>
   </ItemGroup>
   <ItemGroup>

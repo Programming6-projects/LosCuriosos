@@ -1,6 +1,6 @@
 namespace DistributionCenter.Application.Tables.Components.QueryCommands.Bases;
 
-using DistributionCenter.Application.Tables.Components.QueryCommands.Interfaces;
+using Interfaces;
 using DistributionCenter.Commons.Results;
 using DistributionCenter.Domain.Entities.Interfaces;
 
