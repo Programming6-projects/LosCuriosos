@@ -1,9 +1,9 @@
 namespace DistributionCenter.Application.Tests.Tables.Core.Bases;
 
+using Application.Tables.Connections.File.Interfaces;
 using DistributionCenter.Application.Tables.Components.Information.Interfaces;
 using DistributionCenter.Application.Tables.Components.QueryCommands.Concretes.File.Concretes;
 using DistributionCenter.Application.Tables.Components.QueryCommands.Interfaces;
-using DistributionCenter.Application.Tables.Connections.Interfaces;
 using DistributionCenter.Application.Tables.Core.Bases;
 using Domain.Entities.Interfaces;
 using Moq;

@@ -2,7 +2,7 @@ namespace DistributionCenter.Application.Tests.Tables.Core.Concretes;
 
 using Application.Tables.Components.Information.Concretes;
 using Application.Tables.Components.Information.Interfaces;
-using Application.Tables.Connections.Interfaces;
+using Application.Tables.Connections.File.Interfaces;
 using Application.Tables.Core.Concretes;
 using Domain.Entities.Concretes;
 

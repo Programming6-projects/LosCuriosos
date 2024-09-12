@@ -1,9 +1,9 @@
 namespace DistributionCenter.Application.Tests.Tables.Core.Bases;
 
 using System.Data;
+using Application.Tables.Connections.Dapper.Interfaces;
 using DistributionCenter.Application.Tables.Components.Information.Interfaces;
 using DistributionCenter.Application.Tables.Components.QueryCommands.Interfaces;
-using DistributionCenter.Application.Tables.Connections.Interfaces;
 using DistributionCenter.Application.Tables.Core.Bases;
 using DistributionCenter.Domain.Entities.Interfaces;
 
