@@ -33,6 +33,7 @@ public static class ApplicationBuilderConfiguration
             new Dictionary<Type, object>()
             {
                 { typeof(Client), new ClientTable(_.GetRequiredService<IDbConnectionFactory>()) },
+                { typeof(Order), new OrderTable(_.GetRequiredService<IDbConnectionFactory>()) },
             }
         ));
 
