@@ -1,15 +1,17 @@
 namespace DistributionCenter.Application.Configurations;
 
-using DistributionCenter.Application.Constants;
-using DistributionCenter.Application.Contexts.Concretes;
-using DistributionCenter.Application.Contexts.Interfaces;
-using DistributionCenter.Application.Repositories.Concretes;
-using DistributionCenter.Application.Repositories.Interfaces;
-using DistributionCenter.Application.Tables.Connections.Concretes;
-using DistributionCenter.Application.Tables.Connections.Interfaces;
-using DistributionCenter.Application.Tables.Core.Concretes;
-using DistributionCenter.Domain.Entities.Concretes;
-using Microsoft.Extensions.DependencyInjection;
+using System.Data;
+using Constants;
+using Contexts.Concretes;
+using Contexts.Interfaces;
+using Domain.Entities.Concretes;
+using Repositories.Concretes;
+using Repositories.Interfaces;
+using Tables.Connections.Dapper.Concretes;
+using Tables.Connections.Dapper.Interfaces;
+using Tables.Connections.File.Concretes;
+using Tables.Connections.File.Interfaces;
+using Tables.Core.Concretes;
 
 public static class ApplicationBuilderConfiguration
 {
@@ -26,14 +28,21 @@ public static class ApplicationBuilderConfiguration
         IConfiguration configuration
     )
     {
-        _ = services.AddScoped<IDbConnectionFactory>(_ => new NpgqlConnectionFactory(
+        _ = services.AddScoped<IDbConnectionFactory<IDbConnection> >(_ => new NpgqlConnectionFactory(
             configuration[DbConstants.DefaultConnectionStringPath]!
         ));
+        _ = services.AddScoped<IFileConnectionFactory<Transport> >(_ => new JsonConnectionFactory<Transport>(
+            DbConstants.TransportSchema));
+
         _ = services.AddScoped<IContext>(_ => new Context(
-            new Dictionary<Type, object>()
+            new Dictionary<Type, object>
             {
-                { typeof(Client), new ClientTable(_.GetRequiredService<IDbConnectionFactory>()) },
-                { typeof(Order), new OrderTable(_.GetRequiredService<IDbConnectionFactory>()) },
+                { typeof(Client), new ClientTable(_.GetRequiredService<IDbConnectionFactory<
+                    IDbConnection>>()) },
+                {typeof(Transport), new TransportTable(_.GetRequiredService<IFileConnectionFactory<
+                    Transport>>())},
+                { typeof(Order), new OrderTable(_.GetRequiredService<IDbConnectionFactory<
+                    IDbConnection>>()) },
             }
         ));
 
