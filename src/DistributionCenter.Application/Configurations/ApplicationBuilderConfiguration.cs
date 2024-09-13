@@ -43,6 +43,8 @@ public static class ApplicationBuilderConfiguration
                     IDbConnection>>()) },
                 {typeof(Transport), new TransportTable(_.GetRequiredService<IFileConnectionFactory<
                     Transport>>())},
+                { typeof(Order), new OrderTable(_.GetRequiredService<IDbConnectionFactory<
+                    IDbConnection>>()) },
             }
         ));
 
@@ -52,6 +54,7 @@ public static class ApplicationBuilderConfiguration
     private static IServiceCollection ConfigureRepositories(this IServiceCollection services)
     {
         _ = services.AddScoped<IRepository<Client>, ClientRepository>();
+        _ = services.AddScoped<IRepository<Order>, OrderRepository>();
         _ = services.AddScoped<IRepository<Product>, ProductRepository>();
 
         return services;
