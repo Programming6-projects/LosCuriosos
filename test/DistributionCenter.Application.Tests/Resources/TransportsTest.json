@@ -5,7 +5,7 @@
     "AvailableUnits": 10,
     "Id": "b1a4e1f1-d0c7-49b0-9c45-3e6c9c34d375",
     "IsActive": true,
-    "CreatedAt": "2024-09-13T00:58:56.6771739-04:00",
+    "CreatedAt": "2024-09-13T01:13:23.1524897-04:00",
     "UpdatedAt": null
   },
   {
@@ -14,7 +14,7 @@
     "AvailableUnits": 5,
     "Id": "ac456efb-e89b-4a3c-93f4-8bcdd49bfe56",
     "IsActive": true,
-    "CreatedAt": "2024-09-13T00:58:56.6772525-04:00",
+    "CreatedAt": "2024-09-13T01:13:23.1525478-04:00",
     "UpdatedAt": null
   },
   {
@@ -23,7 +23,7 @@
     "AvailableUnits": 8,
     "Id": "f8b3b85d-1b51-4d71-bafe-96cb4c61c9f7",
     "IsActive": true,
-    "CreatedAt": "2024-09-13T00:58:56.6772889-04:00",
+    "CreatedAt": "2024-09-13T01:13:23.1525716-04:00",
     "UpdatedAt": null
   },
   {
@@ -32,26 +32,26 @@
     "AvailableUnits": 12,
     "Id": "3c4913a5-017b-4b7b-85a5-ea5a0e54e1c2",
     "IsActive": true,
-    "CreatedAt": "2024-09-13T00:58:56.6773249-04:00",
+    "CreatedAt": "2024-09-13T01:13:23.1526001-04:00",
     "UpdatedAt": null
   },
   {
     "Name": "Truck AB",
     "Capacity": 2000,
     "AvailableUnits": 10,
-    "Id": "646509b7-8286-4dd9-9b23-4a88fba98655",
+    "Id": "cf1155a5-04e0-4ba3-9edc-40dd19b2fd92",
     "IsActive": true,
-    "CreatedAt": "2024-09-13T04:58:56.6735399Z",
-    "UpdatedAt": "2024-09-13T04:58:56.6737072Z"
+    "CreatedAt": "2024-09-13T05:13:23.1485837Z",
+    "UpdatedAt": "2024-09-13T05:13:23.1486754Z"
   },
   {
     "Name": "Van BC",
     "Capacity": 1000,
     "AvailableUnits": 5,
-    "Id": "dd4a63df-ec24-4a89-af4d-fc880bdf6285",
+    "Id": "6ee51382-135c-4df0-bc11-07932f1cc17d",
     "IsActive": true,
-    "CreatedAt": "2024-09-13T04:58:56.6738318Z",
-    "UpdatedAt": "2024-09-13T04:58:56.6738319Z"
+    "CreatedAt": "2024-09-13T05:13:23.1487656Z",
+    "UpdatedAt": "2024-09-13T05:13:23.1487657Z"
   },
   {
     "Name": "Truck A",
@@ -59,7 +59,7 @@
     "AvailableUnits": 10,
     "Id": "b1a4e1f1-d0c7-49b0-9c45-3e6c9c34d375",
     "IsActive": true,
-    "CreatedAt": "2024-09-13T00:58:56.6771739-04:00",
+    "CreatedAt": "2024-09-13T01:13:23.1524897-04:00",
     "UpdatedAt": null
   },
   {
@@ -68,7 +68,7 @@
     "AvailableUnits": 5,
     "Id": "ac456efb-e89b-4a3c-93f4-8bcdd49bfe56",
     "IsActive": true,
-    "CreatedAt": "2024-09-13T00:58:56.6772525-04:00",
+    "CreatedAt": "2024-09-13T01:13:23.1525478-04:00",
     "UpdatedAt": null
   },
   {
@@ -77,7 +77,7 @@
     "AvailableUnits": 8,
     "Id": "f8b3b85d-1b51-4d71-bafe-96cb4c61c9f7",
     "IsActive": true,
-    "CreatedAt": "2024-09-13T00:58:56.6772889-04:00",
+    "CreatedAt": "2024-09-13T01:13:23.1525716-04:00",
     "UpdatedAt": null
   },
   {
@@ -86,7 +86,7 @@
     "AvailableUnits": 12,
     "Id": "3c4913a5-017b-4b7b-85a5-ea5a0e54e1c2",
     "IsActive": true,
-    "CreatedAt": "2024-09-13T00:58:56.6773249-04:00",
+    "CreatedAt": "2024-09-13T01:13:23.1526001-04:00",
     "UpdatedAt": null
   }
 ]
