@@ -2,7 +2,6 @@ namespace DistributionCenter.Application.Tests.Tables.Connections.File.Concretes
 
 using Application.Tables.Connections.File.Concretes;
 using Domain.Entities.Concretes;
-using Newtonsoft.Json;
 using File = System.IO.File;
 
 public class JsonConnectionFactoryTests
@@ -10,10 +9,11 @@ public class JsonConnectionFactoryTests
     private readonly JsonConnectionFactory<Transport> _jsonConnectionFactory = new(TableName);
     private const string TableName = "TransportsTest";
 
-    [Fact]
-    public async Task LoadDataAsync_ReturnsDeserializedData_WhenFileExists()
+    private static async Task FIllFileAsync()
     {
-        // Define Input and Output
+        string filePath = Path.Combine(Environment.CurrentDirectory, "../../../Resources/TransportsTest.json");
+        await File.WriteAllTextAsync(filePath, "[]");
+
         string jsonData = @"
             [
                 {
@@ -54,14 +54,23 @@ public class JsonConnectionFactoryTests
                 }
             ]";
 
-        await File.WriteAllTextAsync(TableName, jsonData);
+        await File.WriteAllTextAsync(filePath, jsonData);
+    }
+
+    [Fact]
+    public async Task LoadDataAsync_ReturnsDeserializedData_WhenFileExists()
+    {
+        await FIllFileAsync();
+
+        // Define Input and Output
+        int expectedCount = 4;
 
         // Execute actual operation
         List<Transport> result = await _jsonConnectionFactory.LoadDataAsync();
 
         // Verify actual result
         Assert.NotNull(result);
-        Assert.Equal(4, result.Count);
+        Assert.Equal(expectedCount, result.Count);
         Assert.Equal("Truck A", result[0].Name);
         Assert.Equal(2000, result[0].Capacity);
         Assert.Equal("Van B", result[1].Name);
@@ -71,13 +80,17 @@ public class JsonConnectionFactoryTests
     [Fact]
     public async Task SaveDataAsync_WritesSerializedData_ToFile()
     {
+        await FIllFileAsync();
+
         // Define Input and Output
+        int initialCount = 4;
+
         List<Transport> transports =
         [
             new()
             {
                 Id = Guid.NewGuid(),
-                Name = "Truck A",
+                Name = "Truck AB",
                 Capacity = 2000,
                 AvailableUnits = 10,
                 IsActive = true,
@@ -87,7 +100,7 @@ public class JsonConnectionFactoryTests
             new()
             {
                 Id = Guid.NewGuid(),
-                Name = "Van B",
+                Name = "Van BC",
                 Capacity = 1000,
                 AvailableUnits = 5,
                 IsActive = true,
@@ -99,12 +112,14 @@ public class JsonConnectionFactoryTests
         // Execute actual operation
         await _jsonConnectionFactory.SaveDataAsync(transports);
 
-        // Verify actual result
-        Assert.True(File.Exists(TableName));
-        string jsonContent = await File.ReadAllTextAsync(TableName);
-        List<Transport>? savedTransports = JsonConvert.DeserializeObject<List<Transport>>(jsonContent);
-        Assert.Equal(2, savedTransports?.Count);
-        Assert.Equal("Truck A", savedTransports?[0].Name);
-        Assert.Equal("Van B", savedTransports?[1].Name);
+        // Verify actual resul
+        List<Transport> savedTransports = await _jsonConnectionFactory.LoadDataAsync();
+        Assert.Equal(6, savedTransports.Count);
+        Assert.Equal("Truck A", savedTransports[0].Name);
+        Assert.Equal("Van BC", savedTransports[5].Name);
+
+        List<Transport> transportsToKeep = savedTransports.Take(initialCount).ToList();
+        await _jsonConnectionFactory.SaveDataAsync(transportsToKeep);
+
     }
 }
