@@ -31,12 +31,14 @@ public static class ApplicationBuilderConfiguration
         _ = services.AddScoped<IDbConnectionFactory<IDbConnection> >(_ => new NpgqlConnectionFactory(
             configuration[DbConstants.DefaultConnectionStringPath]!
         ));
+
         _ = services.AddScoped<IFileConnectionFactory<Transport> >(_ => new JsonConnectionFactory<Transport>(
             DbConstants.TransportSchema));
 
         _ = services.AddScoped<IContext>(_ => new Context(
             new Dictionary<Type, object>
             {
+                { typeof(Product), new ProductTable(_.GetRequiredService<IDbConnectionFactory<IDbConnection>>()) },
                 { typeof(Client), new ClientTable(_.GetRequiredService<IDbConnectionFactory<
                     IDbConnection>>()) },
                 {typeof(Transport), new TransportTable(_.GetRequiredService<IFileConnectionFactory<
@@ -50,6 +52,7 @@ public static class ApplicationBuilderConfiguration
     private static IServiceCollection ConfigureRepositories(this IServiceCollection services)
     {
         _ = services.AddScoped<IRepository<Client>, ClientRepository>();
+        _ = services.AddScoped<IRepository<Product>, ProductRepository>();
 
         return services;
     }

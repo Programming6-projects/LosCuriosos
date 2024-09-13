@@ -11,15 +11,15 @@ public class UpdateClientDto : IUpdateDto<Client>
     public string? LastName { get; init; }
     public string? Email { get; init; }
 
-    public Client FromEntity(Client client)
+    public Client FromEntity(Client entity)
     {
-        ArgumentNullException.ThrowIfNull(client, nameof(client));
+        ArgumentNullException.ThrowIfNull(entity, nameof(entity));
 
-        client.Name = Name ?? client.Name;
-        client.LastName = LastName ?? client.LastName;
-        client.Email = Email ?? client.Email;
+        entity.Name = Name ?? entity.Name;
+        entity.LastName = LastName ?? entity.LastName;
+        entity.Email = Email ?? entity.Email;
 
-        return client;
+        return entity;
     }
 
     public Result Validate()
