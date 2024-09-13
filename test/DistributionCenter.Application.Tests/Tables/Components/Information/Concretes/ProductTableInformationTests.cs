@@ -1,12 +1,12 @@
-namespace DistributionCenter.Application.Tests.Tables.Components.Information.Concretes;
+﻿namespace DistributionCenter.Application.Tests.Tables.Components.Information.Concretes;
 
-public class ClientTableInformationTests
+public class ProductTableInformationTests
 {
-    private readonly ClientTableInformation _table;
+    private readonly ProductTableInformation _table;
 
-    public ClientTableInformationTests()
+    public ProductTableInformationTests()
     {
-        _table = new ClientTableInformation();
+        _table = new ProductTableInformation();
     }
 
     [Fact]
@@ -14,7 +14,7 @@ public class ClientTableInformationTests
     {
         // Define Input and Output
         string result;
-        string expected = "client";
+        string expected = "product";
 
         // Execute actual operation
         result = _table.TableName;
@@ -29,7 +29,7 @@ public class ClientTableInformationTests
         // Define Input and Output
         string result;
         string expected =
-            "id AS Id, name, last_name AS LastName, email, is_active AS IsActive, created_at AS CreatedAt, updated_at AS UpdatedAt";
+            "id AS Id, name, description, weight_gr AS Weight, is_active AS IsActive, created_at AS CreatedAt, updated_at AS UpdatedAt";
 
         // Execute actual operation
         result = _table.GetByIdFields;
@@ -43,7 +43,7 @@ public class ClientTableInformationTests
     {
         // Define Input and Output
         string result;
-        string expected = "id, name, last_name, email, is_active, created_at, updated_at";
+        string expected = "id, name, description, weight_gr, is_active, created_at, updated_at";
 
         // Execute actual operation
         result = _table.CreateFields;
@@ -57,7 +57,7 @@ public class ClientTableInformationTests
     {
         // Define Input and Output
         string result;
-        string expected = "@Id, @Name, @LastName, @Email, @IsActive, @CreatedAt, @UpdatedAt";
+        string expected = "@Id, @Name, @Description, @Weight, @IsActive, @CreatedAt, @UpdatedAt";
 
         // Execute actual operation
         result = _table.CreateValues;
@@ -72,7 +72,7 @@ public class ClientTableInformationTests
         // Define Input and Output
         string result;
         string expected =
-            "name = @Name, last_name = @LastName, email = @Email, is_active = @IsActive, updated_at = @UpdatedAt";
+            "name = @Name, description = @Description, weight_gr = @Weight, is_active = @IsActive, updated_at = @UpdatedAt";
 
         // Execute actual operation
         result = _table.UpdateFields;
