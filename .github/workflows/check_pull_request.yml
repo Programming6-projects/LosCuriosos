@@ -24,7 +24,7 @@ jobs:
         steps:
             - uses: gsactions/commit-message-checker@v2
               with:
-                  pattern: '(?:build|docs|doc|refactor|test|fix|perf|chore|feat|ci)(?:\(.+\))?:\s[a-z]{1,2}.+'
+                  pattern: '(?:build|docs|doc|refactor|test|fix|perf|chore|feat|ci)(?:\(.+\))?:\s[a-zA-Z]{1,2}.+'
                   error: 'The commit message must follow the commit messages guidelines'
                   excludeDescription: 'true'
                   excludeTitle: 'true'
