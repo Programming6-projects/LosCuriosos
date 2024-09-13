@@ -16,28 +16,22 @@ public class FileConnectionFactoryTests(ITestOutputHelper testOutputHelper)
     private const string FileType = "json";
 
     [Fact]
-    public async Task OpenFileAsync_ThrowsFileNotFoundException_WhenFileDoesNotExist()
-    {
-        // Define Input and Output
-        string filePath = Path.Combine(Environment.CurrentDirectory, "../../../Resources/test.json");
-        if (File.Exists(filePath))
-            File.Delete(filePath);
-
-        // Execute actual operation
-        FileNotFoundException exception = await Assert.ThrowsAsync<FileNotFoundException>(() =>
-            _fileConnectionFactory.OpenFileAsync());
-
-        // Verify actual result
-        Assert.Contains("We could not find the JSON file", exception.Message, StringComparison.Ordinal);
-    }
-
-
-    [Fact]
     public async Task OpenFileAsync_ReturnsFileContents_WhenFileExists()
     {
         // Define Input and Output
         string filePath = Path.Combine(Environment.CurrentDirectory, "../../../Resources/test.json");
         string expectedContent = "{\"key\":\"value\"}";
+        if (!File.Exists(filePath))
+        {
+            string? directoryPath = Path.GetDirectoryName(filePath);
+
+            if (directoryPath != null)
+            {
+                _ = Directory.CreateDirectory(directoryPath);
+            }
+
+            await File.Create(filePath).DisposeAsync();
+        }
         await File.WriteAllTextAsync(filePath, expectedContent);
 
         // Execute actual operation

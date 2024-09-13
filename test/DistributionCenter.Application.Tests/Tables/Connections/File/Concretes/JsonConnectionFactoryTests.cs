@@ -1,5 +1,6 @@
 namespace DistributionCenter.Application.Tests.Tables.Connections.File.Concretes;
 
+using System.Globalization;
 using Application.Tables.Connections.File.Concretes;
 using Domain.Entities.Concretes;
 using File = System.IO.File;
@@ -12,9 +13,23 @@ public class JsonConnectionFactoryTests
     private static async Task FIllFileAsync()
     {
         string filePath = Path.Combine(Environment.CurrentDirectory, "../../../Resources/TransportsTest.json");
+
+        if (!File.Exists(filePath))
+        {
+            string? directoryPath = Path.GetDirectoryName(filePath);
+
+            if (directoryPath != null)
+            {
+                _ = Directory.CreateDirectory(directoryPath);
+            }
+
+            await File.Create(filePath).DisposeAsync();
+        }
+
         await File.WriteAllTextAsync(filePath, "[]");
 
-        string jsonData = @"
+        string jsonData =
+            @"
             [
                 {
                     ""id"": ""b1a4e1f1-d0c7-49b0-9c45-3e6c9c34d375"",
@@ -87,24 +102,22 @@ public class JsonConnectionFactoryTests
         [
             new()
             {
-                Id = Guid.NewGuid(),
+                Id = Guid.Parse("4a31897e-faae-49af-b54c-f9764c743e6f"),
                 Name = "Truck AB",
                 Capacity = 2000,
                 AvailableUnits = 10,
                 IsActive = true,
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow
+                CreatedAt = DateTime.Parse("2024-09-13 14:30", CultureInfo.InvariantCulture),
             },
             new()
             {
-                Id = Guid.NewGuid(),
+                Id = Guid.Parse("f92e3a60-f6e1-4c55-b176-e4aea14edcaf"),
                 Name = "Van BC",
                 Capacity = 1000,
                 AvailableUnits = 5,
                 IsActive = true,
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow
-            }
+                CreatedAt = DateTime.Parse("2024-09-13 14:30", CultureInfo.InvariantCulture),
+            },
         ];
 
         // Execute actual operation

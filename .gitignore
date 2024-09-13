@@ -7,4 +7,6 @@ docs/
 .git/
 node_modules/
 coverage/
+Resources/
 coverage.cobertura.xml
+DistributionCenter.sln.DotSettings.user
