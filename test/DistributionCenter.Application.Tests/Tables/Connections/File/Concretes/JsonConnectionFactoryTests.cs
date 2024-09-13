@@ -83,8 +83,6 @@ public class JsonConnectionFactoryTests
         await FIllFileAsync();
 
         // Define Input and Output
-        int initialCount = 4;
-
         List<Transport> transports =
         [
             new()
@@ -117,9 +115,5 @@ public class JsonConnectionFactoryTests
         Assert.Equal(6, savedTransports.Count);
         Assert.Equal("Truck A", savedTransports[0].Name);
         Assert.Equal("Van BC", savedTransports[5].Name);
-
-        List<Transport> transportsToKeep = savedTransports.Take(initialCount).ToList();
-        await _jsonConnectionFactory.SaveDataAsync(transportsToKeep);
-
     }
 }
