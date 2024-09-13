@@ -3,6 +3,6 @@
     <OutputType>Library</OutputType>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="RestSharp" />
+    <PackageReference Include="RestSharp"/>
   </ItemGroup>
 </Project>
