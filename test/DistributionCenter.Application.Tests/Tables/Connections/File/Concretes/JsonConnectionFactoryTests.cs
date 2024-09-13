@@ -13,8 +13,16 @@ public class JsonConnectionFactoryTests
     private static async Task FIllFileAsync()
     {
         string filePath = Path.Combine(Environment.CurrentDirectory, "../../../Resources/TransportsTest.json");
+
         if (!File.Exists(filePath))
         {
+            string? directoryPath = Path.GetDirectoryName(filePath);
+
+            if (directoryPath != null)
+            {
+                _ = Directory.CreateDirectory(directoryPath);
+            }
+
             await File.Create(filePath).DisposeAsync();
         }
 

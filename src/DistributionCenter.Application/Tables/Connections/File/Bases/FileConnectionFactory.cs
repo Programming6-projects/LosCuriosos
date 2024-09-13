@@ -13,7 +13,16 @@ public abstract class FileConnectionFactory<T>(string tableName, string fileType
     public async Task<string> OpenFileAsync()
     {
         if (!File.Exists(_completedFilePath))
-            throw new FileNotFoundException($"We could not find the JSON file in the following route: {_completedFilePath}");
+        {
+            string? directoryPath = Path.GetDirectoryName(_completedFilePath);
+
+            if (directoryPath != null)
+            {
+                _ = Directory.CreateDirectory(directoryPath);
+            }
+
+            await File.Create(_completedFilePath).DisposeAsync();
+        }
         return await File.ReadAllTextAsync(_completedFilePath);
     }
 
