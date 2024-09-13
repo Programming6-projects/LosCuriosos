@@ -9,13 +9,13 @@ public class UpdateOrderDto: IUpdateDto<Order>
 {
     public Guid? OrderStatusId { get; init; }
 
-    public Order FromEntity(Order client)
+    public Order FromEntity(Order entity)
     {
-        ArgumentNullException.ThrowIfNull(client, nameof(client));
+        ArgumentNullException.ThrowIfNull(entity, nameof(entity));
 
-        client.OrderStatusId = OrderStatusId ?? client.OrderStatusId;
+        entity.OrderStatusId = OrderStatusId ?? entity.OrderStatusId;
 
-        return client;
+        return entity;
     }
 
     public Result Validate()
