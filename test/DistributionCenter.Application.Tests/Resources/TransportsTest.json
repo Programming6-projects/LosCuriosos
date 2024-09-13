@@ -1,38 +1,56 @@
 [
-    {
-        "id": "b1a4e1f1-d0c7-49b0-9c45-3e6c9c34d375",
-        "name": "Truck A",
-        "capacity": 2000,
-        "availableUnits": 10,
-        "is_active": true,
-        "created_at": "2024-09-12T12:00:00Z",
-        "updated_at": "2024-09-12T12:00:00Z"
-    },
-    {
-        "id": "ac456efb-e89b-4a3c-93f4-8bcdd49bfe56",
-        "name": "Van B",
-        "capacity": 1000,
-        "availableUnits": 5,
-        "is_active": true,
-        "created_at": "2024-09-12T12:00:00Z",
-        "updated_at": "2024-09-12T12:00:00Z"
-    },
-    {
-        "id": "f8b3b85d-1b51-4d71-bafe-96cb4c61c9f7",
-        "name": "Truck C",
-        "capacity": 3000,
-        "availableUnits": 8,
-        "is_active": true,
-        "created_at": "2024-09-12T12:00:00Z",
-        "updated_at": "2024-09-12T12:00:00Z"
-    },
-    {
-        "id": "3c4913a5-017b-4b7b-85a5-ea5a0e54e1c2",
-        "name": "Truck D",
-        "capacity": 1500,
-        "availableUnits": 12,
-        "is_active": false,
-        "created_at": "2024-09-12T12:00:00Z",
-        "updated_at": "2024-09-12T12:00:00Z"
-    }
+  {
+    "Name": "Truck A",
+    "Capacity": 2000,
+    "AvailableUnits": 10,
+    "Id": "b1a4e1f1-d0c7-49b0-9c45-3e6c9c34d375",
+    "IsActive": true,
+    "CreatedAt": "2024-09-13T01:20:31.3950909-04:00",
+    "UpdatedAt": null
+  },
+  {
+    "Name": "Van B",
+    "Capacity": 1000,
+    "AvailableUnits": 5,
+    "Id": "ac456efb-e89b-4a3c-93f4-8bcdd49bfe56",
+    "IsActive": true,
+    "CreatedAt": "2024-09-13T01:20:31.3951266-04:00",
+    "UpdatedAt": null
+  },
+  {
+    "Name": "Truck C",
+    "Capacity": 3000,
+    "AvailableUnits": 8,
+    "Id": "f8b3b85d-1b51-4d71-bafe-96cb4c61c9f7",
+    "IsActive": true,
+    "CreatedAt": "2024-09-13T01:20:31.3951404-04:00",
+    "UpdatedAt": null
+  },
+  {
+    "Name": "Truck D",
+    "Capacity": 1500,
+    "AvailableUnits": 12,
+    "Id": "3c4913a5-017b-4b7b-85a5-ea5a0e54e1c2",
+    "IsActive": true,
+    "CreatedAt": "2024-09-13T01:20:31.3951549-04:00",
+    "UpdatedAt": null
+  },
+  {
+    "Name": "Truck AB",
+    "Capacity": 2000,
+    "AvailableUnits": 10,
+    "Id": "4e15c6f6-e870-4506-9eb8-50cf45f3f405",
+    "IsActive": true,
+    "CreatedAt": "2024-09-13T05:20:31.3935727Z",
+    "UpdatedAt": "2024-09-13T05:20:31.393648Z"
+  },
+  {
+    "Name": "Van BC",
+    "Capacity": 1000,
+    "AvailableUnits": 5,
+    "Id": "a0ecd161-fd5c-45e9-a043-34fa8a6e5305",
+    "IsActive": true,
+    "CreatedAt": "2024-09-13T05:20:31.393722Z",
+    "UpdatedAt": "2024-09-13T05:20:31.393722Z"
+  }
 ]
