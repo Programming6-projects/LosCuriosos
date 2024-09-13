@@ -22,6 +22,7 @@ public abstract class FileConnectionFactory<T>(string tableName, string fileType
             }
 
             await File.Create(_completedFilePath).DisposeAsync();
+            await File.WriteAllTextAsync(_completedFilePath, "[]");
         }
         return await File.ReadAllTextAsync(_completedFilePath);
     }
