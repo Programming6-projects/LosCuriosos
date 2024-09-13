@@ -251,6 +251,5 @@ under its [MIT License](LICENSE).
 Thank you for your interest in contributing to this API! We look forward to your
 contributions.
 
-```
-
-```
+## Secrets Documentation
+[Secrets](documentation/secrets-documentation.md)

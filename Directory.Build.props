@@ -16,7 +16,7 @@
     <CollectCoverage>true</CollectCoverage>
     <CoverletOutputFormat>cobertura</CoverletOutputFormat>
     <ThresholdType>line,branch,method</ThresholdType>
-    <Exclude>[DistributionCenter.Api]DistributionCenter.Api.Program,[DistributionCenter.Api]DistributionCenter.Api.Startup,[DistributionCenter.Api]DistributionCenter.Api.Configurations*,[DistributionCenter.Application]DistributionCenter.Application.Configurations*,[DistributionCenter.Application]DistributionCenter.Application.Tables.Connections.Concretes*,[DistributionCenter.Application]DistributionCenter.Application.Tables.Components.QueryCommands.Concretes.Dapper.Concretes*</Exclude>
+    <Exclude>[DistributionCenter.Api]DistributionCenter.Api.Program,[DistributionCenter.Api]DistributionCenter.Api.Startup,[DistributionCenter.Api]DistributionCenter.Api.Configurations*,[DistributionCenter.Application]DistributionCenter.Application.Configurations*,[DistributionCenter.Application]DistributionCenter.Application.Tables.Connections.Concretes*,[DistributionCenter.Application]DistributionCenter.Application.Tables.Components.QueryCommands.Concretes.Dapper.Concretes*,[DistributionCenter.Services]DistributionCenter.Services.Notification.Bases*</Exclude>
   </PropertyGroup>
   <ItemGroup>
     <!-- Analyzers -->
