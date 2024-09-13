@@ -1,0 +1,6 @@
+PUT {{host}}/api/clients/c1d3e678-9b6f-47e1-b0b6-a5f11e7e67a1
+Content-Type: application/json
+
+{
+    "name": "Pepe"
+}

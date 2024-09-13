@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Dapper"></PackageReference>
+    <PackageReference Include="Newtonsoft.Json"></PackageReference>
+    <PackageReference Include="Npgsql"></PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="../DistributionCenter.Commons/DistributionCenter.Commons.csproj"></ProjectReference>
+    <ProjectReference Include="../DistributionCenter.Domain/DistributionCenter.Domain.csproj"></ProjectReference>
+  </ItemGroup>
+</Project>

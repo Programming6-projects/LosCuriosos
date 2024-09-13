@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../DistributionCenter.Commons/DistributionCenter.Commons.csproj"></ProjectReference>
+  </ItemGroup>
+</Project>
