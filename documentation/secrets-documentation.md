@@ -1,77 +1,70 @@
-# Mapbox API Integration and Email Configuration
+# Mapbox API Integration, Email Configuration, and Database Setup
 
 ## Using Mapbox API
 
-The Mapbox API is essential for our order management system as it allows us to calculate the distance between two points on a route. This is crucial for optimizing delivery routes and providing accurate information on arrival times and total distance. Without the Mapbox API, we would need to develop our own distance calculation algorithm, which would be complex and potentially less accurate and efficient.
+The Mapbox API is essential for our order management system as it allows us to
+calculate the distance between two points on a route. This is crucial for
+optimizing delivery routes and providing accurate information on arrival times
+and total distance. Without the Mapbox API, we would need to develop our own
+distance calculation algorithm, which would be complex and potentially less
+accurate and efficient. You need to set the following environment variable:
 
-## Environment Variable Configuration for API Tokens
+- `MAPBOX_TOKEN` - Your Mapbox API token.
 
-To use the Mapbox API, you need to configure environment variables in your development environment to securely store your API token. Follow these steps in a Linux environment:
+## Database Configuration
 
-1. **Open your terminal**.
-2. **Set environment variables** using the `export` command. Replace `your_token` with your actual Mapbox token.
+We use PostgreSQL for our database. You need to set the following environment
+variables:
 
-    ```bash
-    export MAPBOX_TOKEN=your_token
-    ```
+- `PGUSER` - The username for your PostgreSQL database.
+- `PGPASSWORD` - The password for your PostgreSQL database.
 
-3. **Make these environment variables persistent** by adding the export commands to your shell's configuration file (e.g., `~/.bashrc` or `~/.bash_profile` for bash, `~/.zshrc` for zsh).
+## pgAdmin Configuration
 
-    ```bash
-    echo 'export MAPBOX_TOKEN=your_token' >> ~/.bashrc
-    ```
+pgAdmin is a web-based interface for managing PostgreSQL databases. It requires
+the following environment variables:
 
-4. **Apply the changes** to the current session by running the `source` command.
-
-    ```bash
-    source ~/.bashrc
-    ```
-
-5. **Verify that the environment variable is set correctly**.
-
-    ```bash
-    echo $MAPBOX_TOKEN
-    ```
-
-**Note:** Replace `your_token` with your actual Mapbox token. Be sure not to share these tokens as they are sensitive information.
+- `PGADMIN_DEFAULT_EMAIL` - The default email to log into pgAdmin.
+- `PGADMIN_DEFAULT_PASSWORD` - The default password to log into pgAdmin.
 
 ## Email Credentials Configuration
 
-To send emails from our application, we need to configure the credentials of a Gmail account that will act as our sender. We use application-specific passwords generated in the Gmail account to ensure that the email can be used without compromising the security of our primary account.
+To send emails from our application, we need to configure the credentials of a
+Gmail account that will act as our sender. We use application-specific passwords
+generated in the Gmail account to ensure that the email can be used without
+compromising the security of our primary account.
 
-1. **Environment Variables for Email**:
-    - `EMAIL_USERNAME` - Email username (e.g., `loscuriosos63@gmail.com`).
-    - `EMAIL_PASSWORD` - Application password generated for the email account.
+- `EMAIL_USERNAME` - Email username (e.g., `loscuriosos63@gmail.com`).
+- `EMAIL_PASSWORD` - Application password generated for the email account.
 
-2. **Configuration in the Terminal**:
+**Note:** Replace `your_app_password` with the actual application password
+generated for the Gmail account. Do not share these credentials as they are
+sensitive information.
 
-    ```bash
-    export EMAIL_USERNAME=loscuriosos63@gmail.com
-    export EMAIL_PASSWORD=your_app_password
-    ```
+## Environment Variable Configuration
 
-3. **Persisting Variables**:
+Instead of setting environment variables in your shell's configuration file, we
+recommend creating a `.env` file in the root of your project. This file should
+not be committed to your version control system. It's already included in the
+`.gitignore` file.
 
-   Add the commands to your shell's configuration file so that these variables persist between sessions:
+Create a `.env` file and add the following variables:
 
-    ```bash
-    echo 'export EMAIL_USERNAME=loscuriosos63@gmail.com' >> ~/.bashrc
-    echo 'export EMAIL_PASSWORD=your_app_password' >> ~/.bashrc
-    ```
+```bash
+# Postgres variables
+export POSTGRES_USER="Your postgres user"
+export POSTGRES_PASSWORD="Your postgres password"
+# PgAdmin variables
+export PGADMIN_EMAIL="Your pgAdmin email"
+export PGADMIN_PASSWORD="Your pgAdmin password"
+# Mapbox variables
+export MAPBOX_TOKEN="Your mapbox token"
+# Gmail variables
+export GMAIL_EMAIL="Your gmail email"
+export GMAIL_APP_PASSWORD="Your gmail app password"
+```
 
-4. **Apply the Changes**:
+Replace the placeholders with your actual values.
 
-    ```bash
-    source ~/.bashrc
-    ```
-
-5. **Verify Variables**:
-
-    ```bash
-    echo $EMAIL_USERNAME
-    echo $EMAIL_PASSWORD
-    ```
-
-**Note:** Replace `your_app_password` with the actual application password generated for the Gmail account. Do not share these credentials as they are sensitive information.
-
----
+**Note:** Be sure not to share these tokens and credentials as they are
+sensitive information.

@@ -4,11 +4,13 @@
     <StartupObject>DistributionCenter.Api.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="DotNetEnv"></PackageReference>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi"></PackageReference>
     <PackageReference Include="Swashbuckle.AspNetCore"></PackageReference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="../DistributionCenter.Commons/DistributionCenter.Commons.csproj"></ProjectReference>
     <ProjectReference Include="../DistributionCenter.Infraestructure/DistributionCenter.Infraestructure.csproj"></ProjectReference>
+    <ProjectReference Include="../DistributionCenter.Services/DistributionCenter.Services.csproj"></ProjectReference>
   </ItemGroup>
 </Project>

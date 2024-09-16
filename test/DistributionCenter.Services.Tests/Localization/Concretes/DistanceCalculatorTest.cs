@@ -14,7 +14,8 @@ public class DistanceCalculatorTests
         double longitude = -68.15;
         double storeLatitude = -17.0;
         double storeLongitude = -68.0;
-        string jsonResponse = @"{
+        string jsonResponse =
+            @"{
             ""routes"": [
                 {
                     ""distance"": 75000
@@ -23,21 +24,27 @@ public class DistanceCalculatorTests
         }";
 
         Mock<HttpMessageHandler> mockHttpMessageHandler = new();
-        _ = mockHttpMessageHandler.Protected()
+        _ = mockHttpMessageHandler
+            .Protected()
             .Setup<Task<HttpResponseMessage>>(
                 "SendAsync",
                 ItExpr.IsAny<HttpRequestMessage>(),
-                ItExpr.IsAny<CancellationToken>())
-            .ReturnsAsync(() => new HttpResponseMessage(HttpStatusCode.OK)
-            {
-                Content = new StringContent(jsonResponse)
-            });
+                ItExpr.IsAny<CancellationToken>()
+            )
+            .ReturnsAsync(
+                () => new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(jsonResponse) }
+            );
 
         using HttpClient httpClient = new(mockHttpMessageHandler.Object);
-        DistanceCalculator distanceCalculator = new(httpClient);
+        DistanceCalculator distanceCalculator = new(httpClient, "MapboxAccessToken");
 
         // Execute actual operation
-        double result = await distanceCalculator.CalculateDistanceAsync(latitude, longitude, storeLatitude, storeLongitude);
+        double result = await distanceCalculator.CalculateDistanceAsync(
+            latitude,
+            longitude,
+            storeLatitude,
+            storeLongitude
+        );
 
         // Verify actual result
         Assert.Equal(75.0, result, 3);
@@ -54,21 +61,27 @@ public class DistanceCalculatorTests
         string jsonResponse = @"{""routes"": []}";
 
         Mock<HttpMessageHandler> mockHttpMessageHandler = new();
-        _ = mockHttpMessageHandler.Protected()
+        _ = mockHttpMessageHandler
+            .Protected()
             .Setup<Task<HttpResponseMessage>>(
                 "SendAsync",
                 ItExpr.IsAny<HttpRequestMessage>(),
-                ItExpr.IsAny<CancellationToken>())
-            .ReturnsAsync(() => new HttpResponseMessage(HttpStatusCode.OK)
-            {
-                Content = new StringContent(jsonResponse)
-            });
+                ItExpr.IsAny<CancellationToken>()
+            )
+            .ReturnsAsync(
+                () => new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(jsonResponse) }
+            );
 
         using HttpClient httpClient = new(mockHttpMessageHandler.Object);
-        DistanceCalculator distanceCalculator = new(httpClient);
+        DistanceCalculator distanceCalculator = new(httpClient, "MapboxAccessToken");
 
         // Execute actual operation
-        double result = await distanceCalculator.CalculateDistanceAsync(latitude, longitude, storeLatitude, storeLongitude);
+        double result = await distanceCalculator.CalculateDistanceAsync(
+            latitude,
+            longitude,
+            storeLatitude,
+            storeLongitude
+        );
 
         // Verify actual result
         Assert.Equal(0, result);
@@ -84,18 +97,25 @@ public class DistanceCalculatorTests
         double storeLongitude = -68.0;
 
         Mock<HttpMessageHandler> mockHttpMessageHandler = new();
-        _ = mockHttpMessageHandler.Protected()
+        _ = mockHttpMessageHandler
+            .Protected()
             .Setup<Task<HttpResponseMessage>>(
                 "SendAsync",
                 ItExpr.IsAny<HttpRequestMessage>(),
-                ItExpr.IsAny<CancellationToken>())
+                ItExpr.IsAny<CancellationToken>()
+            )
             .ReturnsAsync(() => new HttpResponseMessage(HttpStatusCode.InternalServerError));
 
         using HttpClient httpClient = new(mockHttpMessageHandler.Object);
-        DistanceCalculator distanceCalculator = new(httpClient);
+        DistanceCalculator distanceCalculator = new(httpClient, "MapboxAccessToken");
 
         // Execute actual operation
-        double result = await distanceCalculator.CalculateDistanceAsync(latitude, longitude, storeLatitude, storeLongitude);
+        double result = await distanceCalculator.CalculateDistanceAsync(
+            latitude,
+            longitude,
+            storeLatitude,
+            storeLongitude
+        );
 
         // Verify actual result
         Assert.Equal(0, result);
@@ -109,7 +129,8 @@ public class DistanceCalculatorTests
         double longitude = -68.15;
         double storeLatitude = -16.5;
         double storeLongitude = -68.15;
-        string jsonResponse = @"{
+        string jsonResponse =
+            @"{
             ""routes"": [
                 {
                     ""distance"": 0
@@ -118,21 +139,27 @@ public class DistanceCalculatorTests
         }";
 
         Mock<HttpMessageHandler> mockHttpMessageHandler = new();
-        _ = mockHttpMessageHandler.Protected()
+        _ = mockHttpMessageHandler
+            .Protected()
             .Setup<Task<HttpResponseMessage>>(
                 "SendAsync",
                 ItExpr.IsAny<HttpRequestMessage>(),
-                ItExpr.IsAny<CancellationToken>())
-            .ReturnsAsync(() => new HttpResponseMessage(HttpStatusCode.OK)
-            {
-                Content = new StringContent(jsonResponse)
-            });
+                ItExpr.IsAny<CancellationToken>()
+            )
+            .ReturnsAsync(
+                () => new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(jsonResponse) }
+            );
 
         using HttpClient httpClient = new(mockHttpMessageHandler.Object);
-        DistanceCalculator distanceCalculator = new(httpClient);
+        DistanceCalculator distanceCalculator = new(httpClient, "MapboxAccessToken");
 
         // Execute actual operation
-        double result = await distanceCalculator.CalculateDistanceAsync(latitude, longitude, storeLatitude, storeLongitude);
+        double result = await distanceCalculator.CalculateDistanceAsync(
+            latitude,
+            longitude,
+            storeLatitude,
+            storeLongitude
+        );
 
         // Verify actual result
         Assert.Equal(0, result);
@@ -146,7 +173,8 @@ public class DistanceCalculatorTests
         double longitude = -68.15;
         double storeLatitude = 40.7128;
         double storeLongitude = -74.0060;
-        string jsonResponse = @"{
+        string jsonResponse =
+            @"{
             ""routes"": [
                 {
                     ""distance"": 7500000
@@ -155,24 +183,29 @@ public class DistanceCalculatorTests
         }";
 
         Mock<HttpMessageHandler> mockHttpMessageHandler = new();
-        _ = mockHttpMessageHandler.Protected()
+        _ = mockHttpMessageHandler
+            .Protected()
             .Setup<Task<HttpResponseMessage>>(
                 "SendAsync",
                 ItExpr.IsAny<HttpRequestMessage>(),
-                ItExpr.IsAny<CancellationToken>())
-            .ReturnsAsync(() => new HttpResponseMessage(HttpStatusCode.OK)
-            {
-                Content = new StringContent(jsonResponse)
-            });
+                ItExpr.IsAny<CancellationToken>()
+            )
+            .ReturnsAsync(
+                () => new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(jsonResponse) }
+            );
 
         using HttpClient httpClient = new(mockHttpMessageHandler.Object);
-        DistanceCalculator distanceCalculator = new(httpClient);
+        DistanceCalculator distanceCalculator = new(httpClient, "MapboxAccessToken");
 
         // Execute actual operation
-        double result = await distanceCalculator.CalculateDistanceAsync(latitude, longitude, storeLatitude, storeLongitude);
+        double result = await distanceCalculator.CalculateDistanceAsync(
+            latitude,
+            longitude,
+            storeLatitude,
+            storeLongitude
+        );
 
         // Verify actual result
         Assert.Equal(7500.0, result, 3);
     }
 }
-

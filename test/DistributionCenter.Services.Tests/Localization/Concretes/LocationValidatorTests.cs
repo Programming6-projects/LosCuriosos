@@ -2,10 +2,10 @@ namespace DistributionCenter.Services.Tests.Localization.Concretes;
 
 using System.Net;
 using System.Net.Http;
+using DistributionCenter.Services.Localization.Concretes;
 using Moq;
 using Moq.Protected;
 using Xunit;
-using DistributionCenter.Services.Localization.Concretes;
 
 public class LocationValidatorTests
 {
@@ -15,7 +15,8 @@ public class LocationValidatorTests
         // Define Input and Output
         double latitude = -16.5;
         double longitude = -68.15;
-        string jsonResponse = @"{
+        string jsonResponse =
+            @"{
             ""features"": [{
                 ""context"": [
                     { ""id"": ""country:BO"", ""text"": ""Bolivia"" }
@@ -23,18 +24,19 @@ public class LocationValidatorTests
             }]
         }";
         Mock<HttpMessageHandler> mockHttpMessageHandler = new();
-        _ = mockHttpMessageHandler.Protected()
+        _ = mockHttpMessageHandler
+            .Protected()
             .Setup<Task<HttpResponseMessage>>(
                 "SendAsync",
                 ItExpr.IsAny<HttpRequestMessage>(),
-                ItExpr.IsAny<CancellationToken>())
-            .ReturnsAsync(() => new HttpResponseMessage(HttpStatusCode.OK)
-            {
-                Content = new StringContent(jsonResponse)
-            });
+                ItExpr.IsAny<CancellationToken>()
+            )
+            .ReturnsAsync(
+                () => new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(jsonResponse) }
+            );
 
         using HttpClient httpClient = new(mockHttpMessageHandler.Object);
-        LocationValidator locationValidator = new(httpClient);
+        LocationValidator locationValidator = new(httpClient, "MapboxAccessToken");
 
         // Execute actual operation
         bool result = await locationValidator.IsLocationInCountryAsync(latitude, longitude);
@@ -49,7 +51,8 @@ public class LocationValidatorTests
         // Define Input and Output
         double latitude = -16.5;
         double longitude = -68.15;
-        string jsonResponse = @"{
+        string jsonResponse =
+            @"{
             ""features"": [{
                 ""context"": [
                     { ""id"": ""country:CO"", ""text"": ""Colombia"" }
@@ -58,18 +61,19 @@ public class LocationValidatorTests
         }";
 
         Mock<HttpMessageHandler> mockHttpMessageHandler = new();
-        _ = mockHttpMessageHandler.Protected()
+        _ = mockHttpMessageHandler
+            .Protected()
             .Setup<Task<HttpResponseMessage>>(
                 "SendAsync",
                 ItExpr.IsAny<HttpRequestMessage>(),
-                ItExpr.IsAny<CancellationToken>())
-            .ReturnsAsync(() => new HttpResponseMessage(HttpStatusCode.OK)
-            {
-                Content = new StringContent(jsonResponse)
-            });
+                ItExpr.IsAny<CancellationToken>()
+            )
+            .ReturnsAsync(
+                () => new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(jsonResponse) }
+            );
 
         using HttpClient httpClient = new(mockHttpMessageHandler.Object);
-        LocationValidator locationValidator = new(httpClient);
+        LocationValidator locationValidator = new(httpClient, "MapboxAccessToken");
 
         // Execute actual operation
         bool result = await locationValidator.IsLocationInCountryAsync(latitude, longitude);
@@ -84,23 +88,25 @@ public class LocationValidatorTests
         // Define Input and Output
         double latitude = -16.5;
         double longitude = -68.15;
-        string jsonResponse = @"{
+        string jsonResponse =
+            @"{
             ""features"": []
         }";
 
         Mock<HttpMessageHandler> mockHttpMessageHandler = new();
-        _ = mockHttpMessageHandler.Protected()
+        _ = mockHttpMessageHandler
+            .Protected()
             .Setup<Task<HttpResponseMessage>>(
                 "SendAsync",
                 ItExpr.IsAny<HttpRequestMessage>(),
-                ItExpr.IsAny<CancellationToken>())
-            .ReturnsAsync(() => new HttpResponseMessage(HttpStatusCode.OK)
-            {
-                Content = new StringContent(jsonResponse)
-            });
+                ItExpr.IsAny<CancellationToken>()
+            )
+            .ReturnsAsync(
+                () => new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(jsonResponse) }
+            );
 
         using HttpClient httpClient = new(mockHttpMessageHandler.Object);
-        LocationValidator locationValidator = new(httpClient);
+        LocationValidator locationValidator = new(httpClient, "MapboxAccessToken");
 
         // Execute actual operation
         bool result = await locationValidator.IsLocationInCountryAsync(latitude, longitude);
@@ -115,25 +121,27 @@ public class LocationValidatorTests
         // Define Input and Output
         double latitude = -16.5;
         double longitude = -68.15;
-        string jsonResponse = @"{
+        string jsonResponse =
+            @"{
             ""features"": [{
                 ""context"": []
             }]
         }";
 
         Mock<HttpMessageHandler> mockHttpMessageHandler = new();
-        _ = mockHttpMessageHandler.Protected()
+        _ = mockHttpMessageHandler
+            .Protected()
             .Setup<Task<HttpResponseMessage>>(
                 "SendAsync",
                 ItExpr.IsAny<HttpRequestMessage>(),
-                ItExpr.IsAny<CancellationToken>())
-            .ReturnsAsync(() => new HttpResponseMessage(HttpStatusCode.OK)
-            {
-                Content = new StringContent(jsonResponse)
-            });
+                ItExpr.IsAny<CancellationToken>()
+            )
+            .ReturnsAsync(
+                () => new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(jsonResponse) }
+            );
 
         using HttpClient httpClient = new(mockHttpMessageHandler.Object);
-        LocationValidator locationValidator = new(httpClient);
+        LocationValidator locationValidator = new(httpClient, "MapboxAccessToken");
 
         // Execute actual operation
         bool result = await locationValidator.IsLocationInCountryAsync(latitude, longitude);
@@ -150,15 +158,17 @@ public class LocationValidatorTests
         double longitude = -68.15;
 
         Mock<HttpMessageHandler> mockHttpMessageHandler = new();
-        _ = mockHttpMessageHandler.Protected()
+        _ = mockHttpMessageHandler
+            .Protected()
             .Setup<Task<HttpResponseMessage>>(
                 "SendAsync",
                 ItExpr.IsAny<HttpRequestMessage>(),
-                ItExpr.IsAny<CancellationToken>())
+                ItExpr.IsAny<CancellationToken>()
+            )
             .ReturnsAsync(() => new HttpResponseMessage(HttpStatusCode.BadRequest));
 
         using HttpClient httpClient = new(mockHttpMessageHandler.Object);
-        LocationValidator locationValidator = new(httpClient);
+        LocationValidator locationValidator = new(httpClient, "MapboxAccessToken");
 
         // Execute actual operation
         bool result = await locationValidator.IsLocationInCountryAsync(latitude, longitude);
@@ -173,7 +183,8 @@ public class LocationValidatorTests
         // Define input and output
         double latitude = -16.5;
         double longitude = -68.15;
-        string jsonResponse = @"{
+        string jsonResponse =
+            @"{
             ""features"": [{
                 ""context"": [
                     { ""id"": ""city:LaPaz"", ""text"": ""La Paz"" }
@@ -182,18 +193,19 @@ public class LocationValidatorTests
         }"; // Missing "country" in context
 
         Mock<HttpMessageHandler> mockHttpMessageHandler = new();
-        _ = mockHttpMessageHandler.Protected()
+        _ = mockHttpMessageHandler
+            .Protected()
             .Setup<Task<HttpResponseMessage>>(
                 "SendAsync",
                 ItExpr.IsAny<HttpRequestMessage>(),
-                ItExpr.IsAny<CancellationToken>())
-            .ReturnsAsync(() => new HttpResponseMessage(HttpStatusCode.OK)
-            {
-                Content = new StringContent(jsonResponse)
-            });
+                ItExpr.IsAny<CancellationToken>()
+            )
+            .ReturnsAsync(
+                () => new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(jsonResponse) }
+            );
 
         using HttpClient httpClient = new(mockHttpMessageHandler.Object);
-        LocationValidator locationValidator = new(httpClient);
+        LocationValidator locationValidator = new(httpClient, "MapboxAccessToken");
 
         // Execute actual operation
         bool result = await locationValidator.IsLocationInCountryAsync(latitude, longitude);
@@ -208,7 +220,8 @@ public class LocationValidatorTests
         // Define Input and Output
         double latitude = -16.5;
         double longitude = -68.15;
-        string jsonResponse = @"{
+        string jsonResponse =
+            @"{
             ""features"": [{
                 ""context"": [
                     { ""id"": ""country:US"", ""text"": ""United States"" }
@@ -217,18 +230,19 @@ public class LocationValidatorTests
         }";
 
         Mock<HttpMessageHandler> mockHttpMessageHandler = new();
-        _ = mockHttpMessageHandler.Protected()
+        _ = mockHttpMessageHandler
+            .Protected()
             .Setup<Task<HttpResponseMessage>>(
                 "SendAsync",
                 ItExpr.IsAny<HttpRequestMessage>(),
-                ItExpr.IsAny<CancellationToken>())
-            .ReturnsAsync(() => new HttpResponseMessage(HttpStatusCode.OK)
-            {
-                Content = new StringContent(jsonResponse)
-            });
+                ItExpr.IsAny<CancellationToken>()
+            )
+            .ReturnsAsync(
+                () => new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(jsonResponse) }
+            );
 
         using HttpClient httpClient = new(mockHttpMessageHandler.Object);
-        LocationValidator locationValidator = new(httpClient);
+        LocationValidator locationValidator = new(httpClient, "MapboxAccessToken");
 
         // Execute actual operation
         bool result = await locationValidator.IsLocationInCountryAsync(latitude, longitude);
