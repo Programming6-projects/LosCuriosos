@@ -1,6 +1,6 @@
 namespace DistributionCenter.Services.Localization.Dtos;
 
-public class LocationDto (string category, bool isInCountry, double distanceFromStore)
+public class LocationDto(string category, bool isInCountry, double distanceFromStore)
 {
     private string _category = category;
     private bool _isInCountry = isInCountry;
