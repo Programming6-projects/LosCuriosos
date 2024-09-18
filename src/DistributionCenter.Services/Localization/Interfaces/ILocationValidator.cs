@@ -1,8 +1,10 @@
 namespace DistributionCenter.Services.Localization.Interfaces;
 
 using System.Threading.Tasks;
+using Commons;
+using DistributionCenter.Commons.Results;
 
 public interface ILocationValidator
 {
-    Task<bool> IsLocationInCountryAsync(double latitude, double longitude);
+    Task<Result> IsLocationInCountryAsync(GeoPoint point);
 }
