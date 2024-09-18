@@ -8,5 +8,6 @@ docs/
 node_modules/
 coverage/
 Resources/
+.env
 coverage.cobertura.xml
 DistributionCenter.sln.DotSettings.user

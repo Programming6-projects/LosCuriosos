@@ -232,6 +232,12 @@ All pull requests will be evaluated based on the following criteria:
 By adhering to these guidelines, we ensure that our codebase remains clean,
 maintainable, and aligned with our project goals and standards.
 
+## Sensitive Information and Environment Variables
+
+All the documentation for this part is in the:
+
+- [secrets-documentation](documentation/secrets-documentation.md)
+
 ## More Information
 
 - If you have any questions about the UML diagrams, please visit the next link:
@@ -250,6 +256,3 @@ under its [MIT License](LICENSE).
 
 Thank you for your interest in contributing to this API! We look forward to your
 contributions.
-
-## Secrets Documentation
-[Secrets](documentation/secrets-documentation.md)
