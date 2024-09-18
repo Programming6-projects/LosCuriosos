@@ -1,6 +1,7 @@
 namespace DistributionCenter.Api.Configurations;
 
 using DistributionCenter.Application.Configurations;
+using DistributionCenter.Services.Configurations;
 using Microsoft.OpenApi.Models;
 
 public static class ApiBuilderConfiguration
@@ -12,6 +13,7 @@ public static class ApiBuilderConfiguration
             .AddEndpointsApiExplorer()
             .ConfigureSwagger()
             .AddProblemDetails()
+            .ConfigureOwnServices()
             .ConfigureApplication(configuration);
     }
 

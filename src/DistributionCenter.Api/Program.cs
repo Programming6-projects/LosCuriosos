@@ -1,9 +1,13 @@
 namespace DistributionCenter.Api;
 
+using DotNetEnv;
+
 public class Program
 {
     public static void Main(string[] args)
     {
+        _ = Env.TraversePath().Load();
+
         CreateHostBuilder(args).Build().Run();
     }
 

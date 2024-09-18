@@ -5,14 +5,15 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Interfaces;
 
-public class LocationValidator(HttpClient httpClient) : ILocationValidator
+public class LocationValidator(HttpClient httpClient, string mapboxAccessToken) : ILocationValidator
 {
-    private readonly string _accessToken = Environment.GetEnvironmentVariable("MAPBOX_ACCESS_TOKEN")!;
+    private readonly string _accessToken = mapboxAccessToken;
     private const string BaseUrl = "https://api.mapbox.com/";
 
     public async Task<bool> IsLocationInCountryAsync(double latitude, double longitude)
     {
         Uri url = new($"{BaseUrl}geocoding/v5/mapbox.places/{longitude},{latitude}.json?access_token={_accessToken}");
+
         HttpResponseMessage response = await httpClient.GetAsync(url);
 
         if (!response.IsSuccessStatusCode)
@@ -36,8 +37,12 @@ public class LocationValidator(HttpClient httpClient) : ILocationValidator
             return false;
         }
 
-        JsonElement? country = contextArray.EnumerateArray()
-            .FirstOrDefault(x => x.TryGetProperty("id", out JsonElement id) && id.GetString()?.StartsWith("country", StringComparison.Ordinal) == true);
+        JsonElement? country = contextArray
+            .EnumerateArray()
+            .FirstOrDefault(static x =>
+                x.TryGetProperty("id", out JsonElement id)
+                && id.GetString()?.StartsWith("country", StringComparison.Ordinal) == true
+            );
 
         if (country.HasValue && country.Value.ValueKind != JsonValueKind.Undefined)
         {
