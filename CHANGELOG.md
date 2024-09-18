@@ -2,6 +2,13 @@
 
 
 
+# [1.4.0](https://github.com/Programming6-projects/LosCuriosos/compare/v1.3.0...v1.4.0) (2024-09-18)
+
+
+### Features
+
+* hide sentitive information from the repository and add documentation about it ([9f7ed51](https://github.com/Programming6-projects/LosCuriosos/commit/9f7ed51902ed37ab7e770957ee28baec091472aa))
+
 # [1.3.0](https://github.com/Programming6-projects/LosCuriosos/compare/v1.2.0...v1.3.0) (2024-09-13)
 
 
