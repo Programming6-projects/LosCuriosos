@@ -8,16 +8,20 @@ using DistributionCenter.Infraestructure.Validators.Core.Concretes.Transports;
 public class CreateTransportDto : ICreateDto<Transport>
 {
     public required string Name { get; init; }
+    public required string Plate { get; init; }
     public required int Capacity { get; init; }
-    public required int AvailableUnits { get; init; }
+    public required int CurrentCapacity { get; init; }
+    public required bool IsAvailable { get; init; }
 
     public Transport ToEntity()
     {
         return new Transport
         {
             Name = Name,
+            Plate = Plate,
             Capacity = Capacity,
-            AvailableUnits = AvailableUnits
+            CurrentCapacity = CurrentCapacity,
+            IsAvailable = IsAvailable
         };
     }
 
