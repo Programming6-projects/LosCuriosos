@@ -20,4 +20,10 @@ public class JsonConnectionFactory<T> (string tableName) : FileConnectionFactory
         string jsonData = JsonConvert.SerializeObject(existingData, Formatting.Indented);
         await File.WriteAllTextAsync(CompletedFilePath, jsonData);
     }
+
+    public override async Task OverrideDataAsync(IEnumerable<T> data)
+    {
+        string jsonData = JsonConvert.SerializeObject(data, Formatting.Indented);
+        await File.WriteAllTextAsync(CompletedFilePath, jsonData);
+    }
 }

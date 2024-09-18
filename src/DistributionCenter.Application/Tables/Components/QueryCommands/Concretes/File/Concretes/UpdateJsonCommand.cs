@@ -16,9 +16,10 @@ public class UpdateJsonCommand<T>(IFileConnectionFactory<T> fileConnectionFactor
 
     protected override async Task<Result> Execute(IEnumerable<T> data)
     {
-        T? found = data.FirstOrDefault(p => p.Id == _entity.Id);
+        List<T> dataList = data.ToList();
+        int index = dataList.FindIndex(p => p.Id == _entity.Id);
 
-        if (found == null)
+        if (index == -1)
         {
             return Error.NotFound(
                 code: "ENTITY_NOT_FOUND",
@@ -26,8 +27,8 @@ public class UpdateJsonCommand<T>(IFileConnectionFactory<T> fileConnectionFactor
             );
         }
 
-        IEnumerable<T> updatedData = data.Select(p => p.Id == _entity.Id ? _entity : p);
-        await _fileConnectionFactory.SaveDataAsync(updatedData);
+        dataList[index] = _entity;
+        await _fileConnectionFactory.OverrideDataAsync(dataList);
         return Result.Ok();
     }
 }
