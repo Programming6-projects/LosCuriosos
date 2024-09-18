@@ -68,6 +68,10 @@ public class FileConnectionFactoryTests
 
         string filePath = Path.Combine(Environment.CurrentDirectory, "../../persistence_data/test_table.json");
 
+        // Delete the file if it exists
+        if (File.Exists(filePath))
+            File.Delete(filePath);
+
         async void Action(IEnumerable<Transport> savedData)
         {
             string jsonData = System.Text.Json.JsonSerializer.Serialize(savedData);
