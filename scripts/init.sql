@@ -1,3 +1,5 @@
+CREATE TYPE order_status AS ENUM ('Pending', 'Shipped', 'Delivered', 'Cancelled');
+
 CREATE TABLE IF NOT EXISTS client (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name TEXT NOT NULL,
@@ -74,6 +76,16 @@ CREATE TABLE IF NOT EXISTS client_order_transport (
     transport_id UUID REFERENCES transport(id)
 );
 
+CREATE TABLE IF NOT EXISTS route (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    is_active BOOLEAN NOT NULL DEFAULT TRUE,
+    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMPTZ DEFAULT NULL,
+    status order_status NOT NULL,
+    transport_id UUID REFERENCES transport(id)
+);
+
+
 INSERT INTO client (id, name, last_name, email) VALUES
 ('c1d3e678-9b6f-47e1-b0b6-a5f11e7e67a1', 'Carlos', 'Pérez', 'carlos.perez@gmail.com'),
 ('a2b6e412-4b7e-45c9-a78e-58f0e4e54b2d', 'Maria', 'Lopez', 'maria.lopez@gmail.com'),
@@ -128,3 +140,10 @@ INSERT INTO client_order_transport (id, client_order_id, transport_id) VALUES
 ('567fbf13-ba76-40d2-9fff-1700f9775ada', 'aad9f084-8043-498a-87ef-ce2c2fe76ded', 'f3a4b5c6-f234-5678-9301-112131415163'),
 ('181ae177-d702-4c4b-af59-181c48e74e70', '561d618f-46c2-4bee-b55e-ee23ddc3290b', 'f1a2b3c4-d234-5678-9101-112131415161'),
 ('7e68ebc8-f285-4f16-acd7-09905958859a', '439bac98-f558-491d-8ee4-5ce9f2486195', 'f2a3b4c5-e234-5678-9201-112131415162');
+
+INSERT INTO route (id, status) VALUES
+('940bf5ba-f0dd-4ed8-9491-e95a35d0bd49', 'Pending'),
+('7b0743e0-7117-4f4b-9a0b-e2d76a9369ac', 'Shipped'),
+('a048a326-bc1a-42ad-9bd3-a0f47752b52b', 'Delivered'),
+('792e4ed8-1122-4988-ab54-19b60449a466', 'Cancelled'),
+('fc3538ec-f378-4383-bd77-95dc2b5dfd3c', 'Pending');

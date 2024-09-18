@@ -1,6 +1,8 @@
 namespace DistributionCenter.Infraestructure.Validators.Extensions;
 
 using System.Text.RegularExpressions;
+using Commons.Enums;
+using Components.Builders.Concretes;
 using DistributionCenter.Infraestructure.Validators.Components.Builders.Interfaces;
 
 public static partial class ValidationExtensions
@@ -47,5 +49,18 @@ public static partial class ValidationExtensions
         ArgumentNullException.ThrowIfNull(builder, nameof(builder));
 
         return builder.AddRule(static x => Regex.IsMatch(x, @"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$"), message);
+    }
+
+    public static IValidationBuilder<Status> BelongsToStatus(this IValidationBuilder<string> builder)
+    {
+        ValidationBuilder<Status> enumBuilder = new();
+
+        _ = enumBuilder.When(value => builder.Validate(value.ToString()).Count == 0)
+            .AddRule(
+                value => Enum.TryParse(value.ToString(), true, out Status _),
+                "The value isn't a valid Status."
+            );
+
+        return enumBuilder;
     }
 }
