@@ -1,264 +1,189 @@
 namespace DistributionCenter.Services.Tests.Localization.Concretes;
 
-using Services.Localization.Concretes;
-using Services.Localization.Dtos;
-using Services.Localization.Interfaces;
+using DistributionCenter.Services.Localization.Concretes;
+using DistributionCenter.Services.Localization.Dtos;
+using DistributionCenter.Services.Localization.Interfaces;
+using DistributionCenter.Services.Localization.Commons;
+using Commons.Results;
+using Commons.Errors;
 
 public class LocationServiceTests
 {
     [Fact]
-    public async Task ValidateAndCategorizeLocationAsync_LocationInCityAndInCountry_ReturnsCorrectDto()
+    public async Task ProcessLocationDataAsync_LocationInCity_ReturnsCorrectDto()
     {
         // Define Input and Output
-        double latitude = -16.5;
-        double longitude = -68.15;
-        double storeLatitude = -17.0;
-        double storeLongitude = -68.0;
-        bool expectedIsInCountry = true;
+        GeoPoint sourcePoint = new(-16.5, -68.15);
+        GeoPoint destinationPoint = new(-17.0, -68.0);
         double expectedDistance = 25.0;
         string expectedCategory = "In City";
 
         // Setup Mock Dependencies
         Mock<ILocationValidator> mockLocationValidator = new();
         _ = mockLocationValidator
-            .Setup(lv => lv.IsLocationInCountryAsync(latitude, longitude))
-            .ReturnsAsync(expectedIsInCountry);
+            .Setup(lv => lv.IsLocationInCountryAsync(It.IsAny<GeoPoint>()))
+            .ReturnsAsync(Result.Ok());
 
         Mock<IDistanceCalculator> mockDistanceCalculator = new();
         _ = mockDistanceCalculator
-            .Setup(dc => dc.CalculateDistanceAsync(latitude, longitude, storeLatitude, storeLongitude))
+            .Setup(dc => dc.CalculateDistanceAsync(sourcePoint, destinationPoint))
             .ReturnsAsync(expectedDistance);
 
         LocationService locationService = new(mockLocationValidator.Object, mockDistanceCalculator.Object);
 
         // Execute actual operation
-        LocationDto result = await locationService.ProcessLocationDataAsync(latitude, longitude, storeLatitude, storeLongitude);
+        Result<LocationDto> result = await locationService.ProcessLocationDataAsync(sourcePoint, destinationPoint);
 
         // Verify actual result
-        Assert.Equal(expectedCategory, result.Category);
-        Assert.Equal(expectedIsInCountry, result.IsInCountry);
-        Assert.Equal(expectedDistance, result.DistanceFromStore);
+        Assert.True(result.IsSuccess);
+        Assert.Equal(expectedCategory, result.Value.Category);
+        Assert.Equal(expectedDistance, result.Value.DistanceFromStore);
     }
 
     [Fact]
-    public async Task ValidateAndCategorizeLocationAsync_LocationInterCityAndInCountry_ReturnsCorrectDto()
+    public async Task ProcessLocationDataAsync_LocationInterCity_ReturnsCorrectDto()
     {
         // Define Input and Output
-        double latitude = -16.5;
-        double longitude = -68.15;
-        double storeLatitude = -17.0;
-        double storeLongitude = -68.0;
-        bool expectedIsInCountry = true;
+        GeoPoint sourcePoint = new(-16.5, -68.15);
+        GeoPoint destinationPoint = new(-17.0, -68.0);
         double expectedDistance = 75.0;
         string expectedCategory = "Inter City";
 
         // Setup Mock Dependencies
         Mock<ILocationValidator> mockLocationValidator = new();
         _ = mockLocationValidator
-            .Setup(lv => lv.IsLocationInCountryAsync(latitude, longitude))
-            .ReturnsAsync(expectedIsInCountry);
+            .Setup(lv => lv.IsLocationInCountryAsync(It.IsAny<GeoPoint>()))
+            .ReturnsAsync(Result.Ok());
 
         Mock<IDistanceCalculator> mockDistanceCalculator = new();
         _ = mockDistanceCalculator
-            .Setup(dc => dc.CalculateDistanceAsync(latitude, longitude, storeLatitude, storeLongitude))
+            .Setup(dc => dc.CalculateDistanceAsync(sourcePoint, destinationPoint))
             .ReturnsAsync(expectedDistance);
 
         LocationService locationService = new(mockLocationValidator.Object, mockDistanceCalculator.Object);
 
         // Execute actual operation
-        LocationDto result = await locationService.ProcessLocationDataAsync(latitude, longitude, storeLatitude, storeLongitude);
+        Result<LocationDto> result = await locationService.ProcessLocationDataAsync(sourcePoint, destinationPoint);
 
         // Verify actual result
-        Assert.Equal(expectedCategory, result.Category);
-        Assert.Equal(expectedIsInCountry, result.IsInCountry);
-        Assert.Equal(expectedDistance, result.DistanceFromStore);
+        Assert.True(result.IsSuccess);
+        Assert.Equal(expectedCategory, result.Value.Category);
+        Assert.Equal(expectedDistance, result.Value.DistanceFromStore);
     }
 
     [Fact]
-    public async Task ValidateAndCategorizeLocationAsync_LocationNotInCountry_ReturnsCorrectDto()
+    public async Task ProcessLocationDataAsync_SourceLocationNotInCountry_ReturnsError()
     {
-        // Define Input and Output
-        double latitude = -16.5;
-        double longitude = -68.15;
-        double storeLatitude = -17.0;
-        double storeLongitude = -68.0;
-        bool expectedIsInCountry = false;
-        double expectedDistance = 75.0;
-        string expectedCategory = "Inter City";
+        // Define Input
+        GeoPoint sourcePoint = new(-16.5, -68.15);
+        GeoPoint destinationPoint = new(-17.0, -68.0);
 
         // Setup Mock Dependencies
         Mock<ILocationValidator> mockLocationValidator = new();
         _ = mockLocationValidator
-            .Setup(lv => lv.IsLocationInCountryAsync(latitude, longitude))
-            .ReturnsAsync(expectedIsInCountry);
+            .Setup(lv => lv.IsLocationInCountryAsync(sourcePoint))
+            .ReturnsAsync(Error.Validation("Location.NotInCountry", "Source location is not in the country"));
 
         Mock<IDistanceCalculator> mockDistanceCalculator = new();
-        _ = mockDistanceCalculator
-            .Setup(dc => dc.CalculateDistanceAsync(latitude, longitude, storeLatitude, storeLongitude))
-            .ReturnsAsync(expectedDistance);
 
         LocationService locationService = new(mockLocationValidator.Object, mockDistanceCalculator.Object);
 
         // Execute actual operation
-        LocationDto result = await locationService.ProcessLocationDataAsync(latitude, longitude, storeLatitude, storeLongitude);
+        Result<LocationDto> result = await locationService.ProcessLocationDataAsync(sourcePoint, destinationPoint);
 
         // Verify actual result
-        Assert.Equal(expectedCategory, result.Category);
-        Assert.Equal(expectedIsInCountry, result.IsInCountry);
-        Assert.Equal(expectedDistance, result.DistanceFromStore);
+        Assert.False(result.IsSuccess);
+        _ = Assert.Single(result.Errors);
+        Assert.Equal("Location.NotInCountry", result.Errors[0].Code);
     }
 
     [Fact]
-    public async Task ValidateAndCategorizeLocationAsync_ShortDistance_ReturnsInCityCategory()
+    public async Task ProcessLocationDataAsync_DestinationLocationNotInCountry_ReturnsError()
     {
-        // Define Input and Output
-        double latitude = -16.5;
-        double longitude = -68.15;
-        double storeLatitude = -17.0;
-        double storeLongitude = -68.0;
-        bool expectedIsInCountry = true;
-        double expectedDistance = 10.0;
-        string expectedCategory = "In City";
+        // Define Input
+        GeoPoint sourcePoint = new(-16.5, -68.15);
+        GeoPoint destinationPoint = new(-17.0, -68.0);
 
         // Setup Mock Dependencies
         Mock<ILocationValidator> mockLocationValidator = new();
         _ = mockLocationValidator
-            .Setup(lv => lv.IsLocationInCountryAsync(latitude, longitude))
-            .ReturnsAsync(expectedIsInCountry);
+            .Setup(lv => lv.IsLocationInCountryAsync(sourcePoint))
+            .ReturnsAsync(Result.Ok());
+        _ = mockLocationValidator
+            .Setup(lv => lv.IsLocationInCountryAsync(destinationPoint))
+            .ReturnsAsync(Error.Validation("Location.NotInCountry", "Destination location is not in the country"));
 
         Mock<IDistanceCalculator> mockDistanceCalculator = new();
-        _ = mockDistanceCalculator
-            .Setup(dc => dc.CalculateDistanceAsync(latitude, longitude, storeLatitude, storeLongitude))
-            .ReturnsAsync(expectedDistance);
 
         LocationService locationService = new(mockLocationValidator.Object, mockDistanceCalculator.Object);
 
         // Execute actual operation
-        LocationDto result = await locationService.ProcessLocationDataAsync(latitude, longitude, storeLatitude, storeLongitude);
+        Result<LocationDto> result = await locationService.ProcessLocationDataAsync(sourcePoint, destinationPoint);
 
         // Verify actual result
-        Assert.Equal(expectedCategory, result.Category);
-        Assert.Equal(expectedIsInCountry, result.IsInCountry);
-        Assert.Equal(expectedDistance, result.DistanceFromStore);
+        Assert.False(result.IsSuccess);
+        _ = Assert.Single(result.Errors);
+        Assert.Equal("Location.NotInCountry", result.Errors[0].Code);
     }
 
     [Fact]
-    public async Task ValidateAndCategorizeLocationAsync_LongDistance_ReturnsInterCityCategory()
+    public async Task ProcessLocationDataAsync_DistanceCalculationFails_ReturnsError()
     {
-        // Define Input and Output
-        double latitude = -16.5;
-        double longitude = -68.15;
-        double storeLatitude = -17.0;
-        double storeLongitude = -68.0;
-        bool expectedIsInCountry = true;
-        double expectedDistance = 100.0;
-        string expectedCategory = "Inter City";
+        // Define Input
+        GeoPoint sourcePoint = new(-16.5, -68.15);
+        GeoPoint destinationPoint = new(-17.0, -68.0);
 
         // Setup Mock Dependencies
         Mock<ILocationValidator> mockLocationValidator = new();
         _ = mockLocationValidator
-            .Setup(lv => lv.IsLocationInCountryAsync(latitude, longitude))
-            .ReturnsAsync(expectedIsInCountry);
+            .Setup(lv => lv.IsLocationInCountryAsync(It.IsAny<GeoPoint>()))
+            .ReturnsAsync(Result.Ok());
 
         Mock<IDistanceCalculator> mockDistanceCalculator = new();
         _ = mockDistanceCalculator
-            .Setup(dc => dc.CalculateDistanceAsync(latitude, longitude, storeLatitude, storeLongitude))
-            .ReturnsAsync(expectedDistance);
+            .Setup(dc => dc.CalculateDistanceAsync(sourcePoint, destinationPoint))
+            .ReturnsAsync (Error.Unexpected("Distance.CalculationFailed", "Failed to calculate distance"));
 
         LocationService locationService = new(mockLocationValidator.Object, mockDistanceCalculator.Object);
 
         // Execute actual operation
-        LocationDto result = await locationService.ProcessLocationDataAsync(latitude, longitude, storeLatitude, storeLongitude);
+        Result<LocationDto> result = await locationService.ProcessLocationDataAsync(sourcePoint, destinationPoint);
 
         // Verify actual result
-        Assert.Equal(expectedCategory, result.Category);
-        Assert.Equal(expectedIsInCountry, result.IsInCountry);
-        Assert.Equal(expectedDistance, result.DistanceFromStore);
+        Assert.False(result.IsSuccess);
+        _ = Assert.Single(result.Errors);
+        Assert.Equal("Distance.CalculationFailed", result.Errors[0].Code);
     }
 
-    [Fact]
-    public async Task ProcessLocationDataAsync_LocationInCountryAndInCity_ReturnsInCityCategory()
+    [Theory]
+    [InlineData(35.0, "In City")]
+    [InlineData(35.1, "Inter City")]
+    public async Task ProcessLocationDataAsync_DistanceThreshold_ReturnsCorrectCategory(double distance, string expectedCategory)
     {
-        // Define input
-        double latitude = -16.5;
-        double longitude = -68.15;
-        double storeLatitude = -16.5;
-        double storeLongitude = -68.15;
+        // Define Input
+        GeoPoint sourcePoint = new(-16.5, -68.15);
+        GeoPoint destinationPoint = new(-17.0, -68.0);
 
+        // Setup Mock Dependencies
         Mock<ILocationValidator> mockLocationValidator = new();
-        _ = mockLocationValidator.Setup(lv => lv.IsLocationInCountryAsync(latitude, longitude))
-            .ReturnsAsync(true);
+        _ = mockLocationValidator
+            .Setup(lv => lv.IsLocationInCountryAsync(It.IsAny<GeoPoint>()))
+            .ReturnsAsync(Result.Ok());
 
         Mock<IDistanceCalculator> mockDistanceCalculator = new();
-        _ = mockDistanceCalculator.Setup(dc => dc.CalculateDistanceAsync(latitude, longitude, storeLatitude, storeLongitude))
-            .ReturnsAsync(10);
+        _ = mockDistanceCalculator
+            .Setup(dc => dc.CalculateDistanceAsync(sourcePoint, destinationPoint))
+            .ReturnsAsync(distance);
 
         LocationService locationService = new(mockLocationValidator.Object, mockDistanceCalculator.Object);
 
         // Execute actual operation
-        LocationDto result = await locationService.ProcessLocationDataAsync(latitude, longitude, storeLatitude, storeLongitude);
+        Result<LocationDto> result = await locationService.ProcessLocationDataAsync(sourcePoint, destinationPoint);
 
-        // Verify result
-        Assert.Equal("In City", result.Category);
-        Assert.True(result.IsInCountry);
-        Assert.Equal(10, result.DistanceFromStore);
-    }
-
-    [Fact]
-    public async Task ProcessLocationDataAsync_LocationInCountryAndInterCity_ReturnsInterCityCategory()
-    {
-        // Define input
-        double latitude = -16.5;
-        double longitude = -68.15;
-        double storeLatitude = -16.5;
-        double storeLongitude = -67.9;
-        Mock<ILocationValidator> mockLocationValidator = new();
-        _ = mockLocationValidator.Setup(lv => lv.IsLocationInCountryAsync(latitude, longitude))
-            .ReturnsAsync(true);
-
-        Mock<IDistanceCalculator> mockDistanceCalculator = new();
-        _ = mockDistanceCalculator.Setup(dc => dc.CalculateDistanceAsync(latitude, longitude, storeLatitude, storeLongitude))
-            .ReturnsAsync(50);
-
-        LocationService locationService = new(mockLocationValidator.Object, mockDistanceCalculator.Object);
-
-        // Execute actual operation
-        LocationDto result = await locationService.ProcessLocationDataAsync(latitude, longitude, storeLatitude, storeLongitude);
-
-        // Verify result
-        Assert.Equal("Inter City", result.Category);
-        Assert.True(result.IsInCountry);
-        Assert.Equal(50, result.DistanceFromStore);
-    }
-
-    [Fact]
-    public async Task ProcessLocationDataAsync_LocationNotInCountry_ReturnsCorrectCategoryAndIsInCountryFalse()
-    {
-        // Define input
-        double latitude = -16.5;
-        double longitude = -68.15;
-        double storeLatitude = -16.5;
-        double storeLongitude = -68.15;
-
-        // Mock ILocationValidator
-        Mock<ILocationValidator> mockLocationValidator = new();
-        _ = mockLocationValidator.Setup(lv => lv.IsLocationInCountryAsync(latitude, longitude))
-            .ReturnsAsync(false);
-
-        // Mock IDistanceCalculator
-        Mock<IDistanceCalculator> mockDistanceCalculator = new();
-        _ = mockDistanceCalculator.Setup(dc => dc.CalculateDistanceAsync(latitude, longitude, storeLatitude, storeLongitude))
-            .ReturnsAsync(15);
-
-        LocationService locationService = new(mockLocationValidator.Object, mockDistanceCalculator.Object);
-
-        // Execute actual operation
-        LocationDto result = await locationService.ProcessLocationDataAsync(latitude, longitude, storeLatitude, storeLongitude);
-
-        // Verify result
-        Assert.Equal("In City", result.Category);
-        Assert.False(result.IsInCountry);
-        Assert.Equal(15, result.DistanceFromStore);
+        // Verify actual result
+        Assert.True(result.IsSuccess);
+        Assert.Equal(expectedCategory, result.Value.Category);
+        Assert.Equal(distance, result.Value.DistanceFromStore);
     }
 
     [Theory]
@@ -267,50 +192,27 @@ public class LocationServiceTests
     public async Task ProcessLocationDataAsync_ExtremeCoordinates_HandlesCorrectly(double lat1, double lon1, double lat2, double lon2)
     {
         // Arrange
+        GeoPoint sourcePoint = new(lat1, lon1);
+        GeoPoint destinationPoint = new(lat2, lon2);
+
         Mock<ILocationValidator> mockLocationValidator = new();
         _ = mockLocationValidator
-            .Setup(x => x.IsLocationInCountryAsync(It.IsAny<double>(), It.IsAny<double>()))
-            .ReturnsAsync(true);
+            .Setup(x => x.IsLocationInCountryAsync(It.IsAny<GeoPoint>()))
+            .ReturnsAsync(Result.Ok());
 
         Mock<IDistanceCalculator> mockDistanceCalculator = new();
         _ = mockDistanceCalculator
-            .Setup(x => x.CalculateDistanceAsync(It.IsAny<double>(), It.IsAny<double>(), It.IsAny<double>(), It.IsAny<double>()))
+            .Setup(x => x.CalculateDistanceAsync(sourcePoint, destinationPoint))
             .ReturnsAsync(100.0);
 
-        LocationService locationService = new (mockLocationValidator.Object, mockDistanceCalculator.Object);
+        LocationService locationService = new(mockLocationValidator.Object, mockDistanceCalculator.Object);
 
         // Act
-        LocationDto result = await locationService.ProcessLocationDataAsync(lat1, lon1, lat2, lon2);
+        Result<LocationDto> result = await locationService.ProcessLocationDataAsync(sourcePoint, destinationPoint);
 
         // Assert
-        Assert.NotNull(result);
-        Assert.Equal("Inter City", result.Category);
-        Assert.True(result.IsInCountry);
-        Assert.Equal(100.0, result.DistanceFromStore);
-    }
-
-    [Fact]
-    public async Task ProcessLocationDataAsync_ExactlyOnDistanceThreshold_ReturnsCorrectCategory()
-    {
-        // Arrange
-        Mock<ILocationValidator> mockLocationValidator = new ();
-        _ = mockLocationValidator
-            .Setup(x => x.IsLocationInCountryAsync(It.IsAny<double>(), It.IsAny<double>()))
-            .ReturnsAsync(true);
-
-        Mock<IDistanceCalculator> mockDistanceCalculator = new ();
-        _ = mockDistanceCalculator
-            .Setup(x => x.CalculateDistanceAsync(It.IsAny<double>(), It.IsAny<double>(), It.IsAny<double>(), It.IsAny<double>()))
-            .ReturnsAsync(50.0); // Assuming 50 is the threshold between "In City" and "Inter City"
-
-        LocationService locationService = new (mockLocationValidator.Object, mockDistanceCalculator.Object);
-
-        // Act
-        LocationDto result = await locationService.ProcessLocationDataAsync(0, 0, 1, 1);
-
-        // Assert
-        Assert.Equal("Inter City", result.Category);
-        Assert.True(result.IsInCountry);
-        Assert.Equal(50.0, result.DistanceFromStore);
+        Assert.True(result.IsSuccess);
+        Assert.Equal("Inter City", result.Value.Category);
+        Assert.Equal(100.0, result.Value.DistanceFromStore);
     }
 }
