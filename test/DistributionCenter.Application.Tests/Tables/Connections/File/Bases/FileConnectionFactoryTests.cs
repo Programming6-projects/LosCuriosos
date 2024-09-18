@@ -15,7 +15,7 @@ public class FileConnectionFactoryTests
     public async Task OpenFileAsync_ShouldReturnFileContents_WhenFileExists()
     {
         // Define Input and Output
-        string filePath = Path.Combine(Environment.CurrentDirectory, "../../../../../persistence_data/test_table.json");
+        string filePath = Path.Combine(Environment.CurrentDirectory, "../../persistence_data/test_table.json");
         string fileContent = "[{ \"Id\": 1, \"Name\": \"Test\" }]";
 
         // Create the file for the test
@@ -39,7 +39,7 @@ public class FileConnectionFactoryTests
     public async Task OpenFileAsync_ShouldCreateAndReturnDefaultContents_WhenFileDoesNotExist()
     {
         // Define Input and Output
-        string filePath = Path.Combine(Environment.CurrentDirectory, "../../../../../persistence_data/test_table.json");
+        string filePath = Path.Combine(Environment.CurrentDirectory, "../../persistence_data/test_table.json");
 
         // Delete the file if it exists
         if (File.Exists(filePath))
@@ -62,11 +62,11 @@ public class FileConnectionFactoryTests
         // Define Input and Output
         List<Transport> data =
         [
-            new() { Name = "Test", AvailableUnits = 3, Capacity = 9 },
-            new() { Name = "Test2", AvailableUnits = 2, Capacity = 7 }
+            new() { Name = "Test",  Plate = "1852SBJ", Capacity = 9, CurrentCapacity = 9, IsAvailable = true },
+            new() { Name = "Test2",  Plate = "1002SAJ", Capacity = 9, CurrentCapacity = 9, IsAvailable = true },
         ];
 
-        string filePath = Path.Combine(Environment.CurrentDirectory, "../../../../../persistence_data/test_table.json");
+        string filePath = Path.Combine(Environment.CurrentDirectory, "../../persistence_data/test_table.json");
 
         async void Action(IEnumerable<Transport> savedData)
         {
@@ -95,11 +95,11 @@ public class FileConnectionFactoryTests
         // Define Input and Output
         List<Transport> expectedData =
         [
-            new() { Name = "Test", AvailableUnits = 3, Capacity = 9 },
-            new() { Name = "Test2", AvailableUnits = 2, Capacity = 7 }
+            new() { Name = "Test",  Plate = "1852SBJ", Capacity = 9, CurrentCapacity = 9, IsAvailable = true },
+            new() { Name = "Test2",  Plate = "1002SAJ", Capacity = 9, CurrentCapacity = 9, IsAvailable = true },
         ];
 
-        string filePath = Path.Combine(Environment.CurrentDirectory, "../../../../../persistence_data/test_table.json");
+        string filePath = Path.Combine(Environment.CurrentDirectory, "../../persistence_data/test_table.json");
         string fileContent = System.Text.Json.JsonSerializer.Serialize(expectedData);
 
         await File.WriteAllTextAsync(filePath, fileContent);
@@ -127,7 +127,7 @@ public class FileConnectionFactoryTests
 
         // Modify _completedFilePath for this specific test to make Path.GetDirectoryName return null
         string invalidPath = Path.Combine(Environment.CurrentDirectory,
-            "../../../../../persistence_data/file_without_directory.json");
+            "../../persistence_data/file_without_directory.json");
         _ = mockFactory.SetupGet(f => f.CompletedFilePath).Returns(invalidPath);
 
         // Execute actual operation
@@ -153,10 +153,10 @@ public class FileConnectionFactoryTests
             await File.Create(invalidFilePath).DisposeAsync();
         }
 
-        // Arrange
+        // Define Input and Output
         List<Transport> data =
         [
-            new() { Name = "Test", AvailableUnits = 3, Capacity = 9 }
+            new() { Name = "Test",  Plate = "1852SBJ", Capacity = 9, CurrentCapacity = 9, IsAvailable = true },
         ];
 
         Mock<FileConnectionFactory<Transport>> mockFileConnectionFactory = new("test_table", "json");
@@ -169,7 +169,7 @@ public class FileConnectionFactoryTests
             })
             .ThrowsAsync(new IOException("Write error"));
 
-        // Act & Assert
+        // Execute actual operation
         _ = await Assert.ThrowsAsync<IOException>(async () => await mockFileConnectionFactory.Object.SaveDataAsync(data));
 
         // Clean up

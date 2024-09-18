@@ -10,7 +10,7 @@ public class JsonConnectionFactoryTests
     private readonly JsonConnectionFactory<Transport> _jsonConnectionFactory = new(TableName);
     private const string TableName = "TransportsTest";
     private static readonly string FilePath = Path.Combine(Environment.CurrentDirectory,
-        "../../../../../persistence_data/TransportsTest.json");
+        "../../persistence_data/TransportsTest.json");
 
     private static async Task FIllFileAsync()
     {
@@ -106,20 +106,26 @@ public class JsonConnectionFactoryTests
             {
                 Id = Guid.Parse("4a31897e-faae-49af-b54c-f9764c743e6f"),
                 Name = "Truck AB",
+                Plate = "1234XYZ",
                 Capacity = 2000,
-                AvailableUnits = 10,
+                CurrentCapacity = 1000,
+                IsAvailable = true,
                 IsActive = true,
                 CreatedAt = DateTime.Parse("2024-09-13 14:30", CultureInfo.InvariantCulture),
+                UpdatedAt = null
             },
             new()
             {
                 Id = Guid.Parse("f92e3a60-f6e1-4c55-b176-e4aea14edcaf"),
                 Name = "Van BC",
+                Plate = "5678ABC",
                 Capacity = 1000,
-                AvailableUnits = 5,
+                CurrentCapacity = 500,
+                IsAvailable = true,
                 IsActive = true,
                 CreatedAt = DateTime.Parse("2024-09-13 14:30", CultureInfo.InvariantCulture),
-            },
+                UpdatedAt = null
+            }
         ];
 
         // Execute actual operation
