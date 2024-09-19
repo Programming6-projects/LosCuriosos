@@ -53,6 +53,8 @@ dotnet_diagnostic.CA1303.severity = none
 dotnet_diagnostic.CA2225.severity = none
 # Remove warning about configura await
 dotnet_diagnostic.CA2007.severity = none
+# Remove validate parameter null
+dotnet_diagnostic.CA1062.severity = none
 
 [**/GlobalUsings.cs]
 # Disable warning about global usings
