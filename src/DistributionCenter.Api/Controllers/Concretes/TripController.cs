@@ -7,7 +7,7 @@ using Infraestructure.DTOs.Concretes.Trip;
 using Microsoft.AspNetCore.Mvc;
 
 [Route("api/trips")]
-public class RouteController(IRepository<Trip> repository)
+public class TripController(IRepository<Trip> repository)
     : BaseEntityController<Trip, CreateTripDto, UpdateTripDto> (repository)
 {
 
