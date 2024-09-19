@@ -9,24 +9,19 @@ public class JsonConnectionFactoryTests
 {
     private readonly JsonConnectionFactory<Transport> _jsonConnectionFactory = new(TableName);
     private const string TableName = "TransportsTest";
+    private static readonly string FilePath = Path.Combine(Environment.CurrentDirectory,
+        "../../../../../persistence_data/TransportsTest.json");
 
     private static async Task FIllFileAsync()
     {
-        string filePath = Path.Combine(Environment.CurrentDirectory, "../../../Resources/TransportsTest.json");
-
-        if (!File.Exists(filePath))
+        if (!File.Exists(FilePath))
         {
-            string? directoryPath = Path.GetDirectoryName(filePath);
-
-            if (directoryPath != null)
-            {
-                _ = Directory.CreateDirectory(directoryPath);
-            }
-
-            await File.Create(filePath).DisposeAsync();
+            string? directoryPath = Path.GetDirectoryName(FilePath);
+            if (directoryPath != null) _ = Directory.CreateDirectory(directoryPath);
+            await File.Create(FilePath).DisposeAsync();
         }
 
-        await File.WriteAllTextAsync(filePath, "[]");
+        await File.WriteAllTextAsync(FilePath, "[]");
 
         string jsonData =
             @"
@@ -69,7 +64,13 @@ public class JsonConnectionFactoryTests
                 }
             ]";
 
-        await File.WriteAllTextAsync(filePath, jsonData);
+        await File.WriteAllTextAsync(FilePath, jsonData);
+    }
+
+    private static void RemoveFile()
+    {
+        if (!File.Exists(FilePath)) return;
+        File.Delete(FilePath);
     }
 
     [Fact]
@@ -90,6 +91,7 @@ public class JsonConnectionFactoryTests
         Assert.Equal(2000, result[0].Capacity);
         Assert.Equal("Van B", result[1].Name);
         Assert.Equal(1000, result[1].Capacity);
+        RemoveFile();
     }
 
     [Fact]
@@ -128,5 +130,6 @@ public class JsonConnectionFactoryTests
         Assert.Equal(6, savedTransports.Count);
         Assert.Equal("Truck A", savedTransports[0].Name);
         Assert.Equal("Van BC", savedTransports[5].Name);
+        RemoveFile();
     }
 }

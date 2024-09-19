@@ -13,7 +13,7 @@ services:
         command: -p 3030
         volumes:
             - postgres_data:/var/lib/postgresql/data
-            - ./scripts/init.sql:/docker-entrypoint-initdb.d/1.sql
+            - ./persistence_data/init.sql:/docker-entrypoint-initdb.d/1.sql
         healthcheck:
             test: ['CMD-SHELL', 'pg_isready -h localhost -p 3030 -d distribution_center']
             interval: 5s
