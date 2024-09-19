@@ -10,8 +10,8 @@ public class UpdateTransportValidatorTest
     {
         // Define Input and Output
         UpdateTransportValidator validator = new();
-        string invalidName = ""; // Too short
-        string validName = "Truck 001"; // Valid name
+        string invalidName = "";
+        string validName = "Truck 001";
 
         // Execute actual operation
         UpdateTransportDto invalidDto = new()
@@ -41,8 +41,8 @@ public class UpdateTransportValidatorTest
     {
         // Define Input and Output
         UpdateTransportValidator validator = new();
-        string invalidPlate = "A12ABC"; // Invalid plate (wrong format)
-        string validPlate = "1234ABC"; // Valid plate
+        string invalidPlate = "A12ABC";
+        string validPlate = "1234ABC";
 
         // Execute actual operation
         UpdateTransportDto invalidDto = new()
@@ -72,8 +72,8 @@ public class UpdateTransportValidatorTest
     {
         // Define Input and Output
         UpdateTransportValidator validator = new();
-        int invalidCapacity = 499000; // Too low
-        int validCapacity = 2000000; // Valid capacity
+        int invalidCapacity = 499000;
+        int validCapacity = 2000000;
 
         // Execute actual operation
         UpdateTransportDto invalidDto = new()
@@ -103,8 +103,8 @@ public class UpdateTransportValidatorTest
     {
         // Define Input and Output
         UpdateTransportValidator validator = new();
-        int invalidCurrentCapacity = 460000000; // Too high
-        int validCurrentCapacity = 3000000; // Valid current capacity
+        int invalidCurrentCapacity = 460000000;
+        int validCurrentCapacity = 3000000;
 
         // Execute actual operation
         UpdateTransportDto invalidDto = new()
