@@ -1,14 +1,16 @@
-namespace DistributionCenter.Services.Notification.Concretes;
+namespace DistributionCenter.Services.Tests.Notification.Concretes;
 
-using Interfaces;
+using DistributionCenter.Services.Notification.Concretes;
 
-public class OrderShippedMessage(Guid orderId) : IMessage
+public class OrderShippedMessageTests
 {
-    public string Subject => "Transport Assigned to Your Order";
-
-    public string GetMessage()
+    [Fact]
+    public void GetMessage_ReturnsExpectedMessage()
     {
-        return $@"
+        // Arrange
+        Guid orderId = Guid.NewGuid();
+        string expectedMessage =
+            $@"
             <html>
             <head>
                 <style>
@@ -34,5 +36,26 @@ public class OrderShippedMessage(Guid orderId) : IMessage
                 </div>
             </body>
             </html>";
+        OrderShippedMessage message = new(orderId);
+
+        // Act
+        string result = message.GetMessage();
+
+        // Assert
+        Assert.Equal(expectedMessage, result);
+    }
+
+    [Fact]
+    public void Subject_ReturnsExpectedSubject()
+    {
+        // Arrange
+        Guid orderId = Guid.NewGuid();
+        OrderShippedMessage message = new(orderId);
+
+        // Act
+        string result = message.Subject;
+
+        // Assert
+        Assert.Equal("Transport Assigned to Your Order", result);
     }
 }

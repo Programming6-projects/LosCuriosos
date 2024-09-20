@@ -1,25 +1,23 @@
 namespace DistributionCenter.Services.Notification;
 
 using Concretes;
+using DistributionCenter.Domain.Entities.Enums;
 using Interfaces;
-using System;
-using System.Collections.Generic;
-using Enums;
 
 public static class NotificationFactory
 {
-    private static readonly Dictionary<OrderStatus, Func<string, IMessage>> MessageMap =
+    private static readonly Dictionary<Status, Func<Guid, IMessage>> MessageMap =
         new()
         {
-            { OrderStatus.Pending, orderId => new OrderConfirmationMessage(orderId) },
-            { OrderStatus.Shipped, orderId => new OrderShippedMessage(orderId) },
-            { OrderStatus.Delivered, orderId => new OrderDeliveredMessage(orderId) },
-            { OrderStatus.Cancelled, orderId => new ErrorNotificationMessage(orderId) }
+            { Status.Pending, static orderId => new OrderConfirmationMessage(orderId) },
+            { Status.Shipped, static orderId => new OrderShippedMessage(orderId) },
+            { Status.Delivered, static orderId => new OrderDeliveredMessage(orderId) },
+            { Status.Cancelled, static orderId => new OrderCancelledMessage(orderId) },
         };
 
-    public static IMessage CreateMessage(OrderStatus status, string orderId)
+    public static IMessage CreateMessage(Status status, Guid orderId)
     {
-        if (MessageMap.TryGetValue(status, out Func<string, IMessage>? messageCreator))
+        if (MessageMap.TryGetValue(status, out Func<Guid, IMessage>? messageCreator))
         {
             return messageCreator(orderId);
         }

@@ -12,33 +12,32 @@ public class UpdateOrderDtoTests
         Order order =
             new()
             {
+                RouteId = Guid.NewGuid(),
                 ClientId = Guid.NewGuid(),
-                OrderStatusId = Guid.NewGuid(),
+                DeliveryPointId = Guid.NewGuid(),
             };
-        UpdateOrderDto dto =
-            new()
-            {
-                OrderStatusId = Guid.NewGuid(),
-            };
+        UpdateOrderDto dto = new() { ClientId = Guid.NewGuid() };
 
         // Execute actual operation
         Order updatedOrder = dto.FromEntity(order);
 
         // Verify actual result
-        Assert.Equal(dto.OrderStatusId, updatedOrder.OrderStatusId);
+        Assert.Equal(dto.ClientId, updatedOrder.ClientId);
     }
 
     [Fact]
     public void FromEntity_UpdatesWithNullsAndReturnsCorrectOrder()
     {
         // Define Input and Output
+        Guid initialRouteId = Guid.NewGuid();
         Guid initialClientId = Guid.NewGuid();
-        Guid initialOrderStatusId = Guid.NewGuid();
+        Guid initialDeliveryPointId = Guid.NewGuid();
         Order order =
             new()
             {
+                RouteId = initialRouteId,
                 ClientId = initialClientId,
-                OrderStatusId = initialOrderStatusId,
+                DeliveryPointId = initialDeliveryPointId,
             };
         UpdateOrderDto dto = new();
 
@@ -46,7 +45,8 @@ public class UpdateOrderDtoTests
         Order updatedOrder = dto.FromEntity(order);
 
         // Verify actual result
+        Assert.Equal(order.RouteId, updatedOrder.RouteId);
         Assert.Equal(order.ClientId, updatedOrder.ClientId);
-        Assert.Equal(order.OrderStatusId, updatedOrder.OrderStatusId);
+        Assert.Equal(order.DeliveryPointId, updatedOrder.DeliveryPointId);
     }
 }
