@@ -41,7 +41,7 @@ public class UpdateJsonCommandTests
         // Verify actual result
         Assert.True(result.IsSuccess);
         _fileConnectionFactoryMock.Verify(
-            factory => factory.OverrideDataAsync(It.Is<IEnumerable<IEntity>>(data =>
+            factory => factory.SaveDataAsync(It.Is<IEnumerable<IEntity>>(data =>
                 data.Contains(_entityMock.Object))),
             Times.Once
         );

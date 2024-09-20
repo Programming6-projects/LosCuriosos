@@ -162,9 +162,9 @@ public class JsonConnectionFactoryTests
 
         // Verify actual resul
         List<Transport> savedTransports = await _jsonConnectionFactory.LoadDataAsync();
-        Assert.Equal(6, savedTransports.Count);
-        Assert.Equal("Truck A", savedTransports[0].Name);
-        Assert.Equal("Van BC", savedTransports[5].Name);
+        Assert.Equal(2, savedTransports.Count);
+        Assert.Equal("Truck AB", savedTransports[0].Name);
+        Assert.Equal("Van BC", savedTransports[1].Name);
         RemoveFile();
     }
 
@@ -199,39 +199,6 @@ public class JsonConnectionFactoryTests
         List<Transport> savedTransports = await _jsonConnectionFactory.LoadDataAsync();
         _ = Assert.Single(savedTransports);
         Assert.Equal("New Truck", savedTransports[0].Name);
-        RemoveFile();
-    }
-
-    [Fact]
-    public async Task OverrideDataAsync_WritesDataToFile_OverridingExistingData()
-    {
-        await FIllFileAsync();
-
-        // Define Input and Output
-        List<Transport> transports = new()
-        {
-            new Transport
-            {
-                Id = Guid.Parse("abcd1234-abcd-1234-abcd-1234567890ab"),
-                Name = "Override Truck",
-                Plate = "5678ABC",
-                Capacity = 1000,
-                CurrentCapacity = 500,
-                IsAvailable = true,
-                IsActive = true,
-                CreatedAt = DateTime.Parse("2024-09-13 14:30", CultureInfo.InvariantCulture),
-                UpdatedAt = null
-            }
-        };
-
-        // Execute actual operation
-        await _jsonConnectionFactory.OverrideDataAsync(transports);
-
-        // Verify actual result
-        List<Transport> savedTransports = await _jsonConnectionFactory.LoadDataAsync();
-        _ = Assert.Single(savedTransports);
-        Assert.Equal("Override Truck", savedTransports[0].Name);
-        Assert.Equal(1000, savedTransports[0].Capacity);
         RemoveFile();
     }
 }
