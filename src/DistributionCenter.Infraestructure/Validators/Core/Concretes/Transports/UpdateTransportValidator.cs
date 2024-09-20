@@ -15,13 +15,6 @@ public class UpdateTransportValidator : BaseFluentValidator<UpdateTransportDto>
                 @"^[a-zA-Z0-9\s]+$",
                 "Name must contain letters, numbers and spaces");
 
-        _ = RuleFor(static transport => transport.Plate)!
-            .WhenNotNull()
-            .SizeRange(4, 7, "Plate must be between 4 and 7 characters")
-            .RegexValidator(
-                @"^[0-9]{1,4}[A-Z]{3}$",
-                "Plate must contain 1 to 4 numbers and 3 uppercase letters");
-
         _ = RuleFor(static transport => transport.Capacity)
             .WhenNotNull()
             .NonNegatives("The capacity cannot be a negative number")
