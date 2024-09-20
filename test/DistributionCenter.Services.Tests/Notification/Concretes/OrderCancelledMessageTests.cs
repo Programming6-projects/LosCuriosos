@@ -2,7 +2,7 @@ namespace DistributionCenter.Services.Tests.Notification.Concretes;
 
 using DistributionCenter.Services.Notification.Concretes;
 
-public class OrderConfirmationMessageTests
+public class OrderCancelledMessageTests
 {
     [Fact]
     public void GetMessage_ReturnsExpectedMessage()
@@ -24,18 +24,19 @@ public class OrderConfirmationMessageTests
             <body>
                 <div class='container'>
                     <div class='header'>
-                        <h1>Order Confirmation</h1>
+                        <h1>Order Cancelled</h1>
                     </div>
                     <div class='content'>
-                        <p>Your order with ID <strong>{orderId}</strong> has been received and is being processed.</p>
+                        <p>We regret to inform you that your order with ID <strong>{orderId}</strong> has been cancelled.</p>
+                        <p>If you have any questions, please contact our support team.</p>
                     </div>
                     <div class='footer'>
-                        <p>Thank you for choosing us!</p>
+                        <p>We apologize for any inconvenience caused.</p>
                     </div>
                 </div>
             </body>
             </html>";
-        OrderConfirmationMessage message = new(orderId);
+        OrderCancelledMessage message = new(orderId);
 
         // Act
         string result = message.GetMessage();
@@ -49,12 +50,12 @@ public class OrderConfirmationMessageTests
     {
         // Arrange
         Guid orderId = Guid.NewGuid();
-        OrderConfirmationMessage message = new(orderId);
+        OrderCancelledMessage message = new(orderId);
 
         // Act
         string result = message.Subject;
 
         // Assert
-        Assert.Equal("Order Confirmation", result);
+        Assert.Equal("Order Processing Error", result);
     }
 }

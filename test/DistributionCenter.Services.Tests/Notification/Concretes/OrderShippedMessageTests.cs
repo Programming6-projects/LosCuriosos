@@ -2,7 +2,7 @@ namespace DistributionCenter.Services.Tests.Notification.Concretes;
 
 using DistributionCenter.Services.Notification.Concretes;
 
-public class OrderConfirmationMessageTests
+public class OrderShippedMessageTests
 {
     [Fact]
     public void GetMessage_ReturnsExpectedMessage()
@@ -24,18 +24,19 @@ public class OrderConfirmationMessageTests
             <body>
                 <div class='container'>
                     <div class='header'>
-                        <h1>Order Confirmation</h1>
+                        <h1>Transport Assigned</h1>
                     </div>
                     <div class='content'>
-                        <p>Your order with ID <strong>{orderId}</strong> has been received and is being processed.</p>
+                        <p>A transport has been assigned to your order with ID <strong>{orderId}</strong>.</p>
+                        <p>Your order is now on its way!</p>
                     </div>
                     <div class='footer'>
-                        <p>Thank you for choosing us!</p>
+                        <p>Thank you for your patience.</p>
                     </div>
                 </div>
             </body>
             </html>";
-        OrderConfirmationMessage message = new(orderId);
+        OrderShippedMessage message = new(orderId);
 
         // Act
         string result = message.GetMessage();
@@ -49,12 +50,12 @@ public class OrderConfirmationMessageTests
     {
         // Arrange
         Guid orderId = Guid.NewGuid();
-        OrderConfirmationMessage message = new(orderId);
+        OrderShippedMessage message = new(orderId);
 
         // Act
         string result = message.Subject;
 
         // Assert
-        Assert.Equal("Order Confirmation", result);
+        Assert.Equal("Transport Assigned to Your Order", result);
     }
 }

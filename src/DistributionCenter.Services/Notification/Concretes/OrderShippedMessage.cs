@@ -2,9 +2,9 @@ namespace DistributionCenter.Services.Notification.Concretes;
 
 using Interfaces;
 
-public class OrderConfirmationMessage(Guid orderId) : IMessage
+public class OrderShippedMessage(Guid orderId) : IMessage
 {
-    public string Subject => "Order Confirmation";
+    public string Subject => "Transport Assigned to Your Order";
 
     public string GetMessage()
     {
@@ -22,13 +22,14 @@ public class OrderConfirmationMessage(Guid orderId) : IMessage
             <body>
                 <div class='container'>
                     <div class='header'>
-                        <h1>Order Confirmation</h1>
+                        <h1>Transport Assigned</h1>
                     </div>
                     <div class='content'>
-                        <p>Your order with ID <strong>{orderId}</strong> has been received and is being processed.</p>
+                        <p>A transport has been assigned to your order with ID <strong>{orderId}</strong>.</p>
+                        <p>Your order is now on its way!</p>
                     </div>
                     <div class='footer'>
-                        <p>Thank you for choosing us!</p>
+                        <p>Thank you for your patience.</p>
                     </div>
                 </div>
             </body>
