@@ -22,7 +22,6 @@ public class UpdateTransportDtoTests
         UpdateTransportDto dto = new()
         {
             Name = "Updated Truck",
-            Plate = "5678XYZ",
             Capacity = 2500000,
             CurrentCapacity = 1800000,
             IsAvailable = false
@@ -32,9 +31,7 @@ public class UpdateTransportDtoTests
         Transport updatedTransport = dto.FromEntity(existingTransport);
 
         // Verify actual result
-        Assert.Equal(dto.Name, updatedTransport.Name);
-        Assert.Equal(dto.Plate, updatedTransport.Plate);
-        Assert.Equal(dto.Capacity, updatedTransport.Capacity);
+        Assert.Equal(dto.Name, updatedTransport.Name); Assert.Equal(dto.Capacity, updatedTransport.Capacity);
         Assert.Equal(dto.CurrentCapacity, updatedTransport.CurrentCapacity);
         Assert.Equal(dto.IsAvailable, updatedTransport.IsAvailable);
     }
@@ -55,7 +52,6 @@ public class UpdateTransportDtoTests
         UpdateTransportDto dto = new()
         {
             Name = null,
-            Plate = null,
             Capacity = null,
             CurrentCapacity = null,
             IsAvailable = null
@@ -76,11 +72,10 @@ public class UpdateTransportDtoTests
     public void Validate_ReturnsErrors_WhenDataIsInvalid()
     {
         // Define Input and Output
-        int expectedErrorsCount = 3;
+        int expectedErrorsCount = 2;
         UpdateTransportDto invalidDto = new()
         {
             Name = "T",
-            Plate = "123A",
             Capacity = 50000,
             CurrentCapacity = 600000000,
             IsAvailable = true
@@ -89,7 +84,6 @@ public class UpdateTransportDtoTests
         UpdateTransportDto validDto = new()
         {
             Name = "Valid Truck",
-            Plate = "1234ABC",
             Capacity = 2000000,
             CurrentCapacity = 1500000,
             IsAvailable = true

@@ -17,7 +17,6 @@ public class UpdateTransportValidatorTest
         UpdateTransportDto invalidDto = new()
         {
             Name = invalidName,
-            Plate = "1234ABC",
             Capacity = 2000000,
             CurrentCapacity = 1500000,
             IsAvailable = true
@@ -25,38 +24,6 @@ public class UpdateTransportValidatorTest
         UpdateTransportDto validDto = new()
         {
             Name = validName,
-            Plate = "1234ABC",
-            Capacity = 2000000,
-            CurrentCapacity = 1500000,
-            IsAvailable = true
-        };
-
-        // Verify actual result
-        Assert.False(validator.Validate(invalidDto).IsSuccess);
-        Assert.True(validator.Validate(validDto).IsSuccess);
-    }
-
-    [Fact]
-    public void VerifyThanTransportPlateIsValid()
-    {
-        // Define Input and Output
-        UpdateTransportValidator validator = new();
-        string invalidPlate = "A12ABC";
-        string validPlate = "1234ABC";
-
-        // Execute actual operation
-        UpdateTransportDto invalidDto = new()
-        {
-            Name = "Truck 001",
-            Plate = invalidPlate,
-            Capacity = 2000000,
-            CurrentCapacity = 1500000,
-            IsAvailable = true
-        };
-        UpdateTransportDto validDto = new()
-        {
-            Name = "Truck 002",
-            Plate = validPlate,
             Capacity = 2000000,
             CurrentCapacity = 1500000,
             IsAvailable = true
@@ -79,7 +46,6 @@ public class UpdateTransportValidatorTest
         UpdateTransportDto invalidDto = new()
         {
             Name = "Truck 003",
-            Plate = "1234ABC",
             Capacity = invalidCapacity,
             CurrentCapacity = 1500000,
             IsAvailable = true
@@ -87,7 +53,6 @@ public class UpdateTransportValidatorTest
         UpdateTransportDto validDto = new()
         {
             Name = "Truck 004",
-            Plate = "1234ABC",
             Capacity = validCapacity,
             CurrentCapacity = 1500000,
             IsAvailable = true
@@ -110,7 +75,6 @@ public class UpdateTransportValidatorTest
         UpdateTransportDto invalidDto = new()
         {
             Name = "Truck 005",
-            Plate = "1234ABC",
             Capacity = 2000000,
             CurrentCapacity = invalidCurrentCapacity,
             IsAvailable = true
@@ -118,7 +82,6 @@ public class UpdateTransportValidatorTest
         UpdateTransportDto validDto = new()
         {
             Name = "Truck 006",
-            Plate = "1234ABC",
             Capacity = 2000000,
             CurrentCapacity = validCurrentCapacity,
             IsAvailable = true
@@ -140,7 +103,6 @@ public class UpdateTransportValidatorTest
         UpdateTransportDto validDto = new()
         {
             Name = "Truck 008",
-            Plate = "1234ABC",
             Capacity = 2000000,
             CurrentCapacity = 1500000,
             IsAvailable = validIsAvailable
