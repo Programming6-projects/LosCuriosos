@@ -1,8 +1,10 @@
 namespace DistributionCenter.Services.Localization.Interfaces;
 
 using System.Threading.Tasks;
+using Commons;
+using DistributionCenter.Commons.Results;
 
 public interface IDistanceCalculator
 {
-    Task<double> CalculateDistanceAsync(double latitude, double longitude, double storeLatitude, double storeLongitude);
+    Task<Result<double>> CalculateDistanceAsync(GeoPoint sourcePoint, GeoPoint destinationPoint);
 }
