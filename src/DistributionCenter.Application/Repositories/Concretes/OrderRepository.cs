@@ -4,4 +4,4 @@ using Bases;
 using Contexts.Interfaces;
 using Domain.Entities.Concretes;
 
-public class OrderRepository(IContext context) : BaseRepository<Order>(context) { }
+public class OrderRepository(IContext context) : BaseRepository<ClientOrder>(context) { }
