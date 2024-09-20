@@ -3,7 +3,7 @@ namespace DistributionCenter.Domain.Entities.Concretes;
 using Bases;
 using Commons.Enums;
 
-public class ClientOrder : BaseEntity
+public class Order : BaseEntity
 {
     public required Status Status { get; set; }
     public required Guid RouteId { get; set; }

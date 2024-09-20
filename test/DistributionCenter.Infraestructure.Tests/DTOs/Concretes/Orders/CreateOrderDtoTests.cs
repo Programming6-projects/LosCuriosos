@@ -10,19 +10,24 @@ public class CreateOrderDtoTests
     public void ToEntity_ReturnsCorrectOrder()
     {
         // Define Input and Output
-        CreateOrderDto dto =
-            new()
-            {
-                ClientId = new Guid(),
-                OrderStatusId = new Guid(),
-            };
+        CreateOrderDto dto = new()
+        {
+            ClientId = Guid.NewGuid(),
+            Status = "Pending",
+            RouteId = Guid.NewGuid(),
+            DeliveryPointId = Guid.NewGuid(),
+            ClientOrderProducts = new List<ClientOrderProduct>()
+        };
 
         // Execute actual operation
         Order client = dto.ToEntity();
 
         // Verify actual result
         Assert.Equal(dto.ClientId, client.ClientId);
-        Assert.Equal(dto.OrderStatusId, client.OrderStatusId);
+        Assert.Equal(dto.Status, client.Status.ToString());
+        Assert.Equal(dto.RouteId, client.RouteId);
+        Assert.Equal(dto.DeliveryPointId, client.DeliveryPointId);
+        Assert.Equal(dto.ClientOrderProducts.Count, client.ClientOrderProducts.Count);
     }
 
     [Fact]
@@ -30,19 +35,23 @@ public class CreateOrderDtoTests
     {
         // Define Input and Output
         int expectedErrorsQuantity = 2;
-        CreateOrderDto invalidDto =
-            new()
-            {
-                ClientId = default,
-                OrderStatusId = default,
-            };
+        CreateOrderDto invalidDto = new()
+        {
+            ClientId = default,
+            Status = "X",
+            RouteId = default,
+            DeliveryPointId = default,
+            ClientOrderProducts = new List<ClientOrderProduct>(),
+        };
 
-        CreateOrderDto validDto =
-            new()
-            {
-                ClientId = new Guid("a2b6e412-4b7e-45c9-a78e-58f0e4e54b2d"),
-                OrderStatusId = new Guid("7683ba92-0f00-4000-b86c-f51273ce34b8"),
-            };
+        CreateOrderDto validDto = new()
+        {
+            ClientId = Guid.NewGuid(),
+            Status = "Pending",
+            RouteId = Guid.NewGuid(),
+            DeliveryPointId = Guid.NewGuid(),
+            ClientOrderProducts = new List<ClientOrderProduct>()
+        };
 
         // Execute actual operation
         Result resultWithErrors = invalidDto.Validate();

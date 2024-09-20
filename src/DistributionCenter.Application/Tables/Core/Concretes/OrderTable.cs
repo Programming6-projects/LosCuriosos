@@ -7,7 +7,7 @@ using Components.Information.Interfaces;
 using Connections.Dapper.Interfaces;
 using Domain.Entities.Concretes;
 
-public class OrderTable(IDbConnectionFactory<IDbConnection> dbConnectionFactory) : BaseDapperTable<ClientOrder>(dbConnectionFactory)
+public class OrderTable(IDbConnectionFactory<IDbConnection> dbConnectionFactory) : BaseDapperTable<Order>(dbConnectionFactory)
 {
     public override ITableInformation GetInformation()
     {

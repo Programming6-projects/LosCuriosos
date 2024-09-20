@@ -6,7 +6,7 @@ using Domain.Entities.Concretes;
 using Interfaces;
 using Validators.Core.Concretes.Orders;
 
-public class UpdateOrderDto: IUpdateDto<ClientOrder>
+public class UpdateOrderDto: IUpdateDto<Order>
 {
     public Status? Status { get; set; }
     public Guid? RouteId { get; set; }
@@ -14,7 +14,7 @@ public class UpdateOrderDto: IUpdateDto<ClientOrder>
     public Guid? DeliveryPointId { get; set; }
     public IReadOnlyList<ClientOrderProduct>? ClientOrderProducts { get; set; }
 
-    public ClientOrder FromEntity(ClientOrder entity)
+    public Order FromEntity(Order entity)
     {
         ArgumentNullException.ThrowIfNull(entity, nameof(entity));
 

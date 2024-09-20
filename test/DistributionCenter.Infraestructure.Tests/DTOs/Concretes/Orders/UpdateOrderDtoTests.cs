@@ -1,52 +1,66 @@
 namespace DistributionCenter.Infraestructure.Tests.DTOs.Concretes.Orders;
 
+using Commons.Results;
 using Domain.Entities.Concretes;
 using Infraestructure.DTOs.Concretes.Orders;
 
 public class UpdateOrderDtoTests
 {
     [Fact]
-    public void FromEntity_UpdatesAndReturnsCorrectOrder()
+    public void ToEntity_ReturnsCorrectOrder()
     {
         // Define Input and Output
-        Order order =
-            new()
-            {
-                ClientId = Guid.NewGuid(),
-                OrderStatusId = Guid.NewGuid(),
-            };
-        UpdateOrderDto dto =
-            new()
-            {
-                OrderStatusId = Guid.NewGuid(),
-            };
+        CreateOrderDto dto = new()
+        {
+            ClientId = Guid.NewGuid(),
+            Status = "Pending",
+            RouteId = Guid.NewGuid(),
+            DeliveryPointId = Guid.NewGuid(),
+            ClientOrderProducts = new List<ClientOrderProduct>()
+        };
 
         // Execute actual operation
-        Order updatedOrder = dto.FromEntity(order);
+        Order client = dto.ToEntity();
 
         // Verify actual result
-        Assert.Equal(dto.OrderStatusId, updatedOrder.OrderStatusId);
+        Assert.Equal(dto.ClientId, client.ClientId);
+        Assert.Equal(dto.Status, client.Status.ToString());
+        Assert.Equal(dto.RouteId, client.RouteId);
+        Assert.Equal(dto.DeliveryPointId, client.DeliveryPointId);
+        Assert.Equal(dto.ClientOrderProducts.Count, client.ClientOrderProducts.Count);
     }
 
     [Fact]
-    public void FromEntity_UpdatesWithNullsAndReturnsCorrectOrder()
+    public void VerifyThatTheDataWasValidatedSuccessfully()
     {
         // Define Input and Output
-        Guid initialClientId = Guid.NewGuid();
-        Guid initialOrderStatusId = Guid.NewGuid();
-        Order order =
-            new()
-            {
-                ClientId = initialClientId,
-                OrderStatusId = initialOrderStatusId,
-            };
-        UpdateOrderDto dto = new();
+        int expectedErrorsQuantity = 2;
+        CreateOrderDto invalidDto = new()
+        {
+            ClientId = default,
+            Status = "X",
+            RouteId = default,
+            DeliveryPointId = default,
+            ClientOrderProducts = new List<ClientOrderProduct>(),
+        };
+
+        CreateOrderDto validDto = new()
+        {
+            ClientId = Guid.NewGuid(),
+            Status = "Pending",
+            RouteId = Guid.NewGuid(),
+            DeliveryPointId = Guid.NewGuid(),
+            ClientOrderProducts = new List<ClientOrderProduct>()
+        };
 
         // Execute actual operation
-        Order updatedOrder = dto.FromEntity(order);
+        Result resultWithErrors = invalidDto.Validate();
+        Result resultWithoutErrors = validDto.Validate();
 
         // Verify actual result
-        Assert.Equal(order.ClientId, updatedOrder.ClientId);
-        Assert.Equal(order.OrderStatusId, updatedOrder.OrderStatusId);
+        Assert.False(resultWithErrors.IsSuccess);
+        Assert.Equal(expectedErrorsQuantity, resultWithErrors.Errors.Count);
+
+        Assert.True(resultWithoutErrors.IsSuccess);
     }
 }

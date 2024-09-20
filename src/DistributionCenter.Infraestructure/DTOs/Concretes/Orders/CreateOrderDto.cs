@@ -5,7 +5,7 @@ using Domain.Entities.Concretes;
 using Interfaces;
 using Validators.Core.Concretes.Orders;
 
-public class CreateOrderDto : ICreateDto<ClientOrder>
+public class CreateOrderDto : ICreateDto<Order>
 {
     public required string Status { get; set; }
     public required Guid RouteId { get; set; }
@@ -13,10 +13,10 @@ public class CreateOrderDto : ICreateDto<ClientOrder>
     public required Guid DeliveryPointId { get; set; }
     public required IReadOnlyList<ClientOrderProduct> ClientOrderProducts { get; set; }
 
-    public ClientOrder ToEntity()
+    public Order ToEntity()
     {
         _ = Enum.TryParse(Status, true, out Commons.Enums.Status parseStatus);
-        return new ClientOrder
+        return new Order
         {
             ClientId = ClientId,
             Status = parseStatus,
