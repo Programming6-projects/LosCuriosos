@@ -3,7 +3,6 @@
 using System.ComponentModel.DataAnnotations;
 using Application.Repositories.Interfaces;
 using Bases;
-using Commons.Errors;
 using Commons.Results;
 using Domain.Entities.Concretes;
 using Domain.Entities.Enums;
@@ -33,13 +32,13 @@ public class TripController(IRepository<Trip> repository)
             allOrdersComplete = order.Status != Status.Shipped;
         }
 
+        Result<Trip> result = await Repository.UpdateAsync(entity);
+
         if (allOrdersComplete)
         {
-            Result<Trip> result = await Repository.UpdateAsync(entity);
-
             return result.Match(entity => Ok(entity), this.ErrorsResponse);
         }
 
-        return this.ErrorsResponse([Error.Conflict()]);
+        return this.ErrorsResponse(result.Errors);
     }
 }
