@@ -3,14 +3,16 @@ namespace DistributionCenter.Application.Tests.Tables.Connections.File.Concretes
 using System.Globalization;
 using Application.Tables.Connections.File.Concretes;
 using Domain.Entities.Concretes;
+using Newtonsoft.Json;
 using File = System.IO.File;
 
 public class JsonConnectionFactoryTests
 {
     private readonly JsonConnectionFactory<Transport> _jsonConnectionFactory = new(TableName);
     private const string TableName = "TransportsTest";
+
     private static readonly string FilePath = Path.Combine(Environment.CurrentDirectory,
-        "../../../../../persistence_data/TransportsTest.json");
+        "../../persistence_data/TransportsTest.json");
 
     private static async Task FIllFileAsync()
     {
@@ -95,6 +97,33 @@ public class JsonConnectionFactoryTests
     }
 
     [Fact]
+    public async Task LoadDataAsync_ReturnsEmptyList_WhenFileIsEmpty()
+    {
+        // Ensure file exists but is empty
+        await FIllFileAsync();
+        await File.WriteAllTextAsync(FilePath, "");
+
+        // Execute actual operation
+        List<Transport> result = await _jsonConnectionFactory.LoadDataAsync();
+
+        // Verify actual result
+        Assert.NotNull(result);
+        Assert.Empty(result);
+        RemoveFile();
+    }
+
+    [Fact]
+    public async Task LoadDataAsync_ThrowsJsonException_WhenFileIsCorrupted()
+    {
+        await FIllFileAsync();
+        await File.WriteAllTextAsync(FilePath, "INVALID_JSON");
+
+        // Verify that exception is thrown when loading corrupted data
+        _ = await Assert.ThrowsAsync<JsonReaderException>(async () => await _jsonConnectionFactory.LoadDataAsync());
+        RemoveFile();
+    }
+
+    [Fact]
     public async Task SaveDataAsync_WritesSerializedData_ToFile()
     {
         await FIllFileAsync();
@@ -106,20 +135,26 @@ public class JsonConnectionFactoryTests
             {
                 Id = Guid.Parse("4a31897e-faae-49af-b54c-f9764c743e6f"),
                 Name = "Truck AB",
+                Plate = "1234XYZ",
                 Capacity = 2000,
-                AvailableUnits = 10,
+                CurrentCapacity = 1000,
+                IsAvailable = true,
                 IsActive = true,
                 CreatedAt = DateTime.Parse("2024-09-13 14:30", CultureInfo.InvariantCulture),
+                UpdatedAt = null
             },
             new()
             {
                 Id = Guid.Parse("f92e3a60-f6e1-4c55-b176-e4aea14edcaf"),
                 Name = "Van BC",
+                Plate = "5678ABC",
                 Capacity = 1000,
-                AvailableUnits = 5,
+                CurrentCapacity = 500,
+                IsAvailable = true,
                 IsActive = true,
                 CreatedAt = DateTime.Parse("2024-09-13 14:30", CultureInfo.InvariantCulture),
-            },
+                UpdatedAt = null
+            }
         ];
 
         // Execute actual operation
@@ -127,9 +162,43 @@ public class JsonConnectionFactoryTests
 
         // Verify actual resul
         List<Transport> savedTransports = await _jsonConnectionFactory.LoadDataAsync();
-        Assert.Equal(6, savedTransports.Count);
-        Assert.Equal("Truck A", savedTransports[0].Name);
-        Assert.Equal("Van BC", savedTransports[5].Name);
+        Assert.Equal(2, savedTransports.Count);
+        Assert.Equal("Truck AB", savedTransports[0].Name);
+        Assert.Equal("Van BC", savedTransports[1].Name);
+        RemoveFile();
+    }
+
+    [Fact]
+    public async Task SaveDataAsync_WritesDataToFile_WhenFileIsEmpty()
+    {
+        // Ensure file exists but is empty
+        await FIllFileAsync();
+        await File.WriteAllTextAsync(FilePath, "");
+
+        // Define Input and Output
+        List<Transport> transports = new()
+        {
+            new Transport
+            {
+                Id = Guid.Parse("4a31897e-faae-49af-b54c-f9764c743e6f"),
+                Name = "New Truck",
+                Plate = "5678ABC",
+                Capacity = 1000,
+                CurrentCapacity = 500,
+                IsAvailable = true,
+                IsActive = true,
+                CreatedAt = DateTime.Parse("2024-09-13 14:30", CultureInfo.InvariantCulture),
+                UpdatedAt = null
+            }
+        };
+
+        // Execute actual operation
+        await _jsonConnectionFactory.SaveDataAsync(transports);
+
+        // Verify actual result
+        List<Transport> savedTransports = await _jsonConnectionFactory.LoadDataAsync();
+        _ = Assert.Single(savedTransports);
+        Assert.Equal("New Truck", savedTransports[0].Name);
         RemoveFile();
     }
 }
