@@ -2,7 +2,4 @@
   <PropertyGroup>
     <OutputType>Library</OutputType>
   </PropertyGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\DistributionCenter.Commons\DistributionCenter.Commons.csproj" />
-  </ItemGroup>
 </Project>
