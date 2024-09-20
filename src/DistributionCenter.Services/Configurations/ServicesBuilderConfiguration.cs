@@ -1,9 +1,9 @@
 namespace DistributionCenter.Services.Configurations;
 
-using DistributionCenter.Services.Localization.Concretes;
-using DistributionCenter.Services.Localization.Interfaces;
-using DistributionCenter.Services.Notification.Concretes;
-using DistributionCenter.Services.Notification.Interfaces;
+using Localization.Concretes;
+using Localization.Interfaces;
+using Notification.Concretes;
+using Notification.Interfaces;
 
 public static class ServicesBuilderConfiguration
 {

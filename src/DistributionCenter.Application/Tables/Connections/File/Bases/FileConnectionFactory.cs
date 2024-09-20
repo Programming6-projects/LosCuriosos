@@ -6,7 +6,7 @@ using File = System.IO.File;
 public abstract class FileConnectionFactory<T>(string tableName, string fileType) : IFileConnectionFactory<T>
 {
     private readonly string _completedFilePath = Path.Combine(Environment.CurrentDirectory,
-        "../../../../../persistence_data/" + tableName + "." + fileType);
+        "../../persistence_data/" + tableName + "." + fileType);
 
     public virtual string CompletedFilePath => _completedFilePath;
 
