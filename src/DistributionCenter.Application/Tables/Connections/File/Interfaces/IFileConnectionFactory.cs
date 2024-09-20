@@ -5,5 +5,4 @@ public interface IFileConnectionFactory <T>
     Task<string> OpenFileAsync();
     Task<List<T>> LoadDataAsync();
     Task SaveDataAsync(IEnumerable<T> data);
-    Task OverrideDataAsync(IEnumerable<T> data);
 }

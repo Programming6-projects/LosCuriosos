@@ -15,10 +15,10 @@ public class CreateJsonCommand<T>(
     private readonly IFileConnectionFactory<T> _fileConnectionFactory = fileConnectionFactory;
     protected override async Task<Result> Execute(IEnumerable<T> data)
     {
-        IEnumerable<T> entityIntoList = [_entity];
-        IEnumerable<T> updatedData = data.Concat(entityIntoList);
+        List<T> dataList = data.ToList();
+        dataList.Add(_entity);
 
-        await _fileConnectionFactory.SaveDataAsync(updatedData);
+        await _fileConnectionFactory.SaveDataAsync(dataList);
         return Result.Ok();
     }
 }

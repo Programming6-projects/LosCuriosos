@@ -24,5 +24,4 @@ public abstract class FileConnectionFactory<T>(string tableName, string fileType
 
     public abstract Task<List<T>> LoadDataAsync();
     public abstract Task SaveDataAsync(IEnumerable<T> data);
-    public abstract Task OverrideDataAsync(IEnumerable<T> data);
 }

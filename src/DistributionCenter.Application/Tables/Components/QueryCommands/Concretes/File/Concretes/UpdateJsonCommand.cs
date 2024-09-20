@@ -28,7 +28,7 @@ public class UpdateJsonCommand<T>(IFileConnectionFactory<T> fileConnectionFactor
         }
 
         dataList[index] = _entity;
-        await _fileConnectionFactory.OverrideDataAsync(dataList);
+        await _fileConnectionFactory.SaveDataAsync(dataList);
         return Result.Ok();
     }
 }
