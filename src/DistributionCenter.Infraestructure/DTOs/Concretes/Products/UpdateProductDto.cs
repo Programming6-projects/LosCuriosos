@@ -7,8 +7,8 @@ using Validators.Core.Concretes.Products;
 
 public class UpdateProductDto : IUpdateDto<Product>
 {
-    public required string? Name { get; init; }
-    public required string? Description { get; init; }
+    public string? Name { get; init; }
+    public string? Description { get; init; }
 
     public Product FromEntity(Product entity)
     {

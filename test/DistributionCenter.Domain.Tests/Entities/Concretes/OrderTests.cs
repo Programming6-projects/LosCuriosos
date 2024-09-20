@@ -1,6 +1,7 @@
 namespace DistributionCenter.Domain.Tests.Entities.Concretes;
 
 using Domain.Entities.Concretes;
+using Domain.Entities.Enums;
 
 public class OrderTests
 {
@@ -9,20 +10,20 @@ public class OrderTests
     {
         // Define Input and output
         Guid expectedClientId = new();
-        Guid expectedOrderStatusId = new();
+        Status status = Status.Pending;
         Order entity =
             new()
             {
                 ClientId = expectedClientId,
-                OrderStatusId = expectedOrderStatusId,
+                Status = status,
             };
 
         // Execute actual operation
         Guid clientId = entity.ClientId;
-        Guid orderStatusId = entity.OrderStatusId;
+        Status statusObtained = entity.Status;
 
         // Verify actual result
         Assert.Equal(expectedClientId, clientId);
-        Assert.Equal(expectedOrderStatusId, orderStatusId);
+        Assert.Equal(status, statusObtained);
     }
 }

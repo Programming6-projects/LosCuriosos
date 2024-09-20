@@ -37,7 +37,7 @@ public class CreateProductDtoTests
             {
                 Name = "Sh",
                 Description = "or",
-                Weight = 5323428,
+                Weight = 10000001,
             };
 
         CreateProductDto validDto =

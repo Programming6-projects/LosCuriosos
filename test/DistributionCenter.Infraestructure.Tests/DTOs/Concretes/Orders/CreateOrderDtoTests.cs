@@ -14,7 +14,7 @@ public class CreateOrderDtoTests
             new()
             {
                 ClientId = new Guid(),
-                OrderStatusId = new Guid(),
+                Status = "Pending",
             };
 
         // Execute actual operation
@@ -22,7 +22,6 @@ public class CreateOrderDtoTests
 
         // Verify actual result
         Assert.Equal(dto.ClientId, client.ClientId);
-        Assert.Equal(dto.OrderStatusId, client.OrderStatusId);
     }
 
     [Fact]
@@ -34,14 +33,14 @@ public class CreateOrderDtoTests
             new()
             {
                 ClientId = default,
-                OrderStatusId = default,
+                Status = "Pendingggg",
             };
 
         CreateOrderDto validDto =
             new()
             {
                 ClientId = new Guid("a2b6e412-4b7e-45c9-a78e-58f0e4e54b2d"),
-                OrderStatusId = new Guid("7683ba92-0f00-4000-b86c-f51273ce34b8"),
+                Status = "Pending",
             };
 
         // Execute actual operation

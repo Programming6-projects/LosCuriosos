@@ -11,7 +11,7 @@ public class CreateOrderValidator : BaseFluentValidator<CreateOrderDto>
         _ = RuleFor<Guid>(static x => x.ClientId)
             .UuidNotNull("Client id is required");
 
-        _ = RuleFor<Guid>(static x => x.OrderStatusId)
-            .UuidNotNull("Order status id is required");
+        _ = RuleFor<string>(static x => x.Status)
+            .BelongsToStatus();
     }
 }

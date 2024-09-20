@@ -1,8 +1,13 @@
 ﻿namespace DistributionCenter.Api.Controllers.Concretes;
 
+using System.ComponentModel.DataAnnotations;
 using Application.Repositories.Interfaces;
 using Bases;
+using Commons.Errors;
+using Commons.Results;
 using Domain.Entities.Concretes;
+using Domain.Entities.Enums;
+using Extensions;
 using Infraestructure.DTOs.Concretes.Trip;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,5 +15,31 @@ using Microsoft.AspNetCore.Mvc;
 public class TripController(IRepository<Trip> repository)
     : BaseEntityController<Trip, CreateTripDto, UpdateTripDto> (repository)
 {
+    [HttpPut("CompleteTrip")]
+    public async Task<IActionResult> CompleteTrip([FromRoute] [Required] Guid tripId)
+    {
 
+        Result<Trip> searchEntity = await Repository.GetByIdAsync(tripId);
+
+        if (!searchEntity.IsSuccess)
+        {
+            return this.ErrorsResponse(searchEntity.Errors);
+        }
+
+        Trip entity = searchEntity.Value;
+        bool allOrdersComplete = true;
+        foreach (Order order in entity.Orders)
+        {
+            allOrdersComplete = order.Status != Status.Shipped;
+        }
+
+        if (allOrdersComplete)
+        {
+            Result<Trip> result = await Repository.UpdateAsync(entity);
+
+            return result.Match(entity => Ok(entity), this.ErrorsResponse);
+        }
+
+        return this.ErrorsResponse([Error.Conflict()]);
+    }
 }

@@ -1,6 +1,7 @@
 namespace DistributionCenter.Infraestructure.Tests.DTOs.Concretes.Orders;
 
 using Domain.Entities.Concretes;
+using Domain.Entities.Enums;
 using Infraestructure.DTOs.Concretes.Orders;
 
 public class UpdateOrderDtoTests
@@ -13,19 +14,20 @@ public class UpdateOrderDtoTests
             new()
             {
                 ClientId = Guid.NewGuid(),
-                OrderStatusId = Guid.NewGuid(),
+                Status = Status.Pending,
             };
         UpdateOrderDto dto =
             new()
             {
-                OrderStatusId = Guid.NewGuid(),
+                Status = "Cancelled",
             };
 
         // Execute actual operation
         Order updatedOrder = dto.FromEntity(order);
 
         // Verify actual result
-        Assert.Equal(dto.OrderStatusId, updatedOrder.OrderStatusId);
+        _ = Enum.TryParse(dto.Status, true, out Status status);
+        Assert.Equal(status, updatedOrder.Status);
     }
 
     [Fact]
@@ -33,12 +35,12 @@ public class UpdateOrderDtoTests
     {
         // Define Input and Output
         Guid initialClientId = Guid.NewGuid();
-        Guid initialOrderStatusId = Guid.NewGuid();
+        Status status = Status.Pending;
         Order order =
             new()
             {
                 ClientId = initialClientId,
-                OrderStatusId = initialOrderStatusId,
+                Status = status,
             };
         UpdateOrderDto dto = new();
 
@@ -47,6 +49,6 @@ public class UpdateOrderDtoTests
 
         // Verify actual result
         Assert.Equal(order.ClientId, updatedOrder.ClientId);
-        Assert.Equal(order.OrderStatusId, updatedOrder.OrderStatusId);
+        Assert.Equal(order.Status, updatedOrder.Status);
     }
 }
