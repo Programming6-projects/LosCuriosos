@@ -65,11 +65,11 @@ INSERT INTO client (id, name, last_name, email) VALUES
 ('e5f96224-7d8e-48ea-bf7b-893fa0e0b9b4', 'Luis', 'Martinez', 'luis.martinez@gmail.com');
 
 INSERT INTO route (id, transport_id) VALUES
-('907a1ffa-1075-46b1-ab0c-b97809967002', '153c86c8-b237-46b5-8bd4-9aa27fe4ff04'),
-('84492af2-1cb2-417a-a750-e931e764470e', 'a983a1dc-ffd1-42f9-88b8-c28bf6dbbd30'),
-('c327a84e-fbb6-4ffd-badd-a4793c2a0151', 'c7db2050-17ac-4063-94f4-d33419a15caf'),
-('4b9a14b7-b827-4349-a136-f369760576f5', 'b170783b-59fa-4345-9aec-0a37044905c8'),
-('d8a4c1ec-f80b-4e30-8c8e-8ce5cfe8c41a', '6bdc051d-574b-478e-a7c5-ed8deabc9cf4');
+('907a1ffa-1075-46b1-ab0c-b97809967002', 'eca2e142-95e6-4f36-ae9b-6b0ff4eb63bc'),
+('84492af2-1cb2-417a-a750-e931e764470e', 'eab5c096-8bb4-4966-ae9c-2d58ecb4ae89'),
+('c327a84e-fbb6-4ffd-badd-a4793c2a0151', 'fa368cfc-05f0-4021-bcef-3f27c6df7092'),
+('4b9a14b7-b827-4349-a136-f369760576f5', '7f1c311d-e732-4dd1-9d4b-38490d2ff432'),
+('d8a4c1ec-f80b-4e30-8c8e-8ce5cfe8c41a', '5e278c18-8041-4014-9fa7-5f8c72e20d8b');
 
 INSERT INTO delivery_point (id, latitude, longitude) VALUES
 ('e4eadcca-bd02-4f94-aae0-dd469300aa75', -16.500000, -68.150000),

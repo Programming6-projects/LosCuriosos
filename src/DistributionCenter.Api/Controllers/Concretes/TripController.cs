@@ -44,6 +44,10 @@ public class TripController(IRepository<Trip> repository)
             return await UpdateAvailabilityOfTransport(true, entity.TransportId);
         }
 
+        if (result.IsSuccess)
+        {
+            return result.Match(entity => Ok(entity), this.ErrorsResponse);
+        }
         return this.ErrorsResponse(result.Errors);
     }
 
