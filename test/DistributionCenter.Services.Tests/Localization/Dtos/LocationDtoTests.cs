@@ -9,15 +9,13 @@ public class LocationDtoTests
     {
         // Define Input and Output
         string expectedCategory = "In City";
-        bool expectedIsInCountry = true;
         double expectedDistance = 10.0;
 
         // Execute actual operation
-        LocationDto dto = new (expectedCategory, expectedIsInCountry, expectedDistance);
+        LocationDto dto = new (expectedCategory, expectedDistance);
 
         // Verify actual result
         Assert.Equal(expectedCategory, dto.Category);
-        Assert.Equal(expectedIsInCountry, dto.IsInCountry);
         Assert.Equal(expectedDistance, dto.DistanceFromStore);
     }
 
@@ -26,18 +24,15 @@ public class LocationDtoTests
     {
         // Define Input and Output
         string initialCategory = "In City";
-        bool initialIsInCountry = true;
         double initialDistance = 10.0;
-        LocationDto dto = new (initialCategory, initialIsInCountry, initialDistance);
+        LocationDto dto = new (initialCategory, initialDistance);
 
         // Execute actual operation
         dto.Category = "Inter City";
-        dto.IsInCountry = false;
         dto.DistanceFromStore = 20.0;
 
         // Verify actual result
         Assert.Equal("Inter City", dto.Category);
-        Assert.False(dto.IsInCountry);
         Assert.Equal(20.0, dto.DistanceFromStore);
     }
 
@@ -46,15 +41,13 @@ public class LocationDtoTests
     {
         // Define Input and Output
         string expectedCategory = string.Empty;
-        bool expectedIsInCountry = true;
         double expectedDistance = 10.0;
 
         // Execute actual operation
-        LocationDto dto = new (expectedCategory, expectedIsInCountry, expectedDistance);
+        LocationDto dto = new (expectedCategory, expectedDistance);
 
         // Verify actual result
         Assert.Equal(expectedCategory, dto.Category);
-        Assert.Equal(expectedIsInCountry, dto.IsInCountry);
         Assert.Equal(expectedDistance, dto.DistanceFromStore);
     }
 
@@ -63,15 +56,13 @@ public class LocationDtoTests
     {
         // Define Input and Output
         string expectedCategory = null!;
-        bool expectedIsInCountry = true;
         double expectedDistance = 10.0;
 
         // Execute actual operation
-        LocationDto dto = new (expectedCategory, expectedIsInCountry, expectedDistance);
+        LocationDto dto = new (expectedCategory, expectedDistance);
 
         // Verify actual result
         Assert.Equal(expectedCategory, dto.Category);
-        Assert.Equal(expectedIsInCountry, dto.IsInCountry);
         Assert.Equal(expectedDistance, dto.DistanceFromStore);
     }
 
@@ -80,15 +71,13 @@ public class LocationDtoTests
     {
         // Define Input and Output
         string expectedCategory = "In City";
-        bool expectedIsInCountry = true;
         double expectedDistance = -5.0;
 
         // Execute actual operation
-        LocationDto dto = new (expectedCategory, expectedIsInCountry, expectedDistance);
+        LocationDto dto = new (expectedCategory, expectedDistance);
 
         // Verify actual result
         Assert.Equal(expectedCategory, dto.Category);
-        Assert.Equal(expectedIsInCountry, dto.IsInCountry);
         Assert.Equal(expectedDistance, dto.DistanceFromStore);
     }
 
@@ -97,18 +86,15 @@ public class LocationDtoTests
     {
         // Define Input and Output
         string initialCategory = "In City";
-        bool initialIsInCountry = true;
         double initialDistance = 10.0;
-        LocationDto dto = new (initialCategory, initialIsInCountry, initialDistance);
+        LocationDto dto = new (initialCategory, initialDistance);
 
         // Execute actual operation
         dto.Category = "!@#$%^&*()";
-        dto.IsInCountry = false;
         dto.DistanceFromStore = 1234.5678;
 
         // Verify actual result
         Assert.Equal("!@#$%^&*()", dto.Category);
-        Assert.False(dto.IsInCountry);
         Assert.Equal(1234.5678, dto.DistanceFromStore);
     }
 
@@ -117,11 +103,10 @@ public class LocationDtoTests
     {
         // Define Input and Output
         string initialCategory = "In City";
-        bool initialIsInCountry = true;
         double initialDistance = 1e6;
 
         // Execute actual operation
-        LocationDto dto = new (initialCategory, initialIsInCountry, initialDistance);
+        LocationDto dto = new (initialCategory, initialDistance);
         dto.DistanceFromStore = 1e9;
 
         // Verify actual result
@@ -133,11 +118,10 @@ public class LocationDtoTests
     {
         // Define Input and Output
         string initialCategory = "In City";
-        bool initialIsInCountry = true;
         double initialDistance = 0.0;
 
         // Execute actual operation
-        LocationDto dto = new (initialCategory, initialIsInCountry, initialDistance);
+        LocationDto dto = new (initialCategory, initialDistance);
         dto.DistanceFromStore = 0.0;
 
         // Verify actual result
@@ -149,18 +133,15 @@ public class LocationDtoTests
     {
         // Define Input and Output
         string initialCategory = "In City";
-        bool initialIsInCountry = true;
         double initialDistance = 10.0;
-        LocationDto dto = new (initialCategory, initialIsInCountry, initialDistance);
+        LocationDto dto = new (initialCategory, initialDistance);
 
         // Execute actual operation
         dto.Category = "Different Category";
-        dto.IsInCountry = false;
         dto.DistanceFromStore = 1.1;
 
         // Verify actual result
         Assert.Equal("Different Category", dto.Category);
-        Assert.False(dto.IsInCountry);
         Assert.Equal(1.1, dto.DistanceFromStore);
     }
 
@@ -169,18 +150,15 @@ public class LocationDtoTests
     {
         // Define Input and Output
         string defaultCategory = "Default Category";
-        bool defaultIsInCountry = true;
         double defaultDistance = 0.0;
 
         // Execute actual operation
-        LocationDto dto = new (defaultCategory, defaultIsInCountry, defaultDistance);
+        LocationDto dto = new (defaultCategory, defaultDistance);
         dto.Category = defaultCategory;
-        dto.IsInCountry = defaultIsInCountry;
         dto.DistanceFromStore = defaultDistance;
 
         // Verify actual result
         Assert.Equal(defaultCategory, dto.Category);
-        Assert.Equal(defaultIsInCountry, dto.IsInCountry);
         Assert.Equal(defaultDistance, dto.DistanceFromStore);
     }
 
@@ -189,18 +167,15 @@ public class LocationDtoTests
     {
         // Define Input and Output
         string extremeCategory = new ('a', 1000);
-        bool extremeIsInCountry = false;
         double extremeDistance = double.MaxValue;
 
         // Execute actual operation
-        LocationDto dto = new (extremeCategory, extremeIsInCountry, extremeDistance);
+        LocationDto dto = new (extremeCategory, extremeDistance);
         dto.Category = extremeCategory;
-        dto.IsInCountry = extremeIsInCountry;
         dto.DistanceFromStore = extremeDistance;
 
         // Verify actual result
         Assert.Equal(extremeCategory, dto.Category);
-        Assert.Equal(extremeIsInCountry, dto.IsInCountry);
         Assert.Equal(extremeDistance, dto.DistanceFromStore);
     }
 }
