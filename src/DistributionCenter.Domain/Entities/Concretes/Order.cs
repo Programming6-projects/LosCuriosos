@@ -1,7 +1,7 @@
 namespace DistributionCenter.Domain.Entities.Concretes;
 
 using Bases;
-using Commons.Enums;
+using DistributionCenter.Domain.Entities.Enums;
 
 public class Order : BaseEntity
 {

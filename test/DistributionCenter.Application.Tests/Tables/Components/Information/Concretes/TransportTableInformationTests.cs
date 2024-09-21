@@ -29,7 +29,8 @@ public class TransportTableInformationTests
     public void GetByIdFields_ReturnsExpectedString()
     {
         // Define Input and Output
-        string expected = "id AS Id, name, capacity, availableUnits, is_active AS IsActive, created_at AS CreatedAt, updated_at AS UpdatedAt";
+        string expected = "id AS Id, name, plate, capacity, currentCapacity, isAvailable, is_active AS IsActive, " +
+                          "created_at AS CreatedAt, updated_at AS UpdatedAt";
 
         // Execute actual operation
         string result = _table.GetByIdFields;
@@ -42,7 +43,7 @@ public class TransportTableInformationTests
     public void CreateFields_ReturnsExpectedString()
     {
         // Define Input and Output
-        string expected = "id, name, capacity, availableUnits, is_active, created_at, updated_at";
+        string expected = "id, name, plate, capacity, currentCapacity, isAvailable, is_active, created_at, updated_at";
 
         // Execute actual operation
         string result = _table.CreateFields;
@@ -55,7 +56,8 @@ public class TransportTableInformationTests
     public void CreateValues_ReturnsExpectedString()
     {
         // Define Input and Output
-        string expected = "@Id, @Name, @Capacity, @AvailableUnits, @IsActive, @CreatedAt, @UpdatedAt";
+        string expected = "@Id, @Name, @Plate, @Capacity, @CurrentCapacity, @IsAvailable, " +
+                          "@IsActive, @CreatedAt, @UpdatedAt";
 
         // Execute actual operation
         string result = _table.CreateValues;
@@ -68,7 +70,8 @@ public class TransportTableInformationTests
     public void UpdateFields_ReturnsExpectedString()
     {
         // Define Input and Output
-        string expected = "name = @Name, capacity = @Capacity, availableUnits = @AvailableUnits, is_active = @IsActive, updated_at = @UpdatedAt";
+        string expected = "name = @Name, plate = @Plate, capacity = @Capacity, currentCapacity = @CurrentCapacity," +
+                          " isAvailable = @IsAvailable, is_active = @IsActive, updated_at = @UpdatedAt";
 
         // Execute actual operation
         string result = _table.UpdateFields;

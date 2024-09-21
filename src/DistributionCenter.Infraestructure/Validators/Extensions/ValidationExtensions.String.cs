@@ -1,8 +1,8 @@
 namespace DistributionCenter.Infraestructure.Validators.Extensions;
 
 using System.Text.RegularExpressions;
-using Commons.Enums;
 using Components.Builders.Concretes;
+using DistributionCenter.Domain.Entities.Enums;
 using DistributionCenter.Infraestructure.Validators.Components.Builders.Interfaces;
 
 public static partial class ValidationExtensions

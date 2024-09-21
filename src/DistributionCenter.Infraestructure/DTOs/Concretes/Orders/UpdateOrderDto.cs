@@ -1,12 +1,12 @@
 namespace DistributionCenter.Infraestructure.DTOs.Concretes.Orders;
 
-using Commons.Enums;
 using Commons.Results;
+using DistributionCenter.Domain.Entities.Enums;
 using Domain.Entities.Concretes;
 using Interfaces;
 using Validators.Core.Concretes.Orders;
 
-public class UpdateOrderDto: IUpdateDto<Order>
+public class UpdateOrderDto : IUpdateDto<Order>
 {
     public Status? Status { get; set; }
     public Guid? RouteId { get; set; }

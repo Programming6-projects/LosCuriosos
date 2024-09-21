@@ -1,7 +1,7 @@
-﻿namespace DistributionCenter.Infraestructure.Tests.Validators;
+﻿namespace DistributionCenter.Infraestructure.Tests.Validators.Products;
 
-using Infraestructure.DTOs.Concretes.Products;
-using Infraestructure.Validators.Core.Concretes.Products;
+using DistributionCenter.Infraestructure.DTOs.Concretes.Products;
+using DistributionCenter.Infraestructure.Validators.Core.Concretes.Products;
 
 public class CreateProductValidatorTest
 {

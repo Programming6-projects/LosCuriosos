@@ -1,6 +1,7 @@
 namespace DistributionCenter.Infraestructure.DTOs.Concretes.Orders;
 
 using Commons.Results;
+using DistributionCenter.Domain.Entities.Enums;
 using Domain.Entities.Concretes;
 using Interfaces;
 using Validators.Core.Concretes.Orders;
@@ -15,12 +16,12 @@ public class CreateOrderDto : ICreateDto<Order>
 
     public Order ToEntity()
     {
-        _ = Enum.TryParse(Status, true, out Commons.Enums.Status parseStatus);
+        _ = Enum.TryParse(Status, true, out Status parseStatus);
         return new Order
         {
+            RouteId = RouteId,
             ClientId = ClientId,
             Status = parseStatus,
-            RouteId = RouteId,
             DeliveryPointId = DeliveryPointId,
             ClientOrderProducts = ClientOrderProducts
         };

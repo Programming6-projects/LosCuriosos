@@ -1,6 +1,6 @@
 namespace DistributionCenter.Domain.Tests.Entities.Concretes;
 
-using Commons.Enums;
+using DistributionCenter.Domain.Entities.Enums;
 using Domain.Entities.Concretes;
 
 public class OrderTests
@@ -16,7 +16,7 @@ public class OrderTests
         Product product = new()
         {
             Name = "Pepsi",
-            Description = "La mejor bebida",
+            Description = "The best drink",
             Weight = 100,
         };
 
@@ -42,11 +42,13 @@ public class OrderTests
             };
 
         // Execute actual operation
+        Guid routeId = entity.RouteId;
         Guid clientId = entity.ClientId;
         Status orderStatus = entity.Status;
         IReadOnlyList<ClientOrderProduct> clientOrderProducts = entity.ClientOrderProducts;
 
         // Verify actual result
+        Assert.Equal(expectedRouteId, routeId);
         Assert.Equal(expectedClientId, clientId);
         Assert.Equal(Status.Pending, orderStatus);
         _ = Assert.Single(clientOrderProducts);

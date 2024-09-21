@@ -14,10 +14,7 @@ public class JsonConnectionFactory<T> (string tableName) : FileConnectionFactory
 
     public override async Task SaveDataAsync(IEnumerable<T> data)
     {
-        List<T> existingData = await LoadDataAsync();
-        existingData.AddRange(data);
-
-        string jsonData = JsonConvert.SerializeObject(existingData, Formatting.Indented);
+        string jsonData = JsonConvert.SerializeObject(data, Formatting.Indented);
         await File.WriteAllTextAsync(CompletedFilePath, jsonData);
     }
 }

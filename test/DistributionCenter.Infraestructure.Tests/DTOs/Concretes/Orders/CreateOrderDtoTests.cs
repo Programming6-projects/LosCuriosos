@@ -1,6 +1,6 @@
 namespace DistributionCenter.Infraestructure.Tests.DTOs.Concretes.Orders;
 
-using Commons.Results;
+using DistributionCenter.Commons.Results;
 using Domain.Entities.Concretes;
 using Infraestructure.DTOs.Concretes.Orders;
 
@@ -23,6 +23,7 @@ public class CreateOrderDtoTests
         Order client = dto.ToEntity();
 
         // Verify actual result
+        Assert.Equal(dto.RouteId, client.RouteId);
         Assert.Equal(dto.ClientId, client.ClientId);
         Assert.Equal(dto.Status, client.Status.ToString());
         Assert.Equal(dto.RouteId, client.RouteId);

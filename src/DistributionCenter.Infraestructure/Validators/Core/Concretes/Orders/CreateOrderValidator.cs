@@ -1,8 +1,8 @@
 namespace DistributionCenter.Infraestructure.Validators.Core.Concretes.Orders;
 
 using Bases;
+using DistributionCenter.Infraestructure.Validators.Extensions;
 using DTOs.Concretes.Orders;
-using Extensions;
 
 public class CreateOrderValidator : BaseFluentValidator<CreateOrderDto>
 {
