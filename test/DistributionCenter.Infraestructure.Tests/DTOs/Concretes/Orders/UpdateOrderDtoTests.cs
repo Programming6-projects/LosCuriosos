@@ -10,11 +10,12 @@ public class UpdateOrderDtoTests
     public void FromEntity_UpdatesAndReturnsCorrectOrder()
     {
         // Define Input and Output
+        Guid clientId = Guid.NewGuid();
         Order order =
             new()
             {
                 RouteId = Guid.NewGuid(),
-                ClientId = Guid.NewGuid(),
+                ClientId = clientId,
                 DeliveryPointId = Guid.NewGuid(),
                 Status = Status.Pending,
             };
@@ -30,7 +31,7 @@ public class UpdateOrderDtoTests
         // Verify actual result
         _ = Enum.TryParse(dto.Status, true, out Status status);
         Assert.Equal(status, updatedOrder.Status);
-        Assert.Equal(dto.ClientId, updatedOrder.ClientId);
+        Assert.Equal(clientId, updatedOrder.ClientId);
     }
 
     [Fact]

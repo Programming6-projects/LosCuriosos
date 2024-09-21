@@ -10,7 +10,6 @@ using Bases;
 using Commons.Errors;
 using Commons.Results;
 using Domain.Entities.Concretes;
-using Domain.Entities.Enums;
 using Extensions;
 using Infraestructure.DTOs.Concretes.Trip;
 using Microsoft.AspNetCore.Mvc;

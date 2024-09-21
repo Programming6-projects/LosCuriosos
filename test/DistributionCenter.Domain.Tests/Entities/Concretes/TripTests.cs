@@ -1,6 +1,5 @@
 namespace DistributionCenter.Domain.Tests.Entities.Concretes;
 
-using DistributionCenter.Domain.Entities.Enums;
 using Domain.Entities.Concretes;
 
 public class TripTests

@@ -1,6 +1,7 @@
 namespace DistributionCenter.Domain.Entities.Concretes;
 
 using Bases;
+using Enums;
 
 public class Order : BaseEntity
 {

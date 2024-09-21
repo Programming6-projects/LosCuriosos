@@ -1,7 +1,6 @@
 namespace DistributionCenter.Domain.Tests.Entities.Enums;
 
 using System.ComponentModel;
-using DistributionCenter.Domain.Entities.Enums;
 
 public class ExtensionsTests
 {

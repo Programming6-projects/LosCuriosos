@@ -1,10 +1,7 @@
 namespace DistributionCenter.Services.Tests.Distribution.Concretes;
 
-using DistributionCenter.Services.Distribution.Enums;
 using Domain.Entities.Concretes;
-using Services.Distribution.Concretes;
-using Services.Distribution.Concretes.Components.OrdersParser.Interfaces;
-using Services.Distribution.Concretes.Components.TransportsParser.Interfaces;
+using Domain.Entities.Enums;
 
 public class GreedyDistributionTests
 {
@@ -46,6 +43,7 @@ public class GreedyDistributionTests
                         },
                     },
                 ],
+                Status = Status.Pending,
             },
             new Order
             {
@@ -68,7 +66,8 @@ public class GreedyDistributionTests
                         },
                     },
                 ],
-            },
+                Status = Status.Pending,
+            }
         ];
 
         List<Transport> transports =
@@ -97,7 +96,11 @@ public class GreedyDistributionTests
             .Returns(orders.Select(o => (o, o.Products.Sum(p => p.Quantity * p.Product.Weight))));
         _ = _transportParserMock
             .Setup(parser => parser.Parse(transports, Location.InCity))
-            .Returns(transports.Select(t => (new Trip { TransportId = t.Id }, t)));
+            .Returns(transports.Select(t => (new Trip
+            {
+                TransportId = t.Id,
+                Status = Status.Pending
+            }, t)));
 
         // Execute Actual Operation
         (IEnumerable<Trip> Trips, IEnumerable<Transport> UpdatedTransports, IEnumerable<Order> CancelledOrders) =

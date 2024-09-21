@@ -2,6 +2,7 @@ namespace DistributionCenter.Infraestructure.DTOs.Concretes.Orders;
 
 using Commons.Results;
 using Domain.Entities.Concretes;
+using Domain.Entities.Enums;
 using Interfaces;
 using Validators.Core.Concretes.Orders;
 

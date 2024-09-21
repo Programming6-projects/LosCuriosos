@@ -1,7 +1,5 @@
 namespace DistributionCenter.Services.Tests.Distribution.Concretes.Components.TransportsParser.Concretes;
 
-using DistributionCenter.Services.Distribution.Concretes.Components.TransportsParser.Concretes;
-using DistributionCenter.Services.Distribution.Enums;
 using Domain.Entities.Concretes;
 
 public class TransportParserTests

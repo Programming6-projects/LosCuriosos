@@ -1,7 +1,5 @@
 namespace DistributionCenter.Services.Tests.Notification.Concretes;
 
-using DistributionCenter.Services.Notification.Concretes;
-
 public class OrderDeliveredMessageTests
 {
     [Fact]

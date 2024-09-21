@@ -40,7 +40,9 @@ public class TripControllerTests
                 new Order
                 {
                     ClientId = clientId,
-                    Status = Status.Shipped
+                    Status = Status.Shipped,
+                    RouteId = default,
+                    DeliveryPointId = default
                 }
             },
             TransportId = Guid.NewGuid(),
@@ -73,7 +75,9 @@ public class TripControllerTests
                 new Order
                 {
                     Status = Status.Pending,
-                    ClientId = default
+                    ClientId = default,
+                    RouteId = default,
+                    DeliveryPointId = default
                 }
             },
             TransportId = Guid.NewGuid(),

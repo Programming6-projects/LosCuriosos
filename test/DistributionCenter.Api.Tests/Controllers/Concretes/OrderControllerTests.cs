@@ -5,6 +5,7 @@ using DistributionCenter.Application.Repositories.Interfaces;
 using DistributionCenter.Commons.Errors;
 using DistributionCenter.Domain.Entities.Concretes;
 using DistributionCenter.Services.Notification.Interfaces;
+using Domain.Entities.Enums;
 using Microsoft.AspNetCore.Mvc;
 
 public class OrderControllerTests

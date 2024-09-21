@@ -1,4 +1,12 @@
+global using DistributionCenter.Services.Distribution.Concretes;
+global using DistributionCenter.Services.Distribution.Concretes.Components.OrdersParser.Concretes;
+global using DistributionCenter.Services.Distribution.Concretes.Components.OrdersParser.Interfaces;
+global using DistributionCenter.Services.Distribution.Concretes.Components.TransportsParser.Concretes;
+global using DistributionCenter.Services.Distribution.Concretes.Components.TransportsParser.Interfaces;
+global using DistributionCenter.Services.Distribution.Enums;
 global using DistributionCenter.Services.Localization.Commons;
+global using DistributionCenter.Services.Notification;
+global using DistributionCenter.Services.Notification.Concretes;
 global using DistributionCenter.Services.Routes.Concretes;
 global using DistributionCenter.Services.Routes.Dtos;
 global using Moq;
