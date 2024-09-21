@@ -43,7 +43,7 @@ public class OrderControllerTests
             Weight = 100,
         };
 
-        ClientOrderProduct clientOrderProduct =
+        OrderProduct orderProduct =
             new ()
             {
                 ProductId = expectedProductId,
@@ -52,7 +52,7 @@ public class OrderControllerTests
                 Product = product
             };
 
-        IReadOnlyList<ClientOrderProduct> expectedClientOrderProduct = new List<ClientOrderProduct> { clientOrderProduct };
+        IReadOnlyList<OrderProduct> expectedClientOrderProduct = new List<OrderProduct> { orderProduct };
         Order order =
             new()
             {
@@ -61,7 +61,7 @@ public class OrderControllerTests
                 ClientId = Guid.NewGuid(),
                 DeliveryPointId = Guid.NewGuid(),
                 Id = orderId,
-                ClientOrderProducts = expectedClientOrderProduct
+                Products = expectedClientOrderProduct
             };
         Client client =
             new()
@@ -115,7 +115,7 @@ public class OrderControllerTests
             Weight = 100,
         };
 
-        ClientOrderProduct clientOrderProduct =
+        OrderProduct orderProduct =
             new ()
             {
                 ProductId = expectedProductId,
@@ -124,7 +124,7 @@ public class OrderControllerTests
                 Product = product
             };
 
-        IReadOnlyList<ClientOrderProduct> expectedClientOrderProduct = new List<ClientOrderProduct> { clientOrderProduct };
+        IReadOnlyList<OrderProduct> expectedClientOrderProduct = new List<OrderProduct> { orderProduct };
         Order order =
             new()
             {
@@ -133,7 +133,7 @@ public class OrderControllerTests
                 ClientId = Guid.NewGuid(),
                 DeliveryPointId = Guid.NewGuid(),
                 Id = orderId,
-                ClientOrderProducts = expectedClientOrderProduct
+                Products = expectedClientOrderProduct
             };
 
         _ = _orderRepositoryMock.Setup(repo => repo.GetByIdAsync(orderId)).ReturnsAsync(order);

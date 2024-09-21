@@ -9,5 +9,5 @@ public class Order : BaseEntity
     public required Guid RouteId { get; set; }
     public required Guid ClientId { get; set; }
     public required Guid DeliveryPointId { get; set; }
-    public required IReadOnlyList<ClientOrderProduct> ClientOrderProducts { get; set; }
+    public required IReadOnlyList<OrderProduct> Products { get; set; }
 }

@@ -4,7 +4,7 @@ using Bases;
 using Domain.Entities.Concretes;
 using Extensions;
 
-public class ClientOrderProductValidator : BaseFluentValidator<ClientOrderProduct>
+public class ClientOrderProductValidator : BaseFluentValidator<OrderProduct>
 {
     public ClientOrderProductValidator()
     {

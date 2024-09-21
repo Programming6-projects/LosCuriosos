@@ -16,7 +16,7 @@ public class UpdateOrderDtoTests
             Status = "Pending",
             RouteId = Guid.NewGuid(),
             DeliveryPointId = Guid.NewGuid(),
-            ClientOrderProducts = new List<ClientOrderProduct>()
+            ClientOrderProducts = new List<OrderProduct>()
         };
 
         // Execute actual operation
@@ -27,7 +27,7 @@ public class UpdateOrderDtoTests
         Assert.Equal(dto.Status, client.Status.ToString());
         Assert.Equal(dto.RouteId, client.RouteId);
         Assert.Equal(dto.DeliveryPointId, client.DeliveryPointId);
-        Assert.Equal(dto.ClientOrderProducts.Count, client.ClientOrderProducts.Count);
+        Assert.Equal(dto.ClientOrderProducts.Count, client.Products.Count);
     }
 
     [Fact]
@@ -41,7 +41,7 @@ public class UpdateOrderDtoTests
             Status = "X",
             RouteId = default,
             DeliveryPointId = default,
-            ClientOrderProducts = new List<ClientOrderProduct>(),
+            ClientOrderProducts = new List<OrderProduct>(),
         };
 
         CreateOrderDto validDto = new()
@@ -50,7 +50,7 @@ public class UpdateOrderDtoTests
             Status = "Pending",
             RouteId = Guid.NewGuid(),
             DeliveryPointId = Guid.NewGuid(),
-            ClientOrderProducts = new List<ClientOrderProduct>()
+            ClientOrderProducts = new List<OrderProduct>()
         };
 
         // Execute actual operation

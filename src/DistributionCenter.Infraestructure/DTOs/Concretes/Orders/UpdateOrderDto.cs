@@ -12,7 +12,7 @@ public class UpdateOrderDto : IUpdateDto<Order>
     public Guid? RouteId { get; set; }
     public Guid? ClientId { get; set; }
     public Guid? DeliveryPointId { get; set; }
-    public IReadOnlyList<ClientOrderProduct>? ClientOrderProducts { get; set; }
+    public IReadOnlyList<OrderProduct>? ClientOrderProducts { get; set; }
 
     public Order FromEntity(Order entity)
     {
@@ -22,7 +22,7 @@ public class UpdateOrderDto : IUpdateDto<Order>
         entity.RouteId = RouteId ?? entity.RouteId;
         entity.ClientId = ClientId ?? entity.ClientId;
         entity.DeliveryPointId = DeliveryPointId ?? entity.DeliveryPointId;
-        entity.ClientOrderProducts = ClientOrderProducts ?? entity.ClientOrderProducts;
+        entity.Products = ClientOrderProducts ?? entity.Products;
 
         return entity;
     }

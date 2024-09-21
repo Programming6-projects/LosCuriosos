@@ -20,7 +20,7 @@ public class OrderTests
             Weight = 100,
         };
 
-        ClientOrderProduct clientOrderProduct =
+        OrderProduct orderProduct =
             new ()
             {
                 ProductId = expectedProductId,
@@ -29,7 +29,7 @@ public class OrderTests
                 Product = product
             };
 
-        IReadOnlyList<ClientOrderProduct> expectedClientOrderProduct = new List<ClientOrderProduct> { clientOrderProduct };
+        IReadOnlyList<OrderProduct> expectedClientOrderProduct = new List<OrderProduct> { orderProduct };
 
         Order entity =
             new()
@@ -37,7 +37,7 @@ public class OrderTests
                 Status = Status.Pending,
                 RouteId = expectedRouteId,
                 DeliveryPointId = expectedDeliveredPointId,
-                ClientOrderProducts = expectedClientOrderProduct,
+                Products = expectedClientOrderProduct,
                 ClientId = expectedClientId,
             };
 
@@ -45,7 +45,7 @@ public class OrderTests
         Guid routeId = entity.RouteId;
         Guid clientId = entity.ClientId;
         Status orderStatus = entity.Status;
-        IReadOnlyList<ClientOrderProduct> clientOrderProducts = entity.ClientOrderProducts;
+        IReadOnlyList<OrderProduct> clientOrderProducts = entity.Products;
 
         // Verify actual result
         Assert.Equal(expectedRouteId, routeId);

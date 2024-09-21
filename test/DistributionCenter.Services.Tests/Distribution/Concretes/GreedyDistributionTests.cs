@@ -2,6 +2,7 @@ namespace DistributionCenter.Services.Tests.Distribution.Concretes;
 
 using DistributionCenter.Services.Distribution.Enums;
 using Domain.Entities.Concretes;
+using Domain.Entities.Enums;
 using Services.Distribution.Concretes;
 using Services.Distribution.Concretes.Components.OrdersParser.Interfaces;
 using Services.Distribution.Concretes.Components.TransportsParser.Interfaces;
@@ -27,6 +28,7 @@ public class GreedyDistributionTests
         [
             new Order
             {
+                Status = Status.Pending,
                 RouteId = Guid.NewGuid(),
                 ClientId = Guid.NewGuid(),
                 DeliveryPointId = Guid.NewGuid(),
@@ -49,6 +51,7 @@ public class GreedyDistributionTests
             },
             new Order
             {
+                Status = Status.Pending,
                 RouteId = Guid.NewGuid(),
                 ClientId = Guid.NewGuid(),
                 DeliveryPointId = Guid.NewGuid(),

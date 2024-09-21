@@ -19,7 +19,7 @@ public class TripTests
             Weight = 100,
         };
 
-        ClientOrderProduct clientOrderProduct =
+        OrderProduct orderProduct =
             new ()
             {
                 ProductId = expectedProductId,
@@ -28,7 +28,7 @@ public class TripTests
                 Product = product
             };
 
-        IReadOnlyList<ClientOrderProduct> expectedClientOrderProduct = new List<ClientOrderProduct> { clientOrderProduct };
+        IReadOnlyList<OrderProduct> expectedClientOrderProduct = new List<OrderProduct> { orderProduct };
         Order expectedOrder =
             new()
             {
@@ -36,7 +36,7 @@ public class TripTests
                 RouteId = Guid.NewGuid(),
                 ClientId = Guid.NewGuid(),
                 DeliveryPointId = Guid.NewGuid(),
-                ClientOrderProducts = expectedClientOrderProduct
+                Products = expectedClientOrderProduct
             };
         Trip entity = new() { TransportId = expectedTransportId, Orders = [expectedOrder] };
 

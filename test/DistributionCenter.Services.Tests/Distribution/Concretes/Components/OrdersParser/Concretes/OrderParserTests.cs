@@ -14,6 +14,7 @@ public class OrderParserTests
         [
             new Order
             {
+                Status = Status.Pending,
                 RouteId = Guid.NewGuid(),
                 ClientId = Guid.NewGuid(),
                 DeliveryPointId = Guid.NewGuid(),
