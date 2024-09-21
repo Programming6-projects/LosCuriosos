@@ -5,6 +5,7 @@ using DistributionCenter.Application.Repositories.Interfaces;
 using DistributionCenter.Commons.Errors;
 using DistributionCenter.Domain.Entities.Concretes;
 using DistributionCenter.Services.Notification.Interfaces;
+using Domain.Entities.Enums;
 using Microsoft.AspNetCore.Mvc;
 
 public class OrderControllerTests
@@ -38,11 +39,11 @@ public class OrderControllerTests
                 RouteId = Guid.NewGuid(),
                 ClientId = Guid.NewGuid(),
                 DeliveryPointId = Guid.NewGuid(),
+                Status = Status.Pending,
             };
         Client client =
             new()
             {
-                Id = order.ClientId,
                 Name = "Name",
                 LastName = "Last Name",
                 Email = "test@example.com",
@@ -87,6 +88,7 @@ public class OrderControllerTests
                 RouteId = Guid.NewGuid(),
                 ClientId = Guid.NewGuid(),
                 DeliveryPointId = Guid.NewGuid(),
+                Status = Status.Pending,
             };
 
         _ = _orderRepositoryMock.Setup(repo => repo.GetByIdAsync(orderId)).ReturnsAsync(order);

@@ -1,8 +1,5 @@
 namespace DistributionCenter.Services.Tests.Routes.Dtos;
 
-using Services.Localization.Commons;
-using Services.Routes.Dtos;
-
 public class WayPointDtoTest
 {
     [Fact]

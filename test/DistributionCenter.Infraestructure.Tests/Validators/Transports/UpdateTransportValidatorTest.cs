@@ -1,8 +1,5 @@
 namespace DistributionCenter.Infraestructure.Tests.Validators.Transports;
 
-using Infraestructure.DTOs.Concretes.Transports;
-using Infraestructure.Validators.Core.Concretes.Transports;
-
 public class UpdateTransportValidatorTest
 {
     [Fact]

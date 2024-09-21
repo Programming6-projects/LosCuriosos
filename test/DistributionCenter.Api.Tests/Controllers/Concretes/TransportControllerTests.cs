@@ -1,6 +1,5 @@
 namespace DistributionCenter.Api.Tests.Controllers.Concretes;
 
-using Api.Controllers.Concretes;
 using Application.Repositories.Interfaces;
 using Domain.Entities.Concretes;
 

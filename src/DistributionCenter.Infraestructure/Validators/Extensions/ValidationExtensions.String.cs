@@ -2,6 +2,7 @@ namespace DistributionCenter.Infraestructure.Validators.Extensions;
 
 using System.Text.RegularExpressions;
 using DistributionCenter.Infraestructure.Validators.Components.Builders.Interfaces;
+using Domain.Entities.Enums;
 
 public static partial class ValidationExtensions
 {
@@ -47,5 +48,14 @@ public static partial class ValidationExtensions
         ArgumentNullException.ThrowIfNull(builder, nameof(builder));
 
         return builder.AddRule(static x => Regex.IsMatch(x, @"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$"), message);
+    }
+
+    public static IValidationBuilder<string> BelongsToStatus(this IValidationBuilder<string> builder)
+    {
+        ArgumentNullException.ThrowIfNull(builder, nameof(builder));
+
+        return builder
+            .AddRule(static x => Enum.TryParse(x, true, out Status _)
+                , "String don't correspond to Status Enum");
     }
 }

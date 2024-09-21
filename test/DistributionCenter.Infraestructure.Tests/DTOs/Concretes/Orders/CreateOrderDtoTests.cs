@@ -14,6 +14,7 @@ public class CreateOrderDtoTests
             {
                 RouteId = new Guid(),
                 ClientId = new Guid(),
+                Status = "Pending",
                 DeliveryPointId = new Guid(),
             };
 

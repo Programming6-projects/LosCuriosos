@@ -17,6 +17,7 @@ public class OrderTests
                 RouteId = expectedRouteId,
                 ClientId = expectedClientId,
                 DeliveryPointId = expectedDeliveryPointId,
+                Status = Status.Pending,
             };
 
         // Execute actual operation
