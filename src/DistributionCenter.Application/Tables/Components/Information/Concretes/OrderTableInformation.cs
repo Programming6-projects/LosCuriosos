@@ -9,7 +9,7 @@ public class OrderTableInformation : BaseEntityTableInformation
 
     protected override string ObtainGetByIdFields()
     {
-        return "client_id AS ClientId, client_order_status_id AS OrderStatusId";
+        return "status AS Status, route_id AS RouteId, client_id AS ClientId, delivery_point_id AS DeliveryPointId";
     }
 
     protected override string ObtainTableName()
@@ -19,16 +19,16 @@ public class OrderTableInformation : BaseEntityTableInformation
 
     protected override string ObtainCreateFields()
     {
-        return "client_id, client_order_status_id";
+        return "status, route_id, client_id, delivery_point_id";
     }
 
     protected override string ObtainCreateValues()
     {
-        return "@ClientId, @OrderStatusId";
+        return "@Status, @RouteId, @ClientId, @DeliveryPointId";
     }
 
     protected override string ObtainUpdateFields()
     {
-        return "client_id = @ClientId, client_order_status_id = @OrderStatusId";
+        return "status = @Status, route_id = @RouteId, client_id = @ClientId, delivery_point_id = @DeliveryPointId";
     }
 }

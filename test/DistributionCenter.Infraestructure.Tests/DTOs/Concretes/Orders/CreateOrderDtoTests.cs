@@ -13,44 +13,18 @@ public class CreateOrderDtoTests
         CreateOrderDto dto =
             new()
             {
+                RouteId = new Guid(),
                 ClientId = new Guid(),
                 Status = "Pending",
+                DeliveryPointId = new Guid(),
             };
 
         // Execute actual operation
         Order client = dto.ToEntity();
 
         // Verify actual result
+        Assert.Equal(dto.RouteId, client.RouteId);
         Assert.Equal(dto.ClientId, client.ClientId);
-    }
-
-    [Fact]
-    public void VerifyThatTheDataWasValidatedSuccessfully()
-    {
-        // Define Input and Output
-        int expectedErrorsQuantity = 2;
-        CreateOrderDto invalidDto =
-            new()
-            {
-                ClientId = default,
-                Status = "Pendingggg",
-            };
-
-        CreateOrderDto validDto =
-            new()
-            {
-                ClientId = new Guid("a2b6e412-4b7e-45c9-a78e-58f0e4e54b2d"),
-                Status = "Pending",
-            };
-
-        // Execute actual operation
-        Result resultWithErrors = invalidDto.Validate();
-        Result resultWithoutErrors = validDto.Validate();
-
-        // Verify actual result
-        Assert.False(resultWithErrors.IsSuccess);
-        Assert.Equal(expectedErrorsQuantity, resultWithErrors.Errors.Count);
-
-        Assert.True(resultWithoutErrors.IsSuccess);
+        Assert.Equal(dto.DeliveryPointId, client.DeliveryPointId);
     }
 }

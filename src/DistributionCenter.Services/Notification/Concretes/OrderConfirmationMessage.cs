@@ -2,10 +2,8 @@ namespace DistributionCenter.Services.Notification.Concretes;
 
 using Interfaces;
 
-public class OrderConfirmationMessage(string orderId) : IMessage
+public class OrderConfirmationMessage(Guid orderId) : IMessage
 {
-    private readonly string _orderId = orderId;
-
     public string Subject => "Order Confirmation";
 
     public string GetMessage()
@@ -27,7 +25,7 @@ public class OrderConfirmationMessage(string orderId) : IMessage
                         <h1>Order Confirmation</h1>
                     </div>
                     <div class='content'>
-                        <p>Your order with ID <strong>{_orderId}</strong> has been received and is being processed.</p>
+                        <p>Your order with ID <strong>{orderId}</strong> has been received and is being processed.</p>
                     </div>
                     <div class='footer'>
                         <p>Thank you for choosing us!</p>

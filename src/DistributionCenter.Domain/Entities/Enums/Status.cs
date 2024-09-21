@@ -1,4 +1,4 @@
-﻿namespace DistributionCenter.Domain.Entities.Enums;
+namespace DistributionCenter.Domain.Entities.Enums;
 
 using System.ComponentModel;
 
