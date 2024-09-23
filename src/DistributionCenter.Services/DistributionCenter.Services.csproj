@@ -4,5 +4,6 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../DistributionCenter.Commons/DistributionCenter.Commons.csproj"></ProjectReference>
+    <ProjectReference Include="../DistributionCenter.Domain/DistributionCenter.Domain.csproj"></ProjectReference>
   </ItemGroup>
 </Project>

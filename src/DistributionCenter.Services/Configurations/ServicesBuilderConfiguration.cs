@@ -1,9 +1,15 @@
 namespace DistributionCenter.Services.Configurations;
 
-using DistributionCenter.Services.Localization.Concretes;
-using DistributionCenter.Services.Localization.Interfaces;
-using DistributionCenter.Services.Notification.Concretes;
-using DistributionCenter.Services.Notification.Interfaces;
+using Distribution.Concretes;
+using Distribution.Concretes.Components.OrdersParser.Concretes;
+using Distribution.Concretes.Components.OrdersParser.Interfaces;
+using Distribution.Concretes.Components.TransportsParser.Concretes;
+using Distribution.Concretes.Components.TransportsParser.Interfaces;
+using Distribution.Interfaces;
+using Localization.Concretes;
+using Localization.Interfaces;
+using Notification.Concretes;
+using Notification.Interfaces;
 
 public static class ServicesBuilderConfiguration
 {
@@ -33,6 +39,14 @@ public static class ServicesBuilderConfiguration
         _ = services.AddScoped<ILocationService>(static _ => new LocationService(
             _.GetRequiredService<ILocationValidator>(),
             _.GetRequiredService<IDistanceCalculator>()
+        ));
+
+        _ = services.AddScoped<IOrderParser>(static _ => new OrderParser());
+        _ = services.AddScoped<ITransportParser>(static _ => new TransportParser());
+
+        _ = services.AddScoped<IDistributionStrategy>(static _ => new GreedyDistribution(
+            _.GetRequiredService<IOrderParser>(),
+            _.GetRequiredService<ITransportParser>()
         ));
 
         return services;

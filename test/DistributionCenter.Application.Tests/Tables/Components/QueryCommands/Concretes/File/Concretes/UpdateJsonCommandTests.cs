@@ -10,15 +10,14 @@ public class UpdateJsonCommandTests
     private readonly UpdateJsonCommand<IEntity> _updateJsonCommand;
     private readonly Mock<IFileConnectionFactory<IEntity>> _fileConnectionFactoryMock;
     private readonly Mock<IEntity> _entityMock;
-    private readonly Guid _existingId;
     private readonly List<IEntity> _existingData;
 
     public UpdateJsonCommandTests()
     {
-        _existingId = Guid.NewGuid();
+        Guid existingId = Guid.NewGuid();
         _fileConnectionFactoryMock = new Mock<IFileConnectionFactory<IEntity>>();
         _entityMock = new Mock<IEntity>();
-        _ = _entityMock.SetupGet(e => e.Id).Returns(_existingId);
+        _ = _entityMock.SetupGet(e => e.Id).Returns(existingId);
 
         _existingData = [_entityMock.Object];
 

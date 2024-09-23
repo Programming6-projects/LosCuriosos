@@ -1,6 +1,7 @@
 namespace DistributionCenter.Infraestructure.Tests.DTOs.Concretes.Orders;
 
 using Domain.Entities.Concretes;
+using Domain.Entities.Enums;
 using Infraestructure.DTOs.Concretes.Orders;
 
 public class UpdateOrderDtoTests
@@ -9,36 +10,45 @@ public class UpdateOrderDtoTests
     public void FromEntity_UpdatesAndReturnsCorrectOrder()
     {
         // Define Input and Output
+        Guid clientId = Guid.NewGuid();
         Order order =
             new()
             {
-                ClientId = Guid.NewGuid(),
-                OrderStatusId = Guid.NewGuid(),
+                RouteId = Guid.NewGuid(),
+                ClientId = clientId,
+                DeliveryPointId = Guid.NewGuid(),
+                Status = Status.Pending,
             };
         UpdateOrderDto dto =
             new()
             {
-                OrderStatusId = Guid.NewGuid(),
+                Status = "Cancelled",
             };
 
         // Execute actual operation
         Order updatedOrder = dto.FromEntity(order);
 
         // Verify actual result
-        Assert.Equal(dto.OrderStatusId, updatedOrder.OrderStatusId);
+        _ = Enum.TryParse(dto.Status, true, out Status status);
+        Assert.Equal(status, updatedOrder.Status);
+        Assert.Equal(clientId, updatedOrder.ClientId);
     }
 
     [Fact]
     public void FromEntity_UpdatesWithNullsAndReturnsCorrectOrder()
     {
         // Define Input and Output
+        Guid initialRouteId = Guid.NewGuid();
         Guid initialClientId = Guid.NewGuid();
-        Guid initialOrderStatusId = Guid.NewGuid();
+        Guid initialDeliveryPointId = Guid.NewGuid();
+        Status status = Status.Pending;
         Order order =
             new()
             {
+                RouteId = initialRouteId,
                 ClientId = initialClientId,
-                OrderStatusId = initialOrderStatusId,
+                DeliveryPointId = initialDeliveryPointId,
+                Status = status,
             };
         UpdateOrderDto dto = new();
 
@@ -46,7 +56,9 @@ public class UpdateOrderDtoTests
         Order updatedOrder = dto.FromEntity(order);
 
         // Verify actual result
+        Assert.Equal(order.RouteId, updatedOrder.RouteId);
         Assert.Equal(order.ClientId, updatedOrder.ClientId);
-        Assert.Equal(order.OrderStatusId, updatedOrder.OrderStatusId);
+        Assert.Equal(order.Status, updatedOrder.Status);
+        Assert.Equal(order.DeliveryPointId, updatedOrder.DeliveryPointId);
     }
 }

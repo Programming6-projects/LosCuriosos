@@ -6,24 +6,19 @@ using File = System.IO.File;
 public abstract class FileConnectionFactory<T>(string tableName, string fileType) : IFileConnectionFactory<T>
 {
     private readonly string _completedFilePath = Path.Combine(Environment.CurrentDirectory,
-        "../../../Resources/" + tableName + "." + fileType);
+        "../../persistence_data/" + tableName + "." + fileType);
 
-    protected string CompletedFilePath => _completedFilePath;
+    public virtual string CompletedFilePath => _completedFilePath;
 
     public async Task<string> OpenFileAsync()
     {
-        if (!File.Exists(_completedFilePath))
-        {
-            string? directoryPath = Path.GetDirectoryName(_completedFilePath);
+        if (File.Exists(_completedFilePath)) return await File.ReadAllTextAsync(_completedFilePath);
 
-            if (directoryPath != null)
-            {
-                _ = Directory.CreateDirectory(directoryPath);
-            }
+        string? directoryPath = Path.GetDirectoryName(_completedFilePath);
+        if (directoryPath != null) _ = Directory.CreateDirectory(directoryPath);
 
-            await File.Create(_completedFilePath).DisposeAsync();
-            await File.WriteAllTextAsync(_completedFilePath, "[]");
-        }
+        await File.Create(_completedFilePath).DisposeAsync();
+        await File.WriteAllTextAsync(_completedFilePath, "[]");
         return await File.ReadAllTextAsync(_completedFilePath);
     }
 

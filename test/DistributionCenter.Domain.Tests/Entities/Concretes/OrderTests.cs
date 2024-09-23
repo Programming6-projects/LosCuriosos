@@ -8,21 +8,26 @@ public class OrderTests
     public void Test_Order()
     {
         // Define Input and output
+        Guid expectedRouteId = new();
         Guid expectedClientId = new();
-        Guid expectedOrderStatusId = new();
+        Guid expectedDeliveryPointId = new();
         Order entity =
             new()
             {
+                RouteId = expectedRouteId,
                 ClientId = expectedClientId,
-                OrderStatusId = expectedOrderStatusId,
+                DeliveryPointId = expectedDeliveryPointId,
+                Status = Status.Pending,
             };
 
         // Execute actual operation
+        Guid routeId = entity.RouteId;
         Guid clientId = entity.ClientId;
-        Guid orderStatusId = entity.OrderStatusId;
+        Guid deliveryPointId = entity.DeliveryPointId;
 
         // Verify actual result
+        Assert.Equal(expectedRouteId, routeId);
         Assert.Equal(expectedClientId, clientId);
-        Assert.Equal(expectedOrderStatusId, orderStatusId);
+        Assert.Equal(expectedDeliveryPointId, deliveryPointId);
     }
 }

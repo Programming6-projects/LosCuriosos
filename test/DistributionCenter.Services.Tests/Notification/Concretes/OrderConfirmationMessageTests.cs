@@ -1,14 +1,12 @@
 namespace DistributionCenter.Services.Tests.Notification.Concretes;
 
-using DistributionCenter.Services.Notification.Concretes;
-
 public class OrderConfirmationMessageTests
 {
     [Fact]
     public void GetMessage_ReturnsExpectedMessage()
     {
         // Arrange
-        string orderId = "Test order ID";
+        Guid orderId = Guid.NewGuid();
         string expectedMessage =
             $@"
             <html>
@@ -48,7 +46,7 @@ public class OrderConfirmationMessageTests
     public void Subject_ReturnsExpectedSubject()
     {
         // Arrange
-        string orderId = "Test order ID";
+        Guid orderId = Guid.NewGuid();
         OrderConfirmationMessage message = new(orderId);
 
         // Act
