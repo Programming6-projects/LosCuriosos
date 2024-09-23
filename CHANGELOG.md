@@ -2,6 +2,39 @@
 
 
 
+# [1.5.0](https://github.com/Programming6-projects/LosCuriosos/compare/v1.4.0...v1.5.0) (2024-09-23)
+
+
+### Bug Fixes
+
+* remove unnecessary comments ([c92530d](https://github.com/Programming6-projects/LosCuriosos/commit/c92530d900a1d47ed693b653732467652005b694))
+* rename and change directions of file ([419cf6f](https://github.com/Programming6-projects/LosCuriosos/commit/419cf6fe1218dec389959257c5fc9f9a81c9da6c))
+* solve ishue related with test ([0399d7d](https://github.com/Programming6-projects/LosCuriosos/commit/0399d7d9dc282b3db90e21fd05d5733c5c3b670d))
+* solve observation related with to not update plate ([8f55e1d](https://github.com/Programming6-projects/LosCuriosos/commit/8f55e1deaa7964c16a59d2425cce5055928a3c87))
+* update all test with new dtos and validations ([03666e0](https://github.com/Programming6-projects/LosCuriosos/commit/03666e0d84c308a5268e3be8e082b6f1a77d4f6d))
+* update csproj removing unnecessary dependency ([8df672c](https://github.com/Programming6-projects/LosCuriosos/commit/8df672ce29d5b9c46d7f0ef855e9f6351feebf58))
+* updating branch ([92d1faf](https://github.com/Programming6-projects/LosCuriosos/commit/92d1faf1a3a8d819ea8427f30440541da0893cb7))
+* updating branch with develop ([0204581](https://github.com/Programming6-projects/LosCuriosos/commit/020458130401515221781a4145def52478e7e77e))
+
+
+### Features
+
+* add controler and repository for transport and inyect as a dependency ([bcaa8ff](https://github.com/Programming6-projects/LosCuriosos/commit/bcaa8ffce5d9f222466ab3c7692b6125b6c3d6e1))
+* add dependecy injection into asp net ([cf8b1c0](https://github.com/Programming6-projects/LosCuriosos/commit/cf8b1c0b515b7aafae76040faf4de71f24352d14))
+* add route management on API ([d8fed53](https://github.com/Programming6-projects/LosCuriosos/commit/d8fed5355281614d28e37a72e56c9f6b71fdfe25))
+* adding extenssion methods for validator bool ([cf442d2](https://github.com/Programming6-projects/LosCuriosos/commit/cf442d24c2165d7fab6af8aa13b20d7753750e4b))
+* **application:** update directory path into abtraction of file conecction ([790378a](https://github.com/Programming6-projects/LosCuriosos/commit/790378a2ed7b4aefa2fa38f9bd6843725afe2e47))
+* calculate best route service implementation ([ea054b9](https://github.com/Programming6-projects/LosCuriosos/commit/ea054b90344d00328ff9c42732dc582876db4b55))
+* correct Error Response ([8b74ca5](https://github.com/Programming6-projects/LosCuriosos/commit/8b74ca561be17aff6441065aa5b037fbba167be1))
+* generate test for dtos and validators for transports ([7e842ea](https://github.com/Programming6-projects/LosCuriosos/commit/7e842ea1fe190763dbe205f0493a20fefde6bdc9))
+* **infraestructure:** add dtos for create and update for transports ([c278884](https://github.com/Programming6-projects/LosCuriosos/commit/c278884ce793c56420ce3f945eb94dd6ffc9d113))
+* **infraestructure:** add validators for create and update for transports ([2ade63a](https://github.com/Programming6-projects/LosCuriosos/commit/2ade63a32b0dccb6b1f469e211b1f361cde420a7))
+* **infraestructure:** adding extension methods for IValidationBuilder type int? ([b94f2b7](https://github.com/Programming6-projects/LosCuriosos/commit/b94f2b70d4b58e0dcc3637e97ce7db8e1713f523))
+* **order status:** implementation of a endpoint to get the order status ([7e4e05f](https://github.com/Programming6-projects/LosCuriosos/commit/7e4e05fd64f5cdb160ad04ec5bd26f253c03e8e4))
+* **order status:** progress with order status feature ([099e1ac](https://github.com/Programming6-projects/LosCuriosos/commit/099e1ac5bc89c71800ffbfce02cf6f493d502ecb))
+* update test units and integrate more for new concretes ([5ea0c36](https://github.com/Programming6-projects/LosCuriosos/commit/5ea0c36512cd54b274808d1dc2860ee1dedc7777))
+* validation of each order on route ([d561f9f](https://github.com/Programming6-projects/LosCuriosos/commit/d561f9f9a2655f556410dab6392785e7d900b7c9))
+
 # [1.4.0](https://github.com/Programming6-projects/LosCuriosos/compare/v1.3.0...v1.4.0) (2024-09-18)
 
 
