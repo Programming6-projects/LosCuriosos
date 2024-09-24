@@ -42,13 +42,11 @@ public class OrderTests
             };
 
         // Execute actual operation
-        Guid routeId = entity.RouteId;
         Guid clientId = entity.ClientId;
         Status orderStatus = entity.Status;
         IReadOnlyList<OrderProduct> clientOrderProducts = entity.Products;
 
         // Verify actual result
-        Assert.Equal(expectedRouteId, routeId);
         Assert.Equal(expectedClientId, clientId);
         Assert.Equal(Status.Pending, orderStatus);
         _ = Assert.Single(clientOrderProducts);
