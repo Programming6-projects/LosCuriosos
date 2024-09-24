@@ -8,8 +8,6 @@ using DistributionCenter.Api.Controllers.Extensions;
 using DistributionCenter.Application.Repositories.Interfaces;
 using DistributionCenter.Commons.Results;
 using DistributionCenter.Domain.Entities.Concretes;
-using DistributionCenter.Domain.Entities.Enums;
-using DistributionCenter.Services.Notification;
 using DistributionCenter.Services.Notification.Interfaces;
 using Infraestructure.DTOs.Concretes.Orders;
 using Microsoft.AspNetCore.Mvc;

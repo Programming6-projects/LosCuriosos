@@ -1,8 +1,6 @@
 namespace DistributionCenter.Services.Tests.Notification;
 
 using DistributionCenter.Domain.Entities.Enums;
-using DistributionCenter.Services.Notification;
-using DistributionCenter.Services.Notification.Concretes;
 using DistributionCenter.Services.Notification.Interfaces;
 using Xunit;
 

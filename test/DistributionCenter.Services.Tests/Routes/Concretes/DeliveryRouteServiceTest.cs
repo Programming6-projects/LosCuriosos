@@ -4,9 +4,6 @@ using System.Net;
 using System.Text.Json;
 using Commons.Results;
 using Moq.Protected;
-using Services.Localization.Commons;
-using Services.Routes.Concretes;
-using Services.Routes.Dtos;
 
 public class DeliveryRouteServiceTest
 {

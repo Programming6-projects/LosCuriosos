@@ -1,6 +1,5 @@
 namespace DistributionCenter.Services.Tests.Distribution.Concretes.Components.OrdersParser.Concretes;
 
-using DistributionCenter.Services.Distribution.Concretes.Components.OrdersParser.Concretes;
 using Domain.Entities.Concretes;
 using Domain.Entities.Enums;
 

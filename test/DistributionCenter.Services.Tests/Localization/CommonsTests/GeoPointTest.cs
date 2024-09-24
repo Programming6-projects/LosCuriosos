@@ -1,7 +1,5 @@
 namespace DistributionCenter.Services.Tests.Localization.CommonsTests;
 
-using Services.Localization.Commons;
-
 public class GeoPointTest
 {
     [Fact]

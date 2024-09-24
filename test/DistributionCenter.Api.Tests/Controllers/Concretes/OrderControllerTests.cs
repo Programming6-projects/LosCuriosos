@@ -71,7 +71,6 @@ public class OrderControllerTests
         Client client =
             new()
             {
-                Id = order.ClientId,
                 Name = "Name",
                 LastName = "Last Name",
                 Email = "test@example.com",

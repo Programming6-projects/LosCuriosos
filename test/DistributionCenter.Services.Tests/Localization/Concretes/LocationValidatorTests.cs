@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Commons.Results;
 using DistributionCenter.Services.Localization.Concretes;
 using Moq.Protected;
-using Services.Localization.Commons;
 
 public class LocationValidatorTests
 {

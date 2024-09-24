@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS route (
     is_active BOOLEAN NOT NULL DEFAULT TRUE,
     created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMPTZ DEFAULT NULL,
-    transport_id UUID NOT NULL
+    transport_id UUID
 );
 
 CREATE TABLE IF NOT EXISTS delivery_point (
@@ -66,6 +66,9 @@ INSERT INTO client (id, name, last_name, email) VALUES
 
 INSERT INTO route (id, transport_id) VALUES
 ('907a1ffa-1075-46b1-ab0c-b97809967002', 'eca2e142-95e6-4f36-ae9b-6b0ff4eb63bc'),
+('84492af2-1cb2-417a-a750-e931e764470e', 'eab5c096-8bb4-4966-ae9c-2d58ecb4ae89'),
+('c327a84e-fbb6-4ffd-badd-a4793c2a0151', 'fa368cfc-05f0-4021-bcef-3f27c6df7092'),
+('4b9a14b7-b827-4349-a136-f369760576f5', '7f1c311d-e732-4dd1-9d4b-38490d2ff432'),
 ('d8a4c1ec-f80b-4e30-8c8e-8ce5cfe8c41a', '5e278c18-8041-4014-9fa7-5f8c72e20d8b');
 
 INSERT INTO delivery_point (id, latitude, longitude) VALUES

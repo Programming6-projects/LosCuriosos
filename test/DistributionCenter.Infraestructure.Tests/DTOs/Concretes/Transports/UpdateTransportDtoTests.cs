@@ -2,7 +2,6 @@ namespace DistributionCenter.Infraestructure.Tests.DTOs.Concretes.Transports;
 
 using Commons.Results;
 using Domain.Entities.Concretes;
-using Infraestructure.DTOs.Concretes.Transports;
 
 public class UpdateTransportDtoTests
 {
