@@ -45,6 +45,8 @@ public static class ApplicationBuilderConfiguration
                     Transport>>())},
                 { typeof(Order), new OrderTable(_.GetRequiredService<IDbConnectionFactory<
                     IDbConnection>>()) },
+                { typeof(OrderProduct), new OrderProductTable(_.GetRequiredService<IDbConnectionFactory<
+                    IDbConnection>>()) },
             }
         ));
 
@@ -55,6 +57,7 @@ public static class ApplicationBuilderConfiguration
     {
         _ = services.AddScoped<IRepository<Client>, ClientRepository>();
         _ = services.AddScoped<IRepository<Order>, OrderRepository>();
+        _ = services.AddScoped<IRepository<OrderProduct>, OrderProductRepository>();
         _ = services.AddScoped<IRepository<Product>, ProductRepository>();
         _ = services.AddScoped<IRepository<Transport>, TransportRepository>();
 
