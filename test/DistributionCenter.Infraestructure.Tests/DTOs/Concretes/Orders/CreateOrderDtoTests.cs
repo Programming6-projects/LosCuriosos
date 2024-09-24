@@ -13,22 +13,17 @@ public class CreateOrderDtoTests
         CreateOrderDto dto = new()
         {
             ClientId = Guid.NewGuid(),
-            Status = "Pending",
-            RouteId = Guid.NewGuid(),
             DeliveryPointId = Guid.NewGuid(),
-            ClientOrderProducts = new List<OrderProduct>()
+            OrderProducts = new List<OrderProductRequestDto>(),
         };
 
         // Execute actual operation
         Order client = dto.ToEntity();
 
         // Verify actual result
-        Assert.Equal(dto.RouteId, client.RouteId);
         Assert.Equal(dto.ClientId, client.ClientId);
-        Assert.Equal(dto.Status, client.Status.ToString());
-        Assert.Equal(dto.RouteId, client.RouteId);
         Assert.Equal(dto.DeliveryPointId, client.DeliveryPointId);
-        Assert.Equal(dto.ClientOrderProducts.Count, client.Products.Count);
+        Assert.Equal(dto.OrderProducts.Count, client.Products.Count);
     }
 
     [Fact]
@@ -39,19 +34,15 @@ public class CreateOrderDtoTests
         CreateOrderDto invalidDto = new()
         {
             ClientId = default,
-            Status = "X",
-            RouteId = default,
             DeliveryPointId = default,
-            ClientOrderProducts = new List<OrderProduct>(),
+            OrderProducts = new List<OrderProductRequestDto>(),
         };
 
         CreateOrderDto validDto = new()
         {
             ClientId = Guid.NewGuid(),
-            Status = "Pending",
-            RouteId = Guid.NewGuid(),
             DeliveryPointId = Guid.NewGuid(),
-            ClientOrderProducts = new List<OrderProduct>()
+            OrderProducts = new List<OrderProductRequestDto>(),
         };
 
         // Execute actual operation
