@@ -1,12 +1,12 @@
 namespace DistributionCenter.Application.Tests.Tables.Components.Information.Concretes;
 
-public class ProductTableInformationTests
+public class StrikeTableInformationTests
 {
-    private readonly ProductTableInformation _table;
+    private readonly StrikeTableInformation _table;
 
-    public ProductTableInformationTests()
+    public StrikeTableInformationTests()
     {
-        _table = new ProductTableInformation();
+        _table = new StrikeTableInformation();
     }
 
     [Fact]
@@ -14,7 +14,7 @@ public class ProductTableInformationTests
     {
         // Define Input and Output
         string result;
-        string expected = "product";
+        string expected = "strike";
 
         // Execute actual operation
         result = _table.TableName;
@@ -29,7 +29,7 @@ public class ProductTableInformationTests
         // Define Input and Output
         string result;
         string expected =
-            "id AS Id, name, description, weight_gr AS Weight, is_active AS IsActive, created_at AS CreatedAt, updated_at AS UpdatedAt";
+            "id AS Id, description, transport_id AS TransportId, is_active AS IsActive, created_at AS CreatedAt, updated_at AS UpdatedAt";
 
         // Execute actual operation
         result = _table.GetByIdFields;
@@ -43,7 +43,7 @@ public class ProductTableInformationTests
     {
         // Define Input and Output
         string result;
-        string expected = "id, name, description, weight_gr, is_active, created_at, updated_at";
+        string expected = "id, description, transport_id, is_active, created_at, updated_at";
 
         // Execute actual operation
         result = _table.CreateFields;
@@ -57,7 +57,7 @@ public class ProductTableInformationTests
     {
         // Define Input and Output
         string result;
-        string expected = "@Id, @Name, @Description, @Weight, @IsActive, @CreatedAt, @UpdatedAt";
+        string expected = "@Id, @Description, @TransportId, @IsActive, @CreatedAt, @UpdatedAt";
 
         // Execute actual operation
         result = _table.CreateValues;
@@ -72,7 +72,7 @@ public class ProductTableInformationTests
         // Define Input and Output
         string result;
         string expected =
-            "name = @Name, description = @Description, weight_gr = @Weight, is_active = @IsActive, updated_at = @UpdatedAt";
+            "description = @Description, transport_id = @TransportId, is_active = @IsActive, updated_at = @UpdatedAt";
 
         // Execute actual operation
         result = _table.UpdateFields;

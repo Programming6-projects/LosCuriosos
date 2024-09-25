@@ -12,9 +12,5 @@ public class UpdateStrikeValidator : BaseFluentValidator<UpdateStrikeDto>
             .WhenNotNull()
             .NotNullNotEmpty("The description can't be empty")
             .SizeRange(3, 128, "The description has a limit of 128 characters");
-
-        _ = RuleFor(static product => product.TransportId)
-            .WhenNotNull()
-            .NotNullNotEmtpy("The transport id can't be empty");
     }
 }
