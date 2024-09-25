@@ -6,5 +6,5 @@ using Localization.Commons;
 
 public interface IRouteService
 {
-    Task<Result<IReadOnlyList<WayPointDto>>> GetOptimalRoute(GeoPoint startPoint, IReadOnlyList<GeoPoint> geoPoints);
+    Task<Result<IReadOnlyList<WayPointDto>>> GetOptimalRoute(GeoPoint startPoint, IReadOnlyList<GeoPoint> geoPoints, DateTime startTime);
 }
