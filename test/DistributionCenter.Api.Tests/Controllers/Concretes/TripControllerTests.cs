@@ -1,6 +1,11 @@
 ﻿namespace DistributionCenter.Api.Tests.Controllers.Concretes;
 
+using Application.Constants;
+using Application.Contexts.Concretes;
 using Application.Repositories.Interfaces;
+using Application.Tables.Connections.Dapper.Concretes;
+using Application.Tables.Connections.File.Concretes;
+using Application.Tables.Core.Concretes;
 using Domain.Entities.Concretes;
 using Domain.Entities.Enums;
 using Microsoft.AspNetCore.Mvc;
@@ -14,6 +19,15 @@ public class TripControllerTests
     {
         _repositoryMock = new Mock<IRepository<Trip>>();
         _controllerMock = new TripController(_repositoryMock.Object);
+
+        _ = _repositoryMock.Setup(repo => repo.Context)
+            .Returns(new Context(
+                new Dictionary<Type, object>
+                {
+                    { typeof(Transport), new TransportTable(new JsonConnectionFactory<Transport>(
+                        DbConstants.TransportSchema)) },
+                    { typeof(Trip), new TripTable(new NpgqlConnectionFactory(DbConstants.DefaultConnectionStringPath)) }
+                }));
     }
 
     [Fact]

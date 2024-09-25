@@ -8,7 +8,7 @@ using DistributionCenter.Domain.Entities.Interfaces;
 public abstract class BaseRepository<T>(IContext context) : IRepository<T>
     where T : IEntity
 {
-    protected IContext Context { get; } = context;
+    public IContext Context { get; } = context;
 
     public virtual async Task<Result<T>> GetByIdAsync(Guid id)
     {
