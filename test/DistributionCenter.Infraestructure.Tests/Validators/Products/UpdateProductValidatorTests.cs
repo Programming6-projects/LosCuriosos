@@ -17,12 +17,14 @@ public class UpdateProductValidatorTests
         UpdateProductDto invalidDto = new()
         {
             Name = invalidName,
-            Description = "Some long and valid description"
+            Description = "Some long and valid description",
+            Weight = 1000
         };
         UpdateProductDto validDto = new()
         {
             Name = validName,
-            Description = "Some long and valid description"
+            Description = "Some long and valid description",
+            Weight = 1000
         };
 
         // Verify actual result
@@ -43,12 +45,14 @@ public class UpdateProductValidatorTests
         UpdateProductDto invalidDto = new()
         {
             Name = invalidName,
-            Description = "Some long and valid description"
+            Description = "Some long and valid description",
+            Weight = 1000
         };
         UpdateProductDto validDto = new()
         {
             Name = validName,
-            Description = "Some long and valid description"
+            Description = "Some long and valid description",
+            Weight = 1000
         };
 
         // Verify actual result
@@ -68,12 +72,14 @@ public class UpdateProductValidatorTests
         UpdateProductDto invalidDto = new()
         {
             Name = "Pepsi Zero 2Lts",
-            Description = invalidDescription
+            Description = invalidDescription,
+            Weight = 1000
         };
         UpdateProductDto validDto = new()
         {
             Name = "Pepsi Zero 2Lts",
-            Description = validDescription
+            Description = validDescription,
+            Weight = 1000
         };
 
         // Verify actual result
@@ -96,12 +102,14 @@ public class UpdateProductValidatorTests
         UpdateProductDto invalidDto = new()
         {
             Name = "Pepsi Zero 2Lts",
-            Description = invalidDescription
+            Description = invalidDescription,
+            Weight = 1000
         };
         UpdateProductDto validDto = new()
         {
             Name = "Pepsi Zero 2Lts",
-            Description = validDescription
+            Description = validDescription,
+            Weight = 1000
         };
 
         // Verify actual result
