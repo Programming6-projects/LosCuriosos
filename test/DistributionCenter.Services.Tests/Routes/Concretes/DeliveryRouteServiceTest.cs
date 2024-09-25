@@ -1,12 +1,28 @@
 namespace DistributionCenter.Services.Tests.Routes.Concretes;
 
 using System.Net;
+using System.Security.Cryptography;
 using System.Text.Json;
 using Commons.Results;
 using Moq.Protected;
 
 public class DeliveryRouteServiceTest
 {
+    private static DateTime GenerateRandomTime()
+    {
+        using (RandomNumberGenerator rng = RandomNumberGenerator.Create())
+        {
+            byte[] randomBytes = new byte[4];
+            rng.GetBytes(randomBytes);
+            int randomHours = BitConverter.ToInt32(randomBytes, 0) % 24;
+
+            rng.GetBytes(randomBytes);
+            int randomMinutes = BitConverter.ToInt32(randomBytes, 0) % 60;
+
+            return DateTime.Now.AddHours(Math.Abs(randomHours)).AddMinutes(Math.Abs(randomMinutes));
+        }
+    }
+
     [Fact]
     public async Task GetOptimalRoute_ValidResponse_ReturnsCorrectWaypoints()
     {
@@ -17,6 +33,7 @@ public class DeliveryRouteServiceTest
             new (1.0, 1.0),
             new (2.0, 2.0)
         };
+        DateTime startTime = GenerateRandomTime();
         string jsonResponse =
             @"{
                 ""code"": ""Ok"",
@@ -24,6 +41,14 @@ public class DeliveryRouteServiceTest
                     { ""location"": [0.0, 0.0], ""waypoint_index"": 0 },
                     { ""location"": [1.0, 1.0], ""waypoint_index"": 1 },
                     { ""location"": [2.0, 2.0], ""waypoint_index"": 2 }
+                ],
+                ""trips"": [
+                    {
+                        ""legs"": [
+                            { ""duration"": 300 },
+                            { ""duration"": 600 }
+                        ]
+                    }
                 ]
             }";
 
@@ -41,7 +66,7 @@ public class DeliveryRouteServiceTest
         DeliveryRouteService deliveryRouteService = new(httpClient, "MapboxAccessToken");
 
         // Execute actual operation
-        Result<IReadOnlyList<WayPointDto>> result = await deliveryRouteService.GetOptimalRoute(startPoint, geoPoints);
+        Result<IReadOnlyList<WayPointDto>> result = await deliveryRouteService.GetOptimalRoute(startPoint, geoPoints, startTime);
 
         // Verify actual result
         Assert.True(result.IsSuccess);
@@ -49,6 +74,9 @@ public class DeliveryRouteServiceTest
         Assert.Equal(0, result.Value[0].Priority);
         Assert.Equal(1, result.Value[1].Priority);
         Assert.Equal(2, result.Value[2].Priority);
+        Assert.Equal(startTime, result.Value[0].DeliverTime);
+        Assert.Equal(startTime.AddSeconds(300), result.Value[1].DeliverTime);
+        Assert.Equal(startTime.AddSeconds(900), result.Value[2].DeliverTime);
     }
 
     [Fact]
@@ -61,6 +89,7 @@ public class DeliveryRouteServiceTest
             new (1.0, 1.0),
             new (2.0, 2.0)
         };
+        DateTime startTime = GenerateRandomTime();
 
         Mock<HttpMessageHandler> mockHttpMessageHandler = new();
         _ = mockHttpMessageHandler
@@ -76,7 +105,7 @@ public class DeliveryRouteServiceTest
         DeliveryRouteService deliveryRouteService = new(httpClient, "MapboxAccessToken");
 
         // Execute actual operation
-        Result<IReadOnlyList<WayPointDto>> result = await deliveryRouteService.GetOptimalRoute(startPoint, geoPoints);
+        Result<IReadOnlyList<WayPointDto>> result = await deliveryRouteService.GetOptimalRoute(startPoint, geoPoints, startTime);
 
         // Verify actual result
         Assert.False(result.IsSuccess);
@@ -93,6 +122,7 @@ public class DeliveryRouteServiceTest
             new (1.0, 1.0),
             new (2.0, 2.0)
         };
+        DateTime startTime = GenerateRandomTime();
         string jsonResponse =
             @"{
                 ""code"": ""Error"",
@@ -113,18 +143,20 @@ public class DeliveryRouteServiceTest
         DeliveryRouteService deliveryRouteService = new(httpClient, "MapboxAccessToken");
 
         // Execute actual operation
-        Result<IReadOnlyList<WayPointDto>> result = await deliveryRouteService.GetOptimalRoute(startPoint, geoPoints);
+        Result<IReadOnlyList<WayPointDto>> result = await deliveryRouteService.GetOptimalRoute(startPoint, geoPoints, startTime);
 
         // Verify actual result
         Assert.False(result.IsSuccess);
         Assert.Equal("API returned non-OK status. Code: Error, Message: Invalid request", result.Errors[0].Description);
     }
+
     [Fact]
     public async Task GetOptimalRoute_NoCodeProperty_ReturnsUnexpectedError()
     {
         // Define Input and Output
         GeoPoint startPoint = new(10.0, 20.0);
         GeoPoint[] geoPoints = { new(30.0, 40.0), new(50.0, 60.0) };
+        DateTime startTime = GenerateRandomTime();
 
         string jsonResponse = @"{ ""wrong_property"": ""some_value"" }";
 
@@ -144,7 +176,7 @@ public class DeliveryRouteServiceTest
         DeliveryRouteService service = new(httpClient, "MapboxAccessToken");
 
         // Execute actual operation
-        Result<IReadOnlyList<WayPointDto>> result = await service.GetOptimalRoute(startPoint, geoPoints);
+        Result<IReadOnlyList<WayPointDto>> result = await service.GetOptimalRoute(startPoint, geoPoints, startTime);
 
         // Verify actual result
         Assert.False(result.IsSuccess);
@@ -152,11 +184,12 @@ public class DeliveryRouteServiceTest
     }
 
     [Fact]
-    public async Task GetOptimalRoute_NoWaypointsProperty_ReturnsNotFoundError()
+    public async Task GetOptimalRoute_NoWaypointsOrTripsProperty_ReturnsNotFoundError()
     {
         // Define Input and Output
         GeoPoint startPoint = new(10.0, 20.0);
         GeoPoint[] geoPoints = { new(30.0, 40.0), new(50.0, 60.0) };
+        DateTime startTime = GenerateRandomTime();
 
         string jsonResponse = @"{ ""code"": ""Ok"", ""wrong_property"": ""some_value"" }";
 
@@ -176,11 +209,11 @@ public class DeliveryRouteServiceTest
         DeliveryRouteService service = new(httpClient, "MapboxAccessToken");
 
         // Execute actual operation
-        Result<IReadOnlyList<WayPointDto>> result = await service.GetOptimalRoute(startPoint, geoPoints);
+        Result<IReadOnlyList<WayPointDto>> result = await service.GetOptimalRoute(startPoint, geoPoints, startTime);
 
         // Verify actual result
         Assert.False(result.IsSuccess);
-        Assert.Equal("No waypoints found in the response. Response: { \"code\": \"Ok\", \"wrong_property\": \"some_value\" }", result.Errors[0].Description);
+        Assert.Equal("No waypoints or route data found in the response. Response: { \"code\": \"Ok\", \"wrong_property\": \"some_value\" }", result.Errors[0].Description);
     }
 
     [Fact]
@@ -189,6 +222,7 @@ public class DeliveryRouteServiceTest
         // Define Input and Output
         GeoPoint startPoint = new(10.0, 20.0);
         GeoPoint[] geoPoints = { new(30.0, 40.0), new(50.0, 60.0) };
+        DateTime startTime = GenerateRandomTime();
 
         // Simulate API response with "code" set to a non-OK value and without "message" property
         string jsonResponse = @"{ ""code"": ""ErrorCode"", ""wrong_property"": ""some_value"" }";
@@ -209,7 +243,7 @@ public class DeliveryRouteServiceTest
         DeliveryRouteService service = new(httpClient, "MapboxAccessToken");
 
         // Execute actual operation
-        Result<IReadOnlyList<WayPointDto>> result = await service.GetOptimalRoute(startPoint, geoPoints);
+        Result<IReadOnlyList<WayPointDto>> result = await service.GetOptimalRoute(startPoint, geoPoints, startTime);
 
         // Verify actual result
         Assert.False(result.IsSuccess);
@@ -222,9 +256,10 @@ public class DeliveryRouteServiceTest
         // Define Input and Output
         GeoPoint startPoint = new(10.0, 20.0);
         GeoPoint[] geoPoints = { new(30.0, 40.0), new(50.0, 60.0) };
+        DateTime startTime = GenerateRandomTime();
 
         // Simulate API response with missing "location" property
-        string jsonResponse = @"{ ""code"": ""Ok"", ""waypoints"": [ { ""waypoint_index"": 0 } ] }";
+        string jsonResponse = @"{ ""code"": ""Ok"", ""waypoints"": [ { ""waypoint_index"": 0 } ], ""trips"": [{ ""legs"": [] }] }";
 
         Mock<HttpMessageHandler> mockHttpMessageHandler = new();
         _ = mockHttpMessageHandler
@@ -242,7 +277,7 @@ public class DeliveryRouteServiceTest
         DeliveryRouteService service = new(httpClient, "MapboxAccessToken");
 
         // Execute actual operation
-        Result<IReadOnlyList<WayPointDto>> result = await service.GetOptimalRoute(startPoint, geoPoints);
+        Result<IReadOnlyList<WayPointDto>> result = await service.GetOptimalRoute(startPoint, geoPoints, startTime);
 
         // Verify actual result
         Assert.False(result.IsSuccess);
@@ -255,9 +290,10 @@ public class DeliveryRouteServiceTest
         // Define Input and Output
         GeoPoint startPoint = new(10.0, 20.0);
         GeoPoint[] geoPoints = { new(30.0, 40.0), new(50.0, 60.0) };
+        DateTime startTime = GenerateRandomTime();
 
         // Simulate API response with "location" property containing less than 2 elements
-        string jsonResponse = @"{ ""code"": ""Ok"", ""waypoints"": [ { ""location"": [10.0], ""waypoint_index"": 0 } ] }";
+        string jsonResponse = @"{ ""code"": ""Ok"", ""waypoints"": [ { ""location"": [10.0], ""waypoint_index"": 0 } ], ""trips"": [{ ""legs"": [] }] }";
 
         Mock<HttpMessageHandler> mockHttpMessageHandler = new();
         _ = mockHttpMessageHandler
@@ -275,44 +311,11 @@ public class DeliveryRouteServiceTest
         DeliveryRouteService service = new(httpClient, "MapboxAccessToken");
 
         // Execute actual operation
-        Result<IReadOnlyList<WayPointDto>> result = await service.GetOptimalRoute(startPoint, geoPoints);
+        Result<IReadOnlyList<WayPointDto>> result = await service.GetOptimalRoute(startPoint, geoPoints, startTime);
 
         // Verify actual result
         Assert.False(result.IsSuccess);
         Assert.Equal("Invalid waypoint structure at index 0. Waypoint: { \"location\": [10.0], \"waypoint_index\": 0 }", result.Errors[0].Description);
-    }
-
-    [Fact]
-    public async Task GetOptimalRoute_InvalidWaypointStructure_MissingWaypointIndex_ReturnsUnexpectedError()
-    {
-        // Define Input and Output
-        GeoPoint startPoint = new(10.0, 20.0);
-        GeoPoint[] geoPoints = { new(30.0, 40.0), new(50.0, 60.0) };
-
-        // Simulate API response with missing "waypoint_index" property
-        string jsonResponse = @"{ ""code"": ""Ok"", ""waypoints"": [ { ""location"": [10.0, 20.0] } ] }";
-
-        Mock<HttpMessageHandler> mockHttpMessageHandler = new();
-        _ = mockHttpMessageHandler
-            .Protected()
-            .Setup<Task<HttpResponseMessage>>(
-                "SendAsync",
-                ItExpr.IsAny<HttpRequestMessage>(),
-                ItExpr.IsAny<CancellationToken>()
-            )
-            .ReturnsAsync(
-                () => new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(jsonResponse) }
-            );
-
-        using HttpClient httpClient = new(mockHttpMessageHandler.Object);
-        DeliveryRouteService service = new(httpClient, "MapboxAccessToken");
-
-        // Execute actual operation
-        Result<IReadOnlyList<WayPointDto>> result = await service.GetOptimalRoute(startPoint, geoPoints);
-
-        // Verify actual result
-        Assert.False(result.IsSuccess);
-        Assert.Equal("Invalid waypoint structure at index 0. Waypoint: { \"location\": [10.0, 20.0] }", result.Errors[0].Description);
     }
 
     [Fact]

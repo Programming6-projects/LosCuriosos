@@ -11,7 +11,7 @@ public class DeliveryRouteService(HttpClient httpClient, string mapboxAccessToke
 {
     private const string BaseUrl = "https://api.mapbox.com/optimized-trips/v1/mapbox/driving/";
 
-    public async Task<Result<IReadOnlyList<WayPointDto>>> GetOptimalRoute(GeoPoint startPoint, IReadOnlyList<GeoPoint> geoPoints)
+    public async Task<Result<IReadOnlyList<WayPointDto>>> GetOptimalRoute(GeoPoint startPoint, IReadOnlyList<GeoPoint> geoPoints, DateTime startTime)
     {
         string url = BuildUrl(startPoint, geoPoints);
         HttpResponseMessage response = await SendRequest(url);
@@ -22,7 +22,7 @@ public class DeliveryRouteService(HttpClient httpClient, string mapboxAccessToke
         }
 
         string jsonResponse = await response.Content.ReadAsStringAsync();
-        return ParseResponse(jsonResponse);
+        return ParseResponse(jsonResponse, startTime);
     }
 
     private string BuildUrl(GeoPoint startPoint, IReadOnlyList<GeoPoint> geoPoints)
@@ -31,7 +31,7 @@ public class DeliveryRouteService(HttpClient httpClient, string mapboxAccessToke
         allPoints.AddRange(geoPoints);
 
         string coordinates = string.Join(";", allPoints.Select(p => $"{p.Longitude},{p.Latitude}"));
-        return $"{BaseUrl}{coordinates}?access_token={mapboxAccessToken}&geometries=geojson&source=first&destination=last";
+        return $"{BaseUrl}{coordinates}?access_token={mapboxAccessToken}&geometries=geojson&source=first&destination=last&annotations=duration";
     }
 
     private async Task<HttpResponseMessage> SendRequest(string url)
@@ -39,7 +39,7 @@ public class DeliveryRouteService(HttpClient httpClient, string mapboxAccessToke
         return await httpClient.GetAsync(new Uri(url));
     }
 
-    private static Result<IReadOnlyList<WayPointDto>> ParseResponse(string jsonResponse)
+    private static Result<IReadOnlyList<WayPointDto>> ParseResponse(string jsonResponse, DateTime startTime)
     {
         using JsonDocument document = JsonDocument.Parse(jsonResponse);
         JsonElement root = document.RootElement;
@@ -55,26 +55,21 @@ public class DeliveryRouteService(HttpClient httpClient, string mapboxAccessToke
             return HandleNonOkStatus(root, code);
         }
 
-        if (!root.TryGetProperty("waypoints", out JsonElement waypointsElement))
+        if (!root.TryGetProperty("waypoints", out JsonElement waypointsElement) ||
+            !root.TryGetProperty("trips", out JsonElement tripsElement) ||
+            tripsElement.GetArrayLength() == 0 ||
+            !tripsElement[0].TryGetProperty("legs", out JsonElement legsElement))
         {
-            return Error.NotFound(description: $"No waypoints found in the response. Response: {jsonResponse}");
+            return Error.NotFound(description: $"No waypoints or route data found in the response. Response: {jsonResponse}");
         }
 
-        return ParseWaypoints(waypointsElement);
+        return ParseWaypointsWithDurations(waypointsElement, legsElement, startTime);
     }
 
-    private static Result<IReadOnlyList<WayPointDto>> HandleNonOkStatus(JsonElement root, string? code)
-    {
-        string errorMessage = root.TryGetProperty("message", out JsonElement messageElement)
-            ? messageElement.GetString() ?? "Unknown error"
-            : "Unknown error";
-
-        return Error.Unexpected(description: $"API returned non-OK status. Code: {code}, Message: {errorMessage}");
-    }
-
-    private static Result<IReadOnlyList<WayPointDto>> ParseWaypoints(JsonElement waypointsElement)
+    private static Result<IReadOnlyList<WayPointDto>> ParseWaypointsWithDurations(JsonElement waypointsElement, JsonElement legsElement, DateTime startTime)
     {
         List<WayPointDto> waypoints = new();
+        DateTime currentDeliverTime = startTime;
 
         for (int i = 0; i < waypointsElement.GetArrayLength(); i++)
         {
@@ -92,12 +87,32 @@ public class DeliveryRouteService(HttpClient httpClient, string mapboxAccessToke
             int waypointIndex = indexElement.GetInt32();
 
             GeoPoint point = new(latitude, longitude);
-            WayPointDto waypointDto = new(point, waypointIndex);
+            WayPointDto waypointDto = new(point, waypointIndex)
+            {
+                DeliverTime = currentDeliverTime
+            };
             waypoints.Add(waypointDto);
+
+            if (i < legsElement.GetArrayLength())
+            {
+                JsonElement leg = legsElement[i];
+                if (leg.TryGetProperty("duration", out JsonElement durationElement))
+                {
+                    double durationInSeconds = durationElement.GetDouble();
+                    currentDeliverTime = currentDeliverTime.AddSeconds(durationInSeconds);
+                }
+            }
         }
 
-        waypoints = waypoints.OrderBy(w => w.Priority).ToList();
+        return waypoints.OrderBy(w => w.Priority).ToList();
+    }
 
-        return waypoints;
+    private static Result<IReadOnlyList<WayPointDto>> HandleNonOkStatus(JsonElement root, string? code)
+    {
+        string errorMessage = root.TryGetProperty("message", out JsonElement messageElement)
+            ? messageElement.GetString() ?? "Unknown error"
+            : "Unknown error";
+
+        return Error.Unexpected(description: $"API returned non-OK status. Code: {code}, Message: {errorMessage}");
     }
 }
