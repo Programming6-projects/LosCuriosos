@@ -17,6 +17,7 @@ public class OrderController(
     IRepository<Order> orderRepository,
     IRepository<OrderProduct> orderProductRepository,
     IRepository<Product> productRepository,
+    IRepository<DeliveryPoint> deliveryPointRepository,
     IRepository<Client> clientRepository,
     IEmailService emailService
 ) : BaseEntityController<Order, CreateOrderDto, UpdateOrderDto>(orderRepository)
@@ -78,6 +79,16 @@ public class OrderController(
                 return this.ErrorsResponse(errors);
             }
         }
+
+        Result<DeliveryPoint> coordinates = await deliveryPointRepository.GetByIdAsync(request.DeliveryPointId);
+        if (!coordinates.IsSuccess)
+        {
+            IError error = Error.NotFound();
+            List<IError> errors = new();
+            errors.Add(error);
+            return this.ErrorsResponse(errors);
+        }
+
         Order entity = request.ToEntity();
 
         Result<Order> result = await Repository.CreateAsync(entity);
