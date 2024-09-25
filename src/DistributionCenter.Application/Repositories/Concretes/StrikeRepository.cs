@@ -16,13 +16,6 @@ public class StrikeRepository(IContext context) : BaseRepository<Strike>(context
             return resultStrikes.Errors;
         }
 
-        IEnumerable<Strike> transportStrikes = resultStrikes.Value.Where(s => s.TransportId == entity.TransportId);
-
-        if (transportStrikes.Count(static s => s.IsActive) < 3)
-        {
-            return Result.Ok();
-        }
-
         Result<Transport> resultTransport = await Context
             .SetTable<Transport>()
             .GetById(entity.TransportId)
@@ -34,6 +27,20 @@ public class StrikeRepository(IContext context) : BaseRepository<Strike>(context
         }
 
         Transport transport = resultTransport.Value;
+
+        IEnumerable<Strike> transportStrikes = resultStrikes.Value.Where(s => s.TransportId == transport.Id);
+
+        if (transportStrikes.Count(static s => s.IsActive) < 3)
+        {
+            if (transport.IsAvailable)
+            {
+                return Result.Ok();
+            }
+
+            transport.IsAvailable = true;
+
+            return await Context.SetTable<Transport>().Update(transport).ExecuteAsync();
+        }
 
         transport.IsAvailable = false;
 
