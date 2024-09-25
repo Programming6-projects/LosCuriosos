@@ -13,6 +13,7 @@ public class OrderControllerTests
     private readonly Mock<IRepository<Order>> _orderRepositoryMock;
     private readonly Mock<IRepository<OrderProduct>> _orderProductRepository;
     private readonly Mock<IRepository<Product>> _productRepository;
+    private readonly Mock<IRepository<DeliveryPoint>> _deliveryPointRepository;
     private readonly Mock<IRepository<Client>> _clientRepositoryMock;
     private readonly Mock<IEmailService> _emailServiceMock;
     private readonly OrderController _controller;
@@ -22,12 +23,14 @@ public class OrderControllerTests
         _orderRepositoryMock = new Mock<IRepository<Order>>();
         _orderProductRepository = new Mock<IRepository<OrderProduct>>();
         _productRepository = new Mock<IRepository<Product>>();
+        _deliveryPointRepository = new Mock<IRepository<DeliveryPoint>>();
         _clientRepositoryMock = new Mock<IRepository<Client>>();
         _emailServiceMock = new Mock<IEmailService>();
         _controller = new OrderController(
             _orderRepositoryMock.Object,
             _orderProductRepository.Object,
             _productRepository.Object,
+            _deliveryPointRepository.Object,
             _clientRepositoryMock.Object,
             _emailServiceMock.Object
         );
