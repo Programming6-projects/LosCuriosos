@@ -23,6 +23,16 @@ public abstract class BaseDapperTable<T>(IDbConnectionFactory<IDbConnection> dbC
         );
     }
 
+    public SelectGroupDapperQuery<T> SelectWhere(Func<T, bool> predicate)
+    {
+        return new SelectGroupDapperQuery<T>(
+            DbConnectionFactory,
+            GetInformation().TableName,
+            GetInformation().GetByIdFields,
+            predicate
+            );
+    }
+
     public ICommand Create(T entity)
     {
         return new CreateDapperCommand<T>(

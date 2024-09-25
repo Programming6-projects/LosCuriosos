@@ -30,4 +30,11 @@ public abstract class BaseRepository<T>(IContext context) : IRepository<T>
 
         return result.Match<Result<T>>(() => entity, errors => errors);
     }
+
+    public async Task<Result<IEnumerable<T>>> SelectWhereAsync(Func<T, bool> predicate)
+    {
+        Result<IEnumerable<T>> result = await Context.SetTable<T>().SelectWhere(predicate).ExecuteAsync();
+
+        return result.Match<Result<IEnumerable<T>>>(() => result, errors => errors);
+    }
 }

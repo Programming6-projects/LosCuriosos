@@ -11,4 +11,5 @@ public interface IRepository<T>
     Task<Result<T>> GetByIdAsync(Guid id);
     Task<Result<T>> CreateAsync(T entity);
     Task<Result<T>> UpdateAsync(T entity);
+    Task<Result<IEnumerable<T>>> SelectWhereAsync(Func<T, bool> predicate);
 }

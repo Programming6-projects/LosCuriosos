@@ -1,6 +1,7 @@
 namespace DistributionCenter.Application.Tables.Core.Bases;
 
 using Components.Information.Interfaces;
+using Components.QueryCommands.Concretes.Dapper.Concretes;
 using Components.QueryCommands.Concretes.File.Concretes;
 using Components.QueryCommands.Interfaces;
 using Connections.File.Interfaces;
@@ -15,6 +16,11 @@ public abstract class BaseFileTable<T>(IFileConnectionFactory<T> fileConnectionF
     public IQuery<T> GetById(Guid id)
     {
         return new GetByIdJsonQuery<T>(FileConnectionFactory, id);
+    }
+
+    public SelectGroupDapperQuery<T> SelectWhere(Func<T, bool> predicate)
+    {
+        throw new NotImplementedException();
     }
 
     public ICommand Create(T entity)
