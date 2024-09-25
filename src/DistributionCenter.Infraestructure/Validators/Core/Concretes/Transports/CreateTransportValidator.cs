@@ -9,14 +9,14 @@ public class CreateTransportValidator : BaseFluentValidator<CreateTransportDto>
     public CreateTransportValidator()
     {
         _ = RuleFor(static transport => transport.Name)!
-            .WhenNotNull()
+            .NotNullNotEmpty("Name is required")
             .SizeRange(1, 20, "Name must be between 1 and 20 characters")
             .RegexValidator(
                 @"^[a-zA-Z0-9\s]+$",
                 "Name must contain letters, numbers and spaces");
 
         _ = RuleFor(static transport => transport.Plate)!
-            .WhenNotNull()
+            .NotNullNotEmpty("Plate is required")
             .SizeRange(4, 7, "Plate must be between 4 and 7 characters")
             .RegexValidator(
                 @"^[0-9]{1,4}[A-Z]{3}$",
