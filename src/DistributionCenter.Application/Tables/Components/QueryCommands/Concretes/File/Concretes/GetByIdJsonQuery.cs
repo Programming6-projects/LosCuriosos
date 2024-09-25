@@ -7,7 +7,7 @@ using Connections.File.Interfaces;
 using Domain.Entities.Interfaces;
 
 public class GetByIdJsonQuery<T>(IFileConnectionFactory<T> fileConnectionFactory, Guid id)
-    : BaseJsonQuery<T>(fileConnectionFactory)
+    : BaseJsonQuery<T, T>(fileConnectionFactory)
     where T : IEntity
 {
     private Guid Id { get; } = id;
@@ -18,9 +18,9 @@ public class GetByIdJsonQuery<T>(IFileConnectionFactory<T> fileConnectionFactory
 
         if (entity is null)
         {
-            return Task.FromResult<Result<T>>(Error.NotFound(
-                code: "ENTITY_NOT_FOUND",
-                description: $"The {typeof(T).Name} was not found."));
+            return Task.FromResult<Result<T>>(
+                Error.NotFound(code: "ENTITY_NOT_FOUND", description: $"The {typeof(T).Name} was not found.")
+            );
         }
 
         return Task.FromResult<Result<T>>(entity);

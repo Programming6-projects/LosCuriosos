@@ -19,7 +19,7 @@ public abstract class BaseFileTable<T>(IFileConnectionFactory<T> fileConnectionF
 
     public IQuery<IEnumerable<T>> GetAll()
     {
-        throw new NotImplementedException();
+        return new GetAllJsonQuery<T>(FileConnectionFactory);
     }
 
     public ICommand Create(T entity)
