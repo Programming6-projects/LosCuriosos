@@ -47,6 +47,24 @@ public static partial  class ValidationExtensions
         return builder.When(static x => x != null);
     }
 
+    public static IValidationBuilder<double?> WhenNotNull(this IValidationBuilder<double?> builder)
+    {
+        ArgumentNullException.ThrowIfNull(builder, nameof(builder));
+        return builder.When(static x => x != null);
+    }
+
+    public static IValidationBuilder<double> WhenNotEmpty(this IValidationBuilder<double> builder)
+    {
+        ArgumentNullException.ThrowIfNull(builder, nameof(builder));
+        return builder.When(static x => x != 0);
+    }
+
+    public static IValidationBuilder<double?> WhenNotEmpty(this IValidationBuilder<double?> builder)
+    {
+        ArgumentNullException.ThrowIfNull(builder, nameof(builder));
+        return builder.When(static x => x != 0);
+    }
+
     public static IValidationBuilder<int?> NumberRange(
         this IValidationBuilder<int?> builder,
         uint? min,
