@@ -18,5 +18,10 @@ public class UpdateProductValidator : BaseFluentValidator<UpdateProductDto>
         _ = RuleFor(static product => product.Description)!
             .WhenNotNull()
             .SizeRange(3, 128, "The description has a limit of 128 characters");
+
+        _ = RuleFor(static product => product.Weight)
+            .WhenNotNull()
+            .NonNegatives("The weight can't be a negative number")
+            .NumberRange(0, 1000000, "The weight has a limit of 1000000 gr/ml");
     }
 }
