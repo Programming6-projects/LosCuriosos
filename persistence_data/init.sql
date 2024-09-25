@@ -14,7 +14,16 @@ CREATE TABLE IF NOT EXISTS route (
     is_active BOOLEAN NOT NULL DEFAULT TRUE,
     created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMPTZ DEFAULT NULL,
-    transport_id UUID
+    transport_id UUID NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS strike (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    description TEXT NOT NULL,
+    is_active BOOLEAN NOT NULL DEFAULT TRUE,
+    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMPTZ DEFAULT NULL,
+    transport_id UUID NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS delivery_point (
@@ -70,6 +79,15 @@ INSERT INTO route (id, transport_id) VALUES
 ('c327a84e-fbb6-4ffd-badd-a4793c2a0151', 'fa368cfc-05f0-4021-bcef-3f27c6df7092'),
 ('4b9a14b7-b827-4349-a136-f369760576f5', '7f1c311d-e732-4dd1-9d4b-38490d2ff432'),
 ('d8a4c1ec-f80b-4e30-8c8e-8ce5cfe8c41a', '5e278c18-8041-4014-9fa7-5f8c72e20d8b');
+
+INSERT INTO strike (id, description, transport_id) VALUES
+('176b62f0-982c-4140-917b-aede8fd47da0', 'The Transport was behind schedule 24/09/24', 'eca2e142-95e6-4f36-ae9b-6b0ff4eb63bc'),
+('f891b54e-e5be-4fb4-967c-8eb81f0c8f33', 'The Transport was behind schedule 22/09/24', 'eca2e142-95e6-4f36-ae9b-6b0ff4eb63bc'),
+('9fb294d0-4d44-4384-837d-967715b1077e', 'The Transport was behind schedule 02/09/24', 'eca2e142-95e6-4f36-ae9b-6b0ff4eb63bc'),
+('55d3d6ee-2e7d-41cf-8e34-b0e4ee3166b5', 'The Transport was behind schedule 15/09/24', 'eab5c096-8bb4-4966-ae9c-2d58ecb4ae89'),
+('cc8e071d-bb65-4d98-98d6-76dca01c0c3d', 'The Transport was behind schedule 17/09/24', 'fa368cfc-05f0-4021-bcef-3f27c6df7092'),
+('028b54c8-ec30-4e4e-a7ef-6aeb12d9060e', 'The Transport was behind schedule 18/09/24', '7f1c311d-e732-4dd1-9d4b-38490d2ff432'),
+('f703575b-bb2c-4f7f-b2ff-ab06f4c5d369', 'The Transport was behind schedule 12/09/24', '5e278c18-8041-4014-9fa7-5f8c72e20d8b');
 
 INSERT INTO delivery_point (id, latitude, longitude) VALUES
 ('e4eadcca-bd02-4f94-aae0-dd469300aa75', -16.500000, -68.150000),

@@ -17,14 +17,14 @@ public abstract class BaseRepository<T>(IContext context) : IRepository<T>
         return entity.Match(success => entity, errors => errors);
     }
 
-    public async Task<Result<T>> CreateAsync(T entity)
+    public virtual async Task<Result<T>> CreateAsync(T entity)
     {
         Result result = await Context.SetTable<T>().Create(entity).ExecuteAsync();
 
         return result.Match<Result<T>>(() => entity, errors => errors);
     }
 
-    public async Task<Result<T>> UpdateAsync(T entity)
+    public virtual async Task<Result<T>> UpdateAsync(T entity)
     {
         Result result = await Context.SetTable<T>().Update(entity).ExecuteAsync();
 
