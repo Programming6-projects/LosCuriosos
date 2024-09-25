@@ -25,8 +25,8 @@ public class OrderCancelledMessageTests
                         <h1>Order Cancelled</h1>
                     </div>
                     <div class='content'>
-                        <p>We regret to inform you that your order with ID <strong>{orderId}</strong> has been cancelled.</p>
-                        <p>If you have any questions, please contact our support team.</p>
+                        <p>Your order with ID <strong>{orderId}</strong> has been cancelled.</p>
+                        <p>If you have any questions, please contact our support team at <a href='mailto:loscuriosos63@gmail.com'>loscuriosos63@gmail.com</a>.</p>
                     </div>
                     <div class='footer'>
                         <p>We apologize for any inconvenience caused.</p>
@@ -54,6 +54,6 @@ public class OrderCancelledMessageTests
         string result = message.Subject;
 
         // Assert
-        Assert.Equal("Order Processing Error", result);
+        Assert.Equal("Order Cancelled", result);
     }
 }
