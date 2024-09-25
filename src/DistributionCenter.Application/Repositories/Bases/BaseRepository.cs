@@ -1,5 +1,6 @@
 namespace DistributionCenter.Application.Repositories.Bases;
 
+using System.Collections.Generic;
 using DistributionCenter.Application.Contexts.Interfaces;
 using DistributionCenter.Application.Repositories.Interfaces;
 using DistributionCenter.Commons.Results;
@@ -29,5 +30,12 @@ public abstract class BaseRepository<T>(IContext context) : IRepository<T>
         Result result = await Context.SetTable<T>().Update(entity).ExecuteAsync();
 
         return result.Match<Result<T>>(() => entity, errors => errors);
+    }
+
+    public virtual async Task<Result<IEnumerable<T>>> GetAllAsync()
+    {
+        Result<IEnumerable<T>> entities = await Context.SetTable<T>().GetAll().ExecuteAsync();
+
+        return entities.Match(success => entities, errors => errors);
     }
 }
