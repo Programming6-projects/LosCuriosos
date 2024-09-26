@@ -52,4 +52,86 @@ public class OrderTests
         _ = Assert.Single(clientOrderProducts);
         Assert.Equal(expectedProductId, clientOrderProducts[0].ProductId);
     }
+
+    [Fact]
+    public void Equals_DifferentProperties_ReturnsFalse()
+    {
+        // Define Input and output
+        Order order1 =
+            new()
+            {
+                ClientId = new(),
+                RouteId = new(),
+                DeliveryPointId = new(),
+                Status = Status.Pending,
+                Products = new List<OrderProduct>()
+            };
+        Order order2 =
+            new()
+            {
+                ClientId = new(),
+                RouteId = new(),
+                DeliveryPointId = new(),
+                Status = Status.Shipped,
+                Products = new List<OrderProduct>()
+            };
+
+        // Execute actual operation
+        bool result = order1.Equals(order2);
+
+        // Verify actual result
+        Assert.False(result);
+    }
+
+    [Fact]
+    public void Equals_DifferentObjects_ReturnFalse()
+    {
+        // Define Input and output
+        Order order1 =
+            new()
+            {
+                ClientId = new(),
+                RouteId = new(),
+                DeliveryPointId = new(),
+                Status = Status.Pending,
+                Products = new List<OrderProduct>()
+            };
+
+        // Execute actual operation
+        bool result = order1.Equals(new object());
+
+        // Verify actual result
+        Assert.False(result);
+    }
+
+    [Fact]
+    public void GetHashCode_DifferentProperties_ReturnsDifferentHashCode()
+    {
+        // Define Input and output
+        Order order1 =
+            new()
+            {
+                ClientId = new(),
+                RouteId = new(),
+                DeliveryPointId = new(),
+                Status = Status.Pending,
+                Products = new List<OrderProduct>()
+            };
+        Order order2 =
+            new()
+            {
+                ClientId = new(),
+                RouteId = new(),
+                DeliveryPointId = new(),
+                Status = Status.Shipped,
+                Products = new List<OrderProduct>()
+            };
+
+        // Execute actual operation
+        int hashCode1 = order1.GetHashCode();
+        int hashCode2 = order2.GetHashCode();
+
+        // Verify actual result
+        Assert.NotEqual(hashCode1, hashCode2);
+    }
 }

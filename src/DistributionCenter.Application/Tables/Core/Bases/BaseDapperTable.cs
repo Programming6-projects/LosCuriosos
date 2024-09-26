@@ -5,8 +5,8 @@ using Connections.Dapper.Interfaces;
 using DistributionCenter.Application.Tables.Components.Information.Interfaces;
 using DistributionCenter.Application.Tables.Components.QueryCommands.Concretes.Dapper.Concretes;
 using DistributionCenter.Application.Tables.Components.QueryCommands.Interfaces;
-using Interfaces;
 using DistributionCenter.Domain.Entities.Interfaces;
+using Interfaces;
 
 public abstract class BaseDapperTable<T>(IDbConnectionFactory<IDbConnection> dbConnectionFactory) : ITable<T>
     where T : IEntity

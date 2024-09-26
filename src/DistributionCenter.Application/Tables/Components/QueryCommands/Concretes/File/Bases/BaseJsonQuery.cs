@@ -5,8 +5,7 @@ using DistributionCenter.Application.Tables.Components.QueryCommands.Bases;
 using DistributionCenter.Commons.Results;
 using DistributionCenter.Domain.Entities.Interfaces;
 
-public abstract class BaseJsonQuery<T, TResult>(IFileConnectionFactory<T> fileConnectionFactory) :
-    BaseQuery<TResult>
+public abstract class BaseJsonQuery<T, TResult>(IFileConnectionFactory<T> fileConnectionFactory) : BaseQuery<TResult>
     where T : IEntity
 {
     public override async Task<Result<TResult>> ExecuteAsync()

@@ -1,7 +1,7 @@
 namespace DistributionCenter.Infraestructure.Tests.DTOs.Concretes.Orders;
 
-using Commons.Results;
 using Domain.Entities.Concretes;
+using Domain.Entities.Enums;
 using Infraestructure.DTOs.Concretes.Orders;
 
 public class UpdateOrderDtoTests
@@ -9,50 +9,121 @@ public class UpdateOrderDtoTests
     [Fact]
     public void ToEntity_ReturnsCorrectOrder()
     {
-        // Define Input and Output
-        CreateOrderDto dto = new()
+        Order existingOrder = new()
         {
             ClientId = Guid.NewGuid(),
             DeliveryPointId = Guid.NewGuid(),
-            OrderProducts = new List<OrderProductRequestDto>(),
+            Products = new List<OrderProduct>()
         };
 
-        // Execute actual operation
-        Order client = dto.ToEntity();
+        UpdateOrderDto dto = new()
+        {
+            Status = Status.Pending,
+            OrderProducts = new List<UpdateOrderProductDto>()
+        };
 
-        // Verify actual result
-        Assert.Equal(dto.ClientId, client.ClientId);
-        Assert.Equal(dto.DeliveryPointId, client.DeliveryPointId);
-        Assert.Equal(dto.OrderProducts.Count, client.Products.Count);
+        Order updatedOrder = dto.FromEntity(existingOrder);
+
+        Assert.Equal(existingOrder.ClientId, updatedOrder.ClientId);
+        Assert.Equal(existingOrder.DeliveryPointId, updatedOrder.DeliveryPointId);
+        Assert.Equal(existingOrder.Products.Count, updatedOrder.Products.Count);
+        Assert.Equal(dto.Status, updatedOrder.Status);
     }
 
     [Fact]
-    public void VerifyThatTheDataWasValidatedSuccessfully()
+    public void ToEntity_OrderProductsShouldNotChange_WhenOrderProductsIsNull()
     {
-        // Define Input and Output
-        int expectedErrorsQuantity = 2;
-        CreateOrderDto invalidDto = new()
+        List<OrderProduct> existingProducts = new()
         {
-            ClientId = default,
-            DeliveryPointId = default,
-            OrderProducts = new List<OrderProductRequestDto>(),
+            new OrderProduct
+            {
+                ProductId = Guid.NewGuid(),
+                OrderId = Guid.NewGuid(),
+                Quantity = 1,
+                Product = new Product
+                {
+                    Name = "Pepsi",
+                    Description = "The best drink",
+                    Weight = 100
+                }
+            }
         };
 
-        CreateOrderDto validDto = new()
+        Order existingOrder = new()
         {
+            Products = existingProducts,
             ClientId = Guid.NewGuid(),
-            DeliveryPointId = Guid.NewGuid(),
-            OrderProducts = new List<OrderProductRequestDto>(),
+            DeliveryPointId = Guid.NewGuid()
         };
 
-        // Execute actual operation
-        Result resultWithErrors = invalidDto.Validate();
-        Result resultWithoutErrors = validDto.Validate();
+        UpdateOrderDto dto = new()
+        {
+            Status = null,
+            OrderProducts = null
+        };
 
-        // Verify actual result
-        Assert.False(resultWithErrors.IsSuccess);
-        Assert.Equal(expectedErrorsQuantity, resultWithErrors.Errors.Count);
+        Order updatedOrder = dto.FromEntity(existingOrder);
 
-        Assert.True(resultWithoutErrors.IsSuccess);
+        // Assert
+        Assert.Equal(existingProducts, updatedOrder.Products);
+    }
+
+    [Fact]
+    public void ToEntity_ShouldUpdateOnlyNonNullFields()
+    {
+        Guid orderId = Guid.NewGuid();
+        List<OrderProduct> existingProducts = new()
+        {
+            new OrderProduct
+            {
+                ProductId = Guid.NewGuid(),
+                OrderId = orderId,
+                Quantity = 1,
+                Product = new Product
+                {
+                    Name = "Pepsi",
+                    Description = "The best drink",
+                    Weight = 100
+                }
+            }
+        };
+
+        Order existingOrder = new()
+        {
+            Status = Status.Pending,
+            Products = existingProducts,
+            ClientId = Guid.NewGuid(),
+            DeliveryPointId = Guid.NewGuid()
+        };
+
+        List<UpdateOrderProductDto> newProducts = new()
+        {
+            new UpdateOrderProductDto
+            {
+                OrderProductId = orderId
+            }
+        };
+
+        UpdateOrderDto dto = new()
+        {
+            Status = Status.Shipped,
+            OrderProducts = newProducts
+        };
+
+        Order updatedOrder = dto.FromEntity(existingOrder);
+
+        // Assert
+        Assert.Equal(Status.Shipped, updatedOrder.Status);
+
+        Assert.Equal(existingProducts.Count, updatedOrder.Products.Count);
+
+        for (int i = 0; i < existingProducts.Count; i++)
+        {
+            Assert.Equal(existingProducts[i].ProductId, updatedOrder.Products[i].ProductId);
+            Assert.Equal(existingProducts[i].Quantity, updatedOrder.Products[i].Quantity);
+            Assert.Equal(existingProducts[i].Product.Name, updatedOrder.Products[i].Product.Name);
+            Assert.Equal(existingProducts[i].Product.Description, updatedOrder.Products[i].Product.Description);
+            Assert.Equal(existingProducts[i].Product.Weight, updatedOrder.Products[i].Product.Weight);
+        }
     }
 }

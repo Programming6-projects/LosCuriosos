@@ -18,9 +18,9 @@ public class GetByIdJsonQuery<T>(IFileConnectionFactory<T> fileConnectionFactory
 
         if (entity is null)
         {
-            return Task.FromResult<Result<T>>(Error.NotFound(
-                code: "ENTITY_NOT_FOUND",
-                description: $"The {typeof(T).Name} was not found."));
+            return Task.FromResult<Result<T>>(
+                Error.NotFound(code: "ENTITY_NOT_FOUND", description: $"The {typeof(T).Name} was not found.")
+            );
         }
 
         return Task.FromResult<Result<T>>(entity);

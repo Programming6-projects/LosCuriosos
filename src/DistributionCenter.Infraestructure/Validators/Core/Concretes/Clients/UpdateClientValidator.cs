@@ -18,6 +18,8 @@ public class UpdateClientValidator : BaseFluentValidator<UpdateClientDto>
             .SizeRange(3, 50, "LastName must be between 3 and 50 characters")
             .RegexValidator(@"^[a-zA-Z\s]+$", "LastName must contain only letters and spaces");
 
-        _ = RuleFor(static x => x.Email).WhenNotNull().EmailValidator("Email is not valid email");
+        _ = RuleFor(static x => x.Email)
+            .WhenNotNull()
+            .EmailValidator("Email is not valid email");
     }
 }

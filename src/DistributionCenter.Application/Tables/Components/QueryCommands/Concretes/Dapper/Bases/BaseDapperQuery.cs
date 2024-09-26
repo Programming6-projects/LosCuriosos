@@ -5,7 +5,8 @@ using Connections.Dapper.Interfaces;
 using DistributionCenter.Application.Tables.Components.QueryCommands.Bases;
 using DistributionCenter.Commons.Results;
 
-public abstract class BaseDapperQuery<T>(IDbConnectionFactory<IDbConnection> dbConnectionFactory, string tableName) : BaseQuery<T>
+public abstract class BaseDapperQuery<T>(IDbConnectionFactory<IDbConnection> dbConnectionFactory, string tableName)
+    : BaseQuery<T>
 {
     protected IDbConnectionFactory<IDbConnection> DbConnectionFactory { get; } = dbConnectionFactory;
     protected string TableName { get; } = tableName;
@@ -17,7 +18,9 @@ public abstract class BaseDapperQuery<T>(IDbConnectionFactory<IDbConnection> dbC
         Result<T> result = await Execute(connection);
 
         if (result.IsSuccess)
+        {
             return result.Value;
+        }
 
         return result.Errors;
     }

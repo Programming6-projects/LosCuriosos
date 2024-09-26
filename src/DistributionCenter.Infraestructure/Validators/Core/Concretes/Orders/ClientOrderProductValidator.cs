@@ -8,12 +8,6 @@ public class ClientOrderProductValidator : BaseFluentValidator<CreateOrderProduc
 {
     public ClientOrderProductValidator()
     {
-        _ = RuleFor(x => x.ProductId)
-            .UuidNotNull("ProductId is required");
-
-        _ = RuleFor(x => x.OrderId)
-            .UuidNotNull("OrderId is required");
-
         _ = RuleFor(x => x.Quantity)
             .NonNegatives("Quantity must be a non-negative integer");
     }

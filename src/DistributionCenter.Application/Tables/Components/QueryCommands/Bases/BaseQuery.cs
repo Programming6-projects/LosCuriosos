@@ -1,7 +1,7 @@
 namespace DistributionCenter.Application.Tables.Components.QueryCommands.Bases;
 
-using Interfaces;
 using DistributionCenter.Commons.Results;
+using Interfaces;
 
 public abstract class BaseQuery<T> : IQuery<T>
 {
