@@ -1,7 +1,6 @@
 namespace DistributionCenter.Application.Tests.Repositories.Concretes;
 
 using Application.Contexts.Interfaces;
-using Application.Repositories.Concretes;
 
 public class OrderRepositoryTests
 {

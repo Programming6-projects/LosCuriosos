@@ -10,7 +10,7 @@ public static class NotificationFactory
         new()
         {
             { Status.Pending, static orderId => new OrderConfirmationMessage(orderId) },
-            { Status.Shipped, static orderId => new OrderShippedMessage(orderId) },
+            { Status.Sending, static orderId => new OrderShippedMessage(orderId) },
             { Status.Delivered, static orderId => new OrderDeliveredMessage(orderId) },
             { Status.Cancelled, static orderId => new OrderCancelledMessage(orderId) },
         };

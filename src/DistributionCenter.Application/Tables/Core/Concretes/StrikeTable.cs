@@ -5,7 +5,6 @@ using Bases;
 using Components.Information.Concretes;
 using Components.Information.Interfaces;
 using Connections.Dapper.Interfaces;
-using Domain.Entities.Concretes;
 
 public class StrikeTable(IDbConnectionFactory<IDbConnection> dbConnectionFactory)
     : BaseDapperTable<Strike>(dbConnectionFactory)

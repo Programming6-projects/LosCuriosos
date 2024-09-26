@@ -1,7 +1,6 @@
 namespace DistributionCenter.Application.Tests.Repositories.Concretes;
 
 using DistributionCenter.Application.Contexts.Interfaces;
-using DistributionCenter.Application.Repositories.Concretes;
 using DistributionCenter.Application.Tables.Components.QueryCommands.Interfaces;
 using DistributionCenter.Application.Tables.Core.Interfaces;
 using DistributionCenter.Commons.Errors;

@@ -8,7 +8,7 @@ public class NotificationFactoryTests
 {
     [Theory]
     [InlineData(Status.Pending, typeof(OrderConfirmationMessage))]
-    [InlineData(Status.Shipped, typeof(OrderShippedMessage))]
+    [InlineData(Status.Sending, typeof(OrderShippedMessage))]
     [InlineData(Status.Delivered, typeof(OrderDeliveredMessage))]
     [InlineData(Status.Cancelled, typeof(OrderCancelledMessage))]
     public void CreateMessage_ReturnsExpectedMessageType(Status status, Type expectedType)

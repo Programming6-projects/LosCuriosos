@@ -13,8 +13,8 @@ public class TransportParser : ITransportParser
 
         parsedTransports =
             location == Location.InCity
-                ? parsedTransports.Where(static t => t.Capacity < 70000)
-                : parsedTransports.Where(static t => t.Capacity >= 70000);
+                ? parsedTransports.Where(static t => t.Capacity < 7000000)
+                : parsedTransports.Where(static t => t.Capacity >= 7000000);
 
         IEnumerable<(Trip, Transport)> parsedRoutes = parsedTransports.Select(static t =>
             (new Trip

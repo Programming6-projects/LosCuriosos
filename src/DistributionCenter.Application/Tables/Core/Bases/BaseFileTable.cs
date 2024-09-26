@@ -7,8 +7,9 @@ using Connections.File.Interfaces;
 using Domain.Entities.Interfaces;
 using Interfaces;
 
-public abstract class BaseFileTable<T>(IFileConnectionFactory<T> fileConnectionFactory) : ITable<T>
-    where T : IEntity
+public abstract class BaseFileTable<T>(IFileConnectionFactory<T> fileConnectionFactory)
+    : ITable<T>
+    where T : class, IEntity
 {
     protected IFileConnectionFactory<T> FileConnectionFactory { get; } = fileConnectionFactory;
 
@@ -20,6 +21,11 @@ public abstract class BaseFileTable<T>(IFileConnectionFactory<T> fileConnectionF
     public IQuery<IEnumerable<T>> GetAll()
     {
         return new GetAllJsonQuery<T>(FileConnectionFactory);
+    }
+
+    public IMultipleResponseQuery<T> SelectWhere(Func<T, bool> predicate)
+    {
+        return new SelectGroupJsonQuery<T>(FileConnectionFactory, predicate);
     }
 
     public ICommand Create(T entity)
@@ -34,3 +40,4 @@ public abstract class BaseFileTable<T>(IFileConnectionFactory<T> fileConnectionF
 
     public abstract ITableInformation GetInformation();
 }
+

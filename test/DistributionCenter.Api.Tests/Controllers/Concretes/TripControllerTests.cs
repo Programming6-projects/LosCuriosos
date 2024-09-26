@@ -40,7 +40,7 @@ public class TripControllerTests
                 new Order
                 {
                     ClientId = clientId,
-                    Status = Status.Shipped,
+                    Status = Status.Sending,
                     RouteId = default,
                     DeliveryPointId = default
                 }
