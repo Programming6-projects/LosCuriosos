@@ -23,7 +23,7 @@ public abstract class BaseDapperTable<T>(IDbConnectionFactory<IDbConnection> dbC
         );
     }
 
-    public SelectGroupDapperQuery<T> SelectWhere(Func<T, bool> predicate)
+    public IMultipleResponseQuery<T> SelectWhere(Func<T, bool> predicate)
     {
         return new SelectGroupDapperQuery<T>(
             DbConnectionFactory,

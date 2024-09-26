@@ -33,7 +33,7 @@ public class TripController(IRepository<Trip> repository)
         bool allOrdersComplete = true;
         foreach (Order order in entity.Orders)
         {
-            allOrdersComplete = order.Status != Status.Shipped;
+            allOrdersComplete = order.Status != Status.Sending;
         }
 
         Result<Trip> result = await Repository.UpdateAsync(entity);

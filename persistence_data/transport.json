@@ -92,7 +92,7 @@
     "Plate": "6789MNO",
     "Capacity": 5900000,
     "CurrentCapacity": 5900000,
-    "IsAvailable": true,
+    "IsAvailable": false,
     "Id": "62aaeaf0-de4c-4b20-a69f-a12af863c2bf",
     "IsActive": true,
     "CreatedAt": "2024-09-18T08:34:00",

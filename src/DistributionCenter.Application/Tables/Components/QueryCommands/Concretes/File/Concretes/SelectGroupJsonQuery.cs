@@ -6,7 +6,8 @@ using Commons.Results;
 using Connections.File.Interfaces;
 using Domain.Entities.Interfaces;
 
-public class SelectGroupJsonQuery<T>(IFileConnectionFactory<T> fileConnectionFactory,
+public class SelectGroupJsonQuery<T>(
+    IFileConnectionFactory<T> fileConnectionFactory,
     Func<T, bool> predicate)
     : BaseJsonMultipleResponseQuery<T>(fileConnectionFactory)
     where T : class, IEntity

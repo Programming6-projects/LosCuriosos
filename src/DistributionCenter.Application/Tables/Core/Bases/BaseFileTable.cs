@@ -1,15 +1,15 @@
 namespace DistributionCenter.Application.Tables.Core.Bases;
 
 using Components.Information.Interfaces;
-using Components.QueryCommands.Concretes.Dapper.Concretes;
 using Components.QueryCommands.Concretes.File.Concretes;
 using Components.QueryCommands.Interfaces;
 using Connections.File.Interfaces;
 using Domain.Entities.Interfaces;
 using Interfaces;
 
-public abstract class BaseFileTable<T>(IFileConnectionFactory<T> fileConnectionFactory) : ITable<T>
-    where T : IEntity
+public abstract class BaseFileTable<T>(IFileConnectionFactory<T> fileConnectionFactory)
+    : ITable<T>
+    where T : class, IEntity
 {
     protected IFileConnectionFactory<T> FileConnectionFactory { get; } = fileConnectionFactory;
 
@@ -18,9 +18,9 @@ public abstract class BaseFileTable<T>(IFileConnectionFactory<T> fileConnectionF
         return new GetByIdJsonQuery<T>(FileConnectionFactory, id);
     }
 
-    public SelectGroupDapperQuery<T> SelectWhere(Func<T, bool> predicate)
+    public IMultipleResponseQuery<T> SelectWhere(Func<T, bool> predicate)
     {
-        throw new NotImplementedException();
+        return new SelectGroupJsonQuery<T>(FileConnectionFactory, predicate);
     }
 
     public ICommand Create(T entity)

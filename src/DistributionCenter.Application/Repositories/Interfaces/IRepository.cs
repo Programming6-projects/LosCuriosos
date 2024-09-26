@@ -10,6 +10,8 @@ public interface IRepository<T>
     public IContext Context { get; }
     Task<Result<T>> GetByIdAsync(Guid id);
     Task<Result<T>> CreateAsync(T entity);
+    Task<Result<int>> CreateAllAsync(IEnumerable<T> entities);
     Task<Result<T>> UpdateAsync(T entity);
+    Task<Result<int>> UpdateAllAsync(IEnumerable<T> entities);
     Task<Result<IEnumerable<T>>> SelectWhereAsync(Func<T, bool> predicate);
 }

@@ -21,7 +21,18 @@ public class GreedyDistribution(IOrderParser orderParser, ITransportParser trans
             }
 
             trip.Item2.CurrentCapacity -= order.Item2;
-            trip.Item1.Orders.Add(order.Item1);
+            Order orderUpdated = new()
+            {
+                Id = order.Item1.Id,
+                RouteId = trip.Item1.Id,
+                ClientId = order.Item1.ClientId,
+                DeliveryPointId = order.Item1.DeliveryPointId,
+                Status = order.Item1.Status,
+                IsActive = order.Item1.IsActive,
+                CreatedAt = order.Item1.CreatedAt,
+                UpdatedAt = order.Item1.UpdatedAt,
+            };
+            trip.Item1.Orders.Add(orderUpdated);
 
             return true;
         }
@@ -52,8 +63,10 @@ public class GreedyDistribution(IOrderParser orderParser, ITransportParser trans
         }
 
         return (
-            Trips: parsedTrips.Select(trip => trip.Item1),
-            UpdatedTransports: parsedTrips.Select(trip => trip.Item2),
+            Trips: parsedTrips.Select(trip => trip.Item1).Where(x => x.Orders.Count != 0),
+            UpdatedTransports: parsedTrips
+                .Where(x => x.Item1.Orders.Count != 0)
+                .Select(x => x.Item2),
             CancelledOrders: cancelledOrders
         );
     }
