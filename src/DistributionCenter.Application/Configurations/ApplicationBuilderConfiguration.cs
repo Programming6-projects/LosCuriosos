@@ -59,6 +59,7 @@ public static class ApplicationBuilderConfiguration
         _ = services.AddScoped<IRepository<Trip>, TripRepository>();
         _ = services.AddScoped<IRepository<Transport>, TransportRepository>();
         _ = services.AddScoped<IRepository<Strike>, StrikeRepository>();
+        _ = services.AddScoped<IRepository<DeliveryPoint>, DeliveryPointRepository>();
 
         return services;
     }
