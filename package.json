@@ -60,7 +60,7 @@
     },
     "homepage": "https://github.com/Programming6-projects/LosCuriosos#readme",
     "scripts": {
-        "db:restore": "docker compose down && docker volume rm --force los-curiosos_postgres_data",
+        "db:restore": "docker compose down && docker volume rm --force loscuriosos_postgres_data",
         "start:db": "docker compose down && docker compose up -d",
         "start:dev": "pnpm start:db && dotnet watch run --project ./src/DistributionCenter.Api",
         "report": "dotnet reportgenerator",
