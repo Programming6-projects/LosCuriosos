@@ -5,5 +5,8 @@ using DTOs.Concretes.Orders;
 
 public class UpdateOrderValidator : BaseFluentValidator<UpdateOrderDto>
 {
-    public UpdateOrderValidator() { }
+    public UpdateOrderValidator()
+    {
+        _ = RuleForEach(x => x.Products, new UpdateOrderProductValidator());
+    }
 }

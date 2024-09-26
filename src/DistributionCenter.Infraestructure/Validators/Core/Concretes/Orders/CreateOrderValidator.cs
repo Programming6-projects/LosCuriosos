@@ -5,5 +5,8 @@ using DTOs.Concretes.Orders;
 
 public class CreateOrderValidator : BaseFluentValidator<CreateOrderDto>
 {
-    public CreateOrderValidator() { }
+    public CreateOrderValidator()
+    {
+        _ = RuleForEach(x => x.Products, new CreateOrderProductValidator());
+    }
 }

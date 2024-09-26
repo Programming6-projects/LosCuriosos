@@ -45,6 +45,7 @@ public static class ApplicationBuilderConfiguration
                 { typeof(Order), new OrderTable(_.GetRequiredService<IDbConnectionFactory<IDbConnection>>()) },
                 { typeof(Trip), new TripTable(_.GetRequiredService<IDbConnectionFactory<IDbConnection>>()) },
                 { typeof(Strike), new StrikeTable(_.GetRequiredService<IDbConnectionFactory<IDbConnection>>()) },
+                { typeof(OrderProduct), new OrderProductTable(_.GetRequiredService<IDbConnectionFactory<IDbConnection>>())}
             }
         ));
 
