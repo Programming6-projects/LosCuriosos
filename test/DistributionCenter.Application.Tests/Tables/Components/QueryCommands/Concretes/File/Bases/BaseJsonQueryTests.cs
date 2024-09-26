@@ -11,13 +11,13 @@ using Moq.Protected;
 
 public class BaseJsonQueryTests
 {
-    private readonly Mock<BaseJsonQuery<IEntity>> _jsonQuery;
+    private readonly Mock<BaseJsonQuery<IEntity, IEntity>> _jsonQuery;
     private readonly Mock<IFileConnectionFactory<IEntity>> _fileConnectionFactory;
 
     public BaseJsonQueryTests()
     {
         _fileConnectionFactory = new Mock<IFileConnectionFactory<IEntity>>();
-        _jsonQuery = new Mock<BaseJsonQuery<IEntity>>(_fileConnectionFactory.Object) { CallBase = true };
+        _jsonQuery = new Mock<BaseJsonQuery<IEntity, IEntity>>(_fileConnectionFactory.Object) { CallBase = true };
     }
 
     [Fact]

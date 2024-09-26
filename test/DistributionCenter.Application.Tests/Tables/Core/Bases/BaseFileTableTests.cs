@@ -38,6 +38,21 @@ public class BaseFileTableTests
     }
 
     [Fact]
+    public void GetAll_ShouldReturnQuery()
+    {
+        // Define Input and Output
+        _ = _infoMock.Setup(static i => i.TableName).Returns("table");
+        _ = _tableMock.Setup(static t => t.GetInformation()).Returns(_infoMock.Object);
+
+        // Execute actual operation
+        IQuery<IEnumerable<IEntity>> query = _tableMock.Object.GetAll();
+
+        // Verify actual result
+        Assert.NotNull(query);
+        _ = Assert.IsType<GetAllJsonQuery<IEntity>>(query);
+    }
+
+    [Fact]
     public void Create_ShouldReturnCommand()
     {
         // Define Input and Output
@@ -69,4 +84,3 @@ public class BaseFileTableTests
         _ = Assert.IsType<UpdateJsonCommand<IEntity>>(command);
     }
 }
-

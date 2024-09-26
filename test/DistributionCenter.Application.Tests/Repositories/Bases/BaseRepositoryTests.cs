@@ -35,6 +35,26 @@ public class BaseRepositoryTests
     }
 
     [Fact]
+    public async Task GetAll_ShouldReturnListOfEntities()
+    {
+        // Define Input and Output
+        Mock<IQuery<IEnumerable<IEntity>>> mockQuery = new();
+
+        List<IEntity> mockEntities = [new Mock<IEntity>().Object];
+
+        Result<IEnumerable<IEntity>> expectedResult = mockEntities;
+
+        _ = mockQuery.Setup(static q => q.ExecuteAsync()).ReturnsAsync(expectedResult);
+        _ = _contextMock.Setup(static c => c.SetTable<IEntity>().GetAll()).Returns(mockQuery.Object);
+
+        // Execute actual operation
+        Result<IEnumerable<IEntity>> result = await _repositoryMock.Object.GetAllAsync();
+
+        // Verify actual result
+        Assert.True(result.IsSuccess);
+    }
+
+    [Fact]
     public async Task CreateAsync_ShouldReturnEntity()
     {
         // Define Input and Output

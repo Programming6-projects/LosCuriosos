@@ -5,14 +5,13 @@ using DistributionCenter.Application.Tables.Components.QueryCommands.Bases;
 using DistributionCenter.Commons.Results;
 using DistributionCenter.Domain.Entities.Interfaces;
 
-public abstract class BaseJsonQuery<T>(IFileConnectionFactory<T> fileConnectionFactory) :
-    BaseQuery<T>
+public abstract class BaseJsonQuery<T, TResult>(IFileConnectionFactory<T> fileConnectionFactory) : BaseQuery<TResult>
     where T : IEntity
 {
-    public override async Task<Result<T>> ExecuteAsync()
+    public override async Task<Result<TResult>> ExecuteAsync()
     {
         List<T> data = await fileConnectionFactory.LoadDataAsync();
-        Result<T> result = await Execute(data);
+        Result<TResult> result = await Execute(data);
 
         if (!result.IsSuccess)
             return result.Errors;
@@ -20,5 +19,5 @@ public abstract class BaseJsonQuery<T>(IFileConnectionFactory<T> fileConnectionF
         return result.Value;
     }
 
-    protected abstract Task<Result<T>> Execute(IEnumerable<T> data);
+    protected abstract Task<Result<TResult>> Execute(IEnumerable<T> data);
 }

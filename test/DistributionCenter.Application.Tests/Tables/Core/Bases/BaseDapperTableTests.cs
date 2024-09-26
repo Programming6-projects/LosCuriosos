@@ -36,6 +36,21 @@ public class BaseDapperTableTests
     }
 
     [Fact]
+    public void GetAll_ShouldReturnQuery()
+    {
+        // Define input and Output
+        _ = _infoMock.Setup(static i => i.TableName).Returns("table");
+        _ = _infoMock.Setup(static i => i.GetByIdFields).Returns("fields");
+        _ = _tableMock.Setup(static t => t.GetInformation()).Returns(_infoMock.Object);
+
+        // Execute actual operation
+        IQuery<IEnumerable<IEntity>> query = _tableMock.Object.GetAll();
+
+        // Verigy actual result
+        Assert.NotNull(query);
+    }
+
+    [Fact]
     public void Create_ShouldReturnCommand()
     {
         // Define Input and Output
