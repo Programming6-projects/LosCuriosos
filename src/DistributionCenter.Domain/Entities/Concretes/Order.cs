@@ -5,7 +5,7 @@ using Enums;
 
 public class Order : BaseEntity
 {
-    public Guid RouteId { get; set; } = Guid.Empty;
+    public Guid? RouteId { get; set; }
     public required Guid ClientId { get; set; }
     public required Guid DeliveryPointId { get; set; }
     public IEnumerable<OrderProduct> Products { get; set; } = [];

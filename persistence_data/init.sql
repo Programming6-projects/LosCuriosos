@@ -41,9 +41,9 @@ CREATE TABLE IF NOT EXISTS client_order (
     is_active BOOLEAN NOT NULL DEFAULT TRUE,
     created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMPTZ DEFAULT NULL,
-    route_id UUID REFERENCES route(id),
-    client_id UUID REFERENCES client(id),
-    delivery_point_id UUID REFERENCES delivery_point(id) UNIQUE
+    client_id UUID NOT NULL REFERENCES client(id),
+    delivery_point_id UUID NOT NULL UNIQUE REFERENCES delivery_point(id),
+    route_id UUID REFERENCES route(id)
 );
 
 CREATE TABLE IF NOT EXISTS product (
@@ -62,6 +62,6 @@ CREATE TABLE IF NOT EXISTS client_order_product (
     is_active BOOLEAN NOT NULL DEFAULT TRUE,
     created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMPTZ DEFAULT NULL,
-    product_id UUID REFERENCES product(id),
-    client_order_id UUID REFERENCES client_order(id)
+    product_id UUID NOT NULL REFERENCES product(id),
+    client_order_id UUID NOT NULL REFERENCES client_order(id)
 );

@@ -1,4 +1,4 @@
-namespace DistributionCenter.Infraestructure.DTOs.Concretes.Orders;
+namespace DistributionCenter.Infraestructure.DTOs.Concretes.OrderProducts;
 
 using Commons.Results;
 using Domain.Entities.Concretes;

@@ -4,16 +4,21 @@ using Commons.Results;
 using Domain.Entities.Concretes;
 using Domain.Entities.Enums;
 using Interfaces;
+using OrderProducts;
 
 public class UpdateOrderDto : IUpdateDto<Order>
 {
-    public Status? Status { get; init; }
+    public string? Status { get; init; }
     public IEnumerable<UpdateOrderProductDto> Products { get; init; } = [];
-
 
     public Order FromEntity(Order entity)
     {
-        entity.Status = Status ?? entity.Status;
+        if (Status is not null)
+        {
+            _ = Enum.TryParse(Status, out Status status);
+
+            entity.Status = status;
+        }
 
         foreach (UpdateOrderProductDto product in Products)
         {

@@ -3,6 +3,7 @@ namespace DistributionCenter.Infraestructure.DTOs.Concretes.Orders;
 using Commons.Results;
 using Domain.Entities.Concretes;
 using Interfaces;
+using OrderProducts;
 using Validators.Core.Concretes.Orders;
 
 public class CreateOrderDto : ICreateDto<Order>
@@ -13,12 +14,7 @@ public class CreateOrderDto : ICreateDto<Order>
 
     public Order ToEntity()
     {
-
-        Order order = new()
-        {
-            ClientId = ClientId,
-            DeliveryPointId = DeliveryPointId
-        };
+        Order order = new() { ClientId = ClientId, DeliveryPointId = DeliveryPointId };
 
         List<OrderProduct> products = [];
 
@@ -28,7 +24,7 @@ public class CreateOrderDto : ICreateDto<Order>
             {
                 OrderId = order.Id,
                 ProductId = product.ProductId,
-                Quantity = product.Quantity
+                Quantity = product.Quantity,
             };
 
             products.Add(orderProduct);

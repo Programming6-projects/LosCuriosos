@@ -12,17 +12,15 @@ public class CreateOrderDtoTests
         CreateOrderDto dto =
             new()
             {
-                RouteId = new Guid(),
                 ClientId = new Guid(),
-                Status = "Pending",
                 DeliveryPointId = new Guid(),
+                Products = [],
             };
 
         // Execute actual operation
         Order client = dto.ToEntity();
 
         // Verify actual result
-        Assert.Equal(dto.RouteId, client.RouteId);
         Assert.Equal(dto.ClientId, client.ClientId);
         Assert.Equal(dto.DeliveryPointId, client.DeliveryPointId);
     }

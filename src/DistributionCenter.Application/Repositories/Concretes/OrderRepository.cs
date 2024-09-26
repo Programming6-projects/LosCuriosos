@@ -1,31 +1,25 @@
 namespace DistributionCenter.Application.Repositories.Concretes;
 
 using Bases;
-using Contexts.Interfaces;
 using Commons.Results;
+using Contexts.Interfaces;
 using Domain.Entities.Concretes;
 
 public class OrderRepository(IContext context) : BaseRepository<Order>(context)
 {
-    public override async Task<Result<Order>> GetByIdAsync(Guid id)
+    private async Task<Result<IEnumerable<OrderProduct>>> GetProductsByOrderId(Guid id)
     {
-        Result<Order> orderResult = await base.GetByIdAsync(id);
-
-        if (!orderResult.IsSuccess)
-        {
-            return orderResult.Errors;
-        }
-
-        Result<IEnumerable<OrderProduct>> orderProductsResult = await Context.SetTable<OrderProduct>().GetAll().ExecuteAsync();
+        Result<IEnumerable<OrderProduct>> orderProductsResult = await Context
+            .SetTable<OrderProduct>()
+            .GetAll()
+            .ExecuteAsync();
 
         if (!orderProductsResult.IsSuccess)
         {
             return orderProductsResult.Errors;
         }
 
-        Order order = orderResult.Value;
-
-        IEnumerable<OrderProduct> productsOrder = orderProductsResult.Value.Where(p => p.OrderId == order.Id);
+        List<OrderProduct> productsOrder = orderProductsResult.Value.Where(p => p.OrderId == id).ToList();
 
         foreach (OrderProduct orderProduct in productsOrder)
         {
@@ -39,36 +33,74 @@ public class OrderRepository(IContext context) : BaseRepository<Order>(context)
             orderProduct.Product = product.Value;
         }
 
-        order.Products = productsOrder;
+        return productsOrder;
+    }
+
+    public override async Task<Result<Order>> GetByIdAsync(Guid id)
+    {
+        Result<Order> orderResult = await base.GetByIdAsync(id);
+
+        if (!orderResult.IsSuccess)
+        {
+            return orderResult.Errors;
+        }
+
+        Order order = orderResult.Value;
+
+        Result<IEnumerable<OrderProduct>> productsResult = await GetProductsByOrderId(order.Id);
+
+        if (!productsResult.IsSuccess)
+        {
+            return productsResult.Errors;
+        }
+
+        order.Products = productsResult.Value;
 
         return order;
     }
 
-
     public override async Task<Result<Order>> CreateAsync(Order entity)
     {
+        Result<Order> result = await base.CreateAsync(entity);
+
+        if (!result.IsSuccess)
+        {
+            return result.Errors;
+        }
+
         IEnumerable<OrderProduct> products = entity.Products;
 
         foreach (OrderProduct product in products)
         {
-            Console.WriteLine(product.Id);
-            Console.WriteLine(product.OrderId);
-            Console.WriteLine(product.ProductId);
-            Console.WriteLine(product.Quantity);
-
             Result resultInsert = await Context.SetTable<OrderProduct>().Create(product).ExecuteAsync();
 
             if (!resultInsert.IsSuccess)
             {
                 return resultInsert.Errors;
             }
+
+            Result<Product> productResult = await Context.SetTable<Product>().GetById(product.ProductId).ExecuteAsync();
+
+            if (!productResult.IsSuccess)
+            {
+                return productResult.Errors;
+            }
+
+            product.Product = productResult.Value;
         }
 
-        return await base.CreateAsync(entity);
+        return entity;
     }
 
     public override async Task<Result<Order>> UpdateAsync(Order entity)
     {
+        Result<Order> result = await base.UpdateAsync(entity);
+
+        if (!result.IsSuccess)
+        {
+            return result.Errors;
+        }
+
         IEnumerable<OrderProduct> products = entity.Products;
 
         foreach (OrderProduct product in products)
@@ -79,8 +111,17 @@ public class OrderRepository(IContext context) : BaseRepository<Order>(context)
             {
                 return resultInsert.Errors;
             }
+
+            Result<Product> productResult = await Context.SetTable<Product>().GetById(product.ProductId).ExecuteAsync();
+
+            if (!productResult.IsSuccess)
+            {
+                return productResult.Errors;
+            }
+
+            product.Product = productResult.Value;
         }
 
-        return await base.UpdateAsync(entity);
+        return entity;
     }
 }

@@ -1,4 +1,4 @@
-namespace DistributionCenter.Infraestructure.DTOs.Concretes.Orders;
+namespace DistributionCenter.Infraestructure.DTOs.Concretes.OrderProducts;
 
 using Commons.Results;
 using Domain.Entities.Concretes;
@@ -11,11 +11,7 @@ public class CreateOrderProductDto : ICreateDto<OrderProduct>
 
     public OrderProduct ToEntity()
     {
-        return new OrderProduct
-        {
-            ProductId = ProductId,
-            Quantity = Quantity
-        };
+        return new OrderProduct { ProductId = ProductId, Quantity = Quantity };
     }
 
     public Result Validate()
