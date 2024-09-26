@@ -114,4 +114,53 @@ public class OrderController(
         _ = SendEmailByStatus(entity.Id);
         return result.Match(entity => Ok(entity), this.ErrorsResponse);
     }
+
+    [HttpPut("{id}/updateOrder")]
+    public async Task<IActionResult> UpdateOrder([FromRoute] [Required] Guid id, UpdateOrderDto request)
+    {
+        Result validateResult = request.Validate();
+
+        if (!validateResult.IsSuccess)
+        {
+            return this.ErrorsResponse(validateResult.Errors);
+        }
+
+        Result<Order> orderResult = await Repository.GetByIdAsync(id);
+
+        if (!orderResult.IsSuccess)
+        {
+            return this.ErrorsResponse(orderResult.Errors);
+        }
+
+        Order existingOrder = orderResult.Value;
+        existingOrder = request.FromEntity(existingOrder);
+        Result<Order> updateResult = await Repository.UpdateAsync(existingOrder);
+
+        if (request.OrderProducts != null && request.OrderProducts.Count > 0)
+        {
+            foreach (UpdateOrderProductDto updateOrderProductDto in request.OrderProducts)
+            {
+                Result<OrderProduct> orderProductResult = await orderProductRepository.GetByIdAsync(updateOrderProductDto.OrderProductId);
+                Result<Product> productResult = await productRepository.GetByIdAsync(updateOrderProductDto.ProductId);
+                if (!productResult.IsSuccess)
+                {
+                    List<IError> errors = new();
+                    errors.Add(Error.NotFound($"Product with ID {updateOrderProductDto.ProductId} not found."));
+                    return this.ErrorsResponse(errors);
+                }
+                if (!orderProductResult.IsSuccess)
+                {
+                    List<IError> errors = new();
+                    errors.Add(Error.NotFound($"Order product with ID {updateOrderProductDto.OrderProductId} not found."));
+                    return this.ErrorsResponse(errors);
+                }
+                OrderProduct orderProduct = orderProductResult.Value;
+                OrderProduct updatedOrderProduct = updateOrderProductDto.FromEntity(orderProduct);
+                _ = await orderProductRepository.UpdateAsync(updatedOrderProduct);
+            }
+        }
+
+        Result<Order> result = await Repository.GetByIdAsync(id);
+        return result.Match(entity => Ok(entity), this.ErrorsResponse);
+    }
 }
