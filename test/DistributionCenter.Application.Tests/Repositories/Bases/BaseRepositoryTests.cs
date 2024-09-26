@@ -53,6 +53,33 @@ public class BaseRepositoryTests
     }
 
     [Fact]
+    public async Task CreateAllAsync_ShouldReturnRowsAffected()
+    {
+        // Define input entities
+        List<IEntity> entities = new()
+        {
+            new Mock<IEntity>().Object,
+            new Mock<IEntity>().Object
+        };
+
+        // Mock the behavior for each entity creation
+        Mock<ICommand> mockCommand = new();
+        _ = mockCommand.Setup(c => c.ExecuteAsync()).ReturnsAsync(Result.Ok());
+
+        _ = _contextMock
+            .Setup(static c => c.SetTable<IEntity>().Create(It.IsAny<IEntity>()))
+            .Returns(mockCommand.Object);
+
+        // Execute the actual operation
+        Result<int> result = await _repositoryMock.Object.CreateAllAsync(entities);
+
+        // Verify that rows affected are equal to the number of entities
+        Assert.True(result.IsSuccess);
+        Assert.Equal(entities.Count, result.Value);
+    }
+
+
+    [Fact]
     public async Task UpdateAsync_ShouldReturnEntity()
     {
         // Define Input and Output
@@ -68,5 +95,31 @@ public class BaseRepositoryTests
 
         // Verify actual result
         Assert.True(result.IsSuccess);
+    }
+
+    [Fact]
+    public async Task UpdateAllAsync_ShouldReturnRowsAffected()
+    {
+        // Define input entities
+        List<IEntity> entities = new()
+        {
+            new Mock<IEntity>().Object,
+            new Mock<IEntity>().Object
+        };
+
+        // Mock the behavior for each entity update
+        Mock<ICommand> mockCommand = new();
+        _ = mockCommand.Setup(c => c.ExecuteAsync()).ReturnsAsync(Result.Ok());
+
+        _ = _contextMock
+            .Setup(static c => c.SetTable<IEntity>().Update(It.IsAny<IEntity>()))
+            .Returns(mockCommand.Object);
+
+        // Execute the actual operation
+        Result<int> result = await _repositoryMock.Object.UpdateAllAsync(entities);
+
+        // Verify that rows affected are equal to the number of entities
+        Assert.True(result.IsSuccess);
+        Assert.Equal(entities.Count, result.Value);
     }
 }
