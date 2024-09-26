@@ -7,6 +7,8 @@ public interface ITable<T>
     where T : IEntity
 {
     IQuery<T> GetById(Guid id);
+    IQuery<IEnumerable<T>> GetAll();
+
     IMultipleResponseQuery<T> SelectWhere(Func<T, bool> predicate);
     ICommand Create(T entity);
     ICommand Update(T entity);

@@ -1,7 +1,7 @@
 namespace DistributionCenter.Services.Notification;
 
 using Concretes;
-using DistributionCenter.Domain.Entities.Enums;
+using Domain.Entities.Enums;
 using Interfaces;
 
 public static class NotificationFactory

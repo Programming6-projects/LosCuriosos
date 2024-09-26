@@ -1,7 +1,5 @@
 ﻿namespace DistributionCenter.Domain.Tests.Entities.Concretes;
 
-using Domain.Entities.Concretes;
-
 public class ProductTests
 {
     [Fact]

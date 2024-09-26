@@ -1,5 +1,6 @@
 namespace DistributionCenter.Application.Repositories.Bases;
 
+using System.Collections.Generic;
 using DistributionCenter.Application.Contexts.Interfaces;
 using DistributionCenter.Application.Repositories.Interfaces;
 using DistributionCenter.Commons.Results;
@@ -8,7 +9,7 @@ using DistributionCenter.Domain.Entities.Interfaces;
 public abstract class BaseRepository<T>(IContext context) : IRepository<T>
     where T : IEntity
 {
-    public IContext Context { get; } = context;
+    protected IContext Context { get; } = context;
 
     public virtual async Task<Result<T>> GetByIdAsync(Guid id)
     {
@@ -17,7 +18,7 @@ public abstract class BaseRepository<T>(IContext context) : IRepository<T>
         return entity.Match(success => entity, errors => errors);
     }
 
-    public async Task<Result<T>> CreateAsync(T entity)
+    public virtual async Task<Result<T>> CreateAsync(T entity)
     {
         Result result = await Context.SetTable<T>().Create(entity).ExecuteAsync();
 
@@ -39,7 +40,7 @@ public abstract class BaseRepository<T>(IContext context) : IRepository<T>
         return rowsAffected;
     }
 
-    public async Task<Result<T>> UpdateAsync(T entity)
+    public virtual async Task<Result<T>> UpdateAsync(T entity)
     {
         Result result = await Context.SetTable<T>().Update(entity).ExecuteAsync();
 
@@ -66,5 +67,12 @@ public abstract class BaseRepository<T>(IContext context) : IRepository<T>
         Result<IEnumerable<T>> result = await Context.SetTable<T>().SelectWhere(predicate).ExecuteAsync();
 
         return result.Match<Result<IEnumerable<T>>>(() => result, errors => errors);
+    }
+
+    public virtual async Task<Result<IEnumerable<T>>> GetAllAsync()
+    {
+        Result<IEnumerable<T>> entities = await Context.SetTable<T>().GetAll().ExecuteAsync();
+
+        return entities.Match(success => entities, errors => errors);
     }
 }
