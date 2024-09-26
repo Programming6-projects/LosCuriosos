@@ -4,10 +4,8 @@ using System.Data;
 using Connections.Dapper.Interfaces;
 using DistributionCenter.Application.Tables.Components.QueryCommands.Bases;
 using DistributionCenter.Commons.Results;
-using DistributionCenter.Domain.Entities.Interfaces;
 
 public abstract class BaseDapperQuery<T>(IDbConnectionFactory<IDbConnection> dbConnectionFactory, string tableName) : BaseQuery<T>
-    where T : IEntity
 {
     protected IDbConnectionFactory<IDbConnection> DbConnectionFactory { get; } = dbConnectionFactory;
     protected string TableName { get; } = tableName;

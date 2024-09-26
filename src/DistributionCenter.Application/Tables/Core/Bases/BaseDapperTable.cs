@@ -23,6 +23,15 @@ public abstract class BaseDapperTable<T>(IDbConnectionFactory<IDbConnection> dbC
         );
     }
 
+    public IQuery<IEnumerable<T>> GetAll()
+    {
+        return new GetAllDapperQuery<T>(
+            DbConnectionFactory,
+            GetInformation().TableName,
+            GetInformation().GetByIdFields
+        );
+    }
+
     public ICommand Create(T entity)
     {
         return new CreateDapperCommand<T>(

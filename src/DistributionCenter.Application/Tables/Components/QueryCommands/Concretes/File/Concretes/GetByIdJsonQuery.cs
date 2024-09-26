@@ -7,7 +7,7 @@ using Connections.File.Interfaces;
 using Domain.Entities.Interfaces;
 
 public class GetByIdJsonQuery<T>(IFileConnectionFactory<T> fileConnectionFactory, Guid id)
-    : BaseJsonQuery<T>(fileConnectionFactory)
+    : BaseJsonQuery<T, T>(fileConnectionFactory)
     where T : IEntity
 {
     private Guid Id { get; } = id;
