@@ -1,8 +1,9 @@
 namespace DistributionCenter.Services.Notification.Concretes;
 
+using Dtos;
 using Interfaces;
 
-public class OrderDeliveredMessage(Guid orderId) : IMessage
+public class OrderDeliveredMessage(OrderDto orderDto) : IMessage
 {
     public string Subject => "Order Delivered";
 
@@ -25,7 +26,7 @@ public class OrderDeliveredMessage(Guid orderId) : IMessage
                         <h1>Order Delivered</h1>
                     </div>
                     <div class='content'>
-                        <p>Your order with ID <strong>{orderId}</strong> has been successfully delivered.</p>
+                        <p>Your order with ID <strong>{orderDto.OrderId}</strong> has been successfully delivered.</p>
                         <p>We hope you enjoy your purchase!</p>
                     </div>
                     <div class='footer'>

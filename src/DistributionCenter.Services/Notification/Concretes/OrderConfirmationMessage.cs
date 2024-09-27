@@ -1,8 +1,9 @@
 namespace DistributionCenter.Services.Notification.Concretes;
 
+using Dtos;
 using Interfaces;
 
-public class OrderConfirmationMessage(Guid orderId) : IMessage
+public class OrderConfirmationMessage(OrderDto orderDto) : IMessage
 {
     public string Subject => "Order Confirmation";
 
@@ -25,7 +26,7 @@ public class OrderConfirmationMessage(Guid orderId) : IMessage
                         <h1>Order Confirmation</h1>
                     </div>
                     <div class='content'>
-                        <p>Your order with ID <strong>{orderId}</strong> has been received and is being processed.</p>
+                        <p>Your order with ID <strong>{orderDto.OrderId}</strong> has been received and is being processed.</p>
                     </div>
                     <div class='footer'>
                         <p>Thank you for choosing us!</p>
