@@ -130,4 +130,181 @@ public class StrikeRepositoryTests
         Assert.False(result.IsSuccess);
         Assert.Contains(result.Errors, error => error.Code == "TRANSPORT_NOT_FOUND");
     }
+
+    [Fact]
+    public async Task CreateAsync_SetsTransportToUnavailable_WhenThreeActiveStrikesExist()
+    {
+        // Arrange
+        List<Strike> existingStrikes = new()
+        {
+            new()
+            {
+                Id = Guid.NewGuid(),
+                TransportId = _transport.Id,
+                IsActive = true,
+                Description = " aaaa"
+            },
+            new()
+            {
+                Id = Guid.NewGuid(),
+                TransportId = _transport.Id,
+                IsActive = true,
+                Description = " aaaa"
+            },
+            new()
+            {
+                Id = _strike.Id,
+                TransportId = _transport.Id,
+                IsActive = true,
+                Description = " aaaa"
+            }
+        };
+
+        SetupMocks(existingStrikes, _transport);
+
+        // Act
+        Result<Strike> result = await _strikeRepository.CreateAsync(_strike);
+
+        // Assert
+        Assert.True(result.IsSuccess);
+        Assert.Equal(_strike, result.Value);
+        Assert.False(_transport.IsAvailable);
+        _transportTableMock.Verify(t => t.Update(_transport), Times.Once);
+    }
+
+    [Fact]
+    public async Task CreateAsync_KeepsTransportAvailable_WhenLessThanThreeActiveStrikesExist()
+    {
+        // Arrange
+        List<Strike> existingStrikes = new()
+        {
+            new()
+            {
+                Id = Guid.NewGuid(),
+                TransportId = _transport.Id,
+                IsActive = true,
+                Description = " aaaa"
+            },
+            new()
+            {
+                Id = Guid.NewGuid(),
+                TransportId = _transport.Id,
+                IsActive = true,
+                Description = " aaaa"
+            }
+        };
+
+        SetupMocks(existingStrikes, _transport);
+
+        // Act
+        Result<Strike> result = await _strikeRepository.CreateAsync(_strike);
+
+        // Assert
+        Assert.True(result.IsSuccess);
+        Assert.Equal(_strike, result.Value);
+        Assert.True(_transport.IsAvailable);
+        _transportTableMock.Verify(t => t.Update(_transport), Times.Never);
+    }
+
+    [Fact]
+    public async Task UpdateAsync_SetsTransportToUnavailable_WhenUpdatingThirdActiveStrike()
+    {
+        // Arrange
+        List<Strike> existingStrikes = new()
+        {
+            new()
+            {
+                Id = Guid.NewGuid(),
+                TransportId = _transport.Id,
+                IsActive = true,
+                Description = " aaaa"
+            },
+            new()
+            {
+                Id = Guid.NewGuid(),
+                TransportId = _transport.Id,
+                IsActive = true,
+                Description = " aaaa"
+            },
+            new()
+            {
+                Id = _strike.Id,
+                TransportId = _transport.Id,
+                IsActive = false,
+                Description = " aaaa"
+            }
+        };
+
+        SetupMocks(existingStrikes, _transport);
+
+        _strike.IsActive = true;
+
+        // Act
+        Result<Strike> result = await _strikeRepository.UpdateAsync(_strike);
+
+        // Assert
+        Assert.True(result.IsSuccess);
+        Assert.Equal(_strike, result.Value);
+    }
+
+    [Fact]
+    public async Task UpdateAsync_SetsTransportToAvailable_WhenDeactivatingThirdStrike()
+    {
+        // Arrange
+        _transport.IsAvailable = false;
+        List<Strike> existingStrikes = new()
+        {
+            new()
+            {
+                Id = Guid.NewGuid(),
+                TransportId = _transport.Id,
+                IsActive = true,
+                Description = " aaaa"
+            },
+            new()
+            {
+                Id = Guid.NewGuid(),
+                TransportId = _transport.Id,
+                IsActive = true,
+                Description = " aaaa"
+            },
+            new()
+            {
+                Id = _strike.Id,
+                TransportId = _transport.Id,
+                IsActive = true,
+                Description = " aaaa"
+            }
+        };
+
+        SetupMocks(existingStrikes, _transport);
+
+        _strike.IsActive = false;
+
+        // Act
+        Result<Strike> result = await _strikeRepository.UpdateAsync(_strike);
+
+        // Assert
+        Assert.True(result.IsSuccess);
+        Assert.Equal(_strike, result.Value);
+        _transportTableMock.Verify(t => t.Update(_transport), Times.Once);
+    }
+
+    private void SetupMocks(List<Strike> strikes, Transport transport)
+    {
+        _ = _transportTableMock.Setup(t => t.GetById(transport.Id))
+            .Returns(Mock.Of<IQuery<Transport>>(q => q.ExecuteAsync() == Task.FromResult(new Result<Transport>(transport))));
+
+        _ = _strikeTableMock.Setup(t => t.GetAll())
+            .Returns(Mock.Of<IQuery<IEnumerable<Strike>>>(q => q.ExecuteAsync() == Task.FromResult(new Result<IEnumerable<Strike>>(strikes))));
+
+        _ = _strikeTableMock.Setup(t => t.Create(It.IsAny<Strike>()))
+            .Returns(Mock.Of<ICommand>(c => c.ExecuteAsync() == Task.FromResult(Result.Ok())));
+
+        _ = _strikeTableMock.Setup(t => t.Update(It.IsAny<Strike>()))
+            .Returns(Mock.Of<ICommand>(c => c.ExecuteAsync() == Task.FromResult(Result.Ok())));
+
+        _ = _transportTableMock.Setup(t => t.Update(It.IsAny<Transport>()))
+            .Returns(Mock.Of<ICommand>(c => c.ExecuteAsync() == Task.FromResult(Result.Ok())));
+    }
 }

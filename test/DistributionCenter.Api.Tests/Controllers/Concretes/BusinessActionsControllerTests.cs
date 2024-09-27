@@ -2,13 +2,14 @@
 
 using Application.Repositories.Interfaces;
 using Commons.Errors;
-using Commons.Results;
 using Domain.Entities.Concretes;
 using Domain.Entities.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Services.Distribution.Enums;
 using Services.Distribution.Interfaces;
+using Services.Localization.Commons;
 using Services.Notification.Interfaces;
+using Services.Routes.Dtos;
 using Services.Routes.Interfaces;
 
 public class BusinessActionsControllerTests
@@ -325,5 +326,98 @@ public class BusinessActionsControllerTests
         // Assert
         Assert.Equal(2, rowsAffected);
         _transportRepositoryMock.Verify(r => r.UpdateAllAsync(It.IsAny<IEnumerable<Transport>>()), Times.Once);
+    }
+
+    [Fact]
+    public async Task UpdateTables_OrdersTripsCorrectly()
+    {
+        // Arrange
+        Mock<IRepository<Order>> orderRepositoryMock = new();
+        Mock<IRepository<Transport>> transportRepositoryMock = new();
+        Mock<IRepository<Client>> clientRepositoryMock = new();
+        Mock<IRepository<Trip>> tripRepositoryMock = new();
+        Mock<IDistributionStrategy> distributionStrategyMock = new();
+        Mock<IRepository<DeliveryPoint>> deliveryPointRepositoryMock = new();
+        Mock<IEmailService> emailServiceMock = new();
+        Mock<IRouteService> routeServiceMock = new();
+
+        BusinessActionsController controller = new(
+            orderRepositoryMock.Object,
+            transportRepositoryMock.Object,
+            clientRepositoryMock.Object,
+            tripRepositoryMock.Object,
+            distributionStrategyMock.Object,
+            deliveryPointRepositoryMock.Object,
+            emailServiceMock.Object,
+            routeServiceMock.Object);
+
+        List<Order> orders = new()
+        {
+            new()
+            {
+                Id = Guid.NewGuid(),
+                DeliveryPointId = Guid.NewGuid(),
+                Status = Status.Pending,
+                ClientId = default,
+                DeliveryTime = null
+            },
+            new()
+            {
+                Id = Guid.NewGuid(),
+                DeliveryPointId = Guid.NewGuid(),
+                Status = Status.Pending,
+                ClientId = default,
+                DeliveryTime = null
+            }
+        };
+
+        Trip trip = new()
+        {
+            Id = Guid.NewGuid(),
+            TransportId = Guid.NewGuid(),
+            Orders = orders,
+            Status = Status.Pending
+        };
+
+        (List<Trip> Trips, List<Transport> UpdatedTransports, List<Order> CancelledOrders) distributionResult = (
+            Trips: new() { trip },
+            UpdatedTransports: new(),
+            CancelledOrders: new()
+        );
+
+        List<DeliveryPoint> deliveryPoints = new()
+        {
+            new() { Id = orders[0].DeliveryPointId, Latitude = 1.0, Longitude = 1.0 },
+            new() { Id = orders[1].DeliveryPointId, Latitude = 2.0, Longitude = 2.0 }
+        };
+
+        List<WayPointDto> wayPoints = new()
+        {
+            new WayPointDto(new GeoPoint(2.0, 2.0), 0),
+            new WayPointDto(new GeoPoint(1.0, 1.0), 0),
+        };
+
+        // Setup mocks
+        _ = deliveryPointRepositoryMock.Setup(r => r.GetByIdAsync(It.IsAny<Guid>()))
+            .ReturnsAsync((Guid id) => new(deliveryPoints.First(dp => dp.Id == id)));
+
+        _ = routeServiceMock.Setup(r =>
+                r.GetOptimalRoute(It.IsAny<GeoPoint>(), It.IsAny<List<GeoPoint>>(), It.IsAny<DateTime>()))
+            .ReturnsAsync(new Result<IReadOnlyList<WayPointDto>>(wayPoints));
+
+        _ = orderRepositoryMock.Setup(r => r.UpdateAllAsync(It.IsAny<IEnumerable<Order>>()))
+            .ReturnsAsync(new Result<int>(orders.Count));
+
+        _ = transportRepositoryMock.Setup(r => r.UpdateAllAsync(It.IsAny<IEnumerable<Transport>>()))
+            .ReturnsAsync(new Result<int>(0));
+
+        _ = tripRepositoryMock.Setup(r => r.CreateAllAsync(It.IsAny<IEnumerable<Trip>>()))
+            .ReturnsAsync(new Result<int>(1));
+
+        // Act
+        int rowsAffected = await controller.UpdateTables(orders, distributionResult);
+
+        // Assert
+        Assert.Equal(5, rowsAffected); // 4 orders updated + 1 trip created
     }
 }

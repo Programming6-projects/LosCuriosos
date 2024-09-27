@@ -1,11 +1,7 @@
 ﻿namespace DistributionCenter.Api.Controllers.Concretes;
 
 using System.ComponentModel.DataAnnotations;
-using Application.Constants;
-using Application.Contexts.Concretes;
 using Application.Repositories.Interfaces;
-using Application.Tables.Connections.File.Concretes;
-using Application.Tables.Core.Concretes;
 using Bases;
 using Commons.Errors;
 using Commons.Results;
@@ -15,7 +11,7 @@ using Infraestructure.DTOs.Concretes.Trip;
 using Microsoft.AspNetCore.Mvc;
 
 [Route("api/trips")]
-public class TripController(IRepository<Trip> repository)
+public class TripController(IRepository<Trip> repository, IRepository<Transport> transportRepository)
     : BaseEntityController<Trip, CreateTripDto, UpdateTripDto> (repository)
 {
     [HttpPut("complete-trip/{tripId}")]
@@ -33,15 +29,23 @@ public class TripController(IRepository<Trip> repository)
         bool allOrdersComplete = true;
         foreach (Order order in entity.Orders)
         {
-            allOrdersComplete = order.Status != Status.Sending;
+            if (order.Status != Status.Delivered)
+            {
+                allOrdersComplete = false;
+                break;
+            }
         }
+
+
+        if (!allOrdersComplete)
+        {
+            return this.ErrorsResponse([Error.Conflict()]);
+        }
+
+        entity.Status = Status.Delivered;
+        _ = await UpdateAvailabilityOfTransport(true, entity.TransportId);
 
         Result<Trip> result = await Repository.UpdateAsync(entity);
-
-        if (allOrdersComplete)
-        {
-            return await UpdateAvailabilityOfTransport(true, entity.TransportId);
-        }
 
         if (result.IsSuccess)
         {
@@ -50,6 +54,7 @@ public class TripController(IRepository<Trip> repository)
         return this.ErrorsResponse(result.Errors);
     }
 
+    [NonAction]
     private async Task<IActionResult> UpdateAvailabilityOfTransport(bool availability, Guid? transportId)
     {
         if (transportId == null)
@@ -57,15 +62,7 @@ public class TripController(IRepository<Trip> repository)
             return this.ErrorsResponse([Error.Conflict()]);
         }
 
-        TransportRepository transportRepository
-            = new (new Context(
-                new Dictionary<Type, object>
-                {
-                    { typeof(Transport), new TransportTable(new JsonConnectionFactory<Transport>(
-                        DbConstants.TransportSchema)) }
-                }));
-
-        Result<Transport> transportResult = await transportRepository.GetByIdAsync((Guid) transportId);
+        Result<Transport> transportResult = await transportRepository.GetByIdAsync(transportId.Value);
 
         if (!transportResult.IsSuccess)
         {

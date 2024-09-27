@@ -98,7 +98,6 @@ public class BaseRepositoryTests
         Assert.Equal(entities.Count, result.Value);
     }
 
-
     [Fact]
     public async Task UpdateAsync_ShouldReturnEntity()
     {
