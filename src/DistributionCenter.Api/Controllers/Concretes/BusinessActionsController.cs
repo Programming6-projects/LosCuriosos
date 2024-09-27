@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 using Services.Distribution.Enums;
 using Services.Distribution.Interfaces;
 using Services.Localization.Commons;
+using Services.Notification.Dtos;
+using Services.Notification.Interfaces;
 using Services.Routes.Dtos;
 using Services.Routes.Interfaces;
 
@@ -16,9 +18,11 @@ using Services.Routes.Interfaces;
 public class BusinessActionsController(
     IRepository<Order> orderRepository,
     IRepository<Transport> transportRepository,
+    IRepository<Client> clientRepository,
     IRepository<Trip> tripRepository,
     IDistributionStrategy distributionStrategy,
     IRepository<DeliveryPoint> deliveryPointRepository,
+    IEmailService emailService,
     IRouteService routeService
     ) : ControllerBase
 {
@@ -92,6 +96,7 @@ public class BusinessActionsController(
             ordersAccepted.Select(x =>
             {
                 x.Status = Status.Sending;
+                _ = SendNotificationOfUpdateOrders(x);
                 return x;
             })
         );
@@ -99,6 +104,7 @@ public class BusinessActionsController(
             distributionResult.CancelledOrders.Select(x =>
             {
                 x.Status = Status.Cancelled;
+                _ = SendNotificationOfUpdateOrders(x);
                 return x;
             })
         );
@@ -158,7 +164,7 @@ public class BusinessActionsController(
         return geoPointToOrderMap;
     }
 
-    private static List<Order> OrderOrders(IReadOnlyList<WayPointDto> wayPoints, Dictionary<GeoPoint, Order> geoPointToOrderMap)
+    private List<Order> OrderOrders(IReadOnlyList<WayPointDto> wayPoints, Dictionary<GeoPoint, Order> geoPointToOrderMap)
     {
         List<Order> orderedOrders = new();
 
@@ -167,11 +173,28 @@ public class BusinessActionsController(
             if (geoPointToOrderMap.TryGetValue(wayPoint.Point, out Order? matchingOrder))
             {
                 matchingOrder.DeliveryTime = wayPoint.DeliverTime;
+                _ = SendNotificationOfUpdateOrders(matchingOrder);
                 orderedOrders.Add(matchingOrder);
             }
         }
 
         return orderedOrders;
+    }
+
+    private async Task SendNotificationOfUpdateOrders(Order order)
+    {
+        Result<Client> clientResult = await clientRepository.GetByIdAsync(order.ClientId);
+        Client client = clientResult.Value;
+
+        OrderDto orderDto = new()
+        {
+            OrderId = order.Id,
+            OrderStatus = order.Status,
+            TimeToDeliver = order.DeliveryTime
+        };
+
+        IMessage message = NotificationFactory.CreateMessage(orderDto);
+        _ = Task.Run(() => emailService.SendEmailAsync(client.Email, message));
     }
 
     private async Task<Result<IReadOnlyList<WayPointDto>>> GetOrdersOrderByCloserLocationToUpdateTrip(
