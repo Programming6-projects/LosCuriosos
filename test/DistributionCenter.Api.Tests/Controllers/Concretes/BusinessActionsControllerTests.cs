@@ -2,7 +2,6 @@
 
 using Application.Repositories.Interfaces;
 using Commons.Errors;
-using Commons.Results;
 using Domain.Entities.Concretes;
 using Domain.Entities.Enums;
 using Microsoft.AspNetCore.Mvc;
