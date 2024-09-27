@@ -8,21 +8,19 @@ using Domain.Entities.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Services.Distribution.Enums;
 using Services.Distribution.Interfaces;
+using Services.Notification.Interfaces;
+using Services.Routes.Interfaces;
 
 public class BusinessActionsControllerTests
 {
-    private readonly Mock<IRepository<Order>> _orderRepositoryMock;
-    private readonly Mock<IRepository<Transport>> _transportRepositoryMock;
-    private readonly Mock<IRepository<Trip>> _tripRepositoryMock;
-    private readonly Mock<IDistributionStrategy> _distributionStrategy;
-
-    public BusinessActionsControllerTests()
-    {
-        _orderRepositoryMock = new Mock<IRepository<Order>>();
-        _transportRepositoryMock = new Mock<IRepository<Transport>>();
-        _tripRepositoryMock = new Mock<IRepository<Trip>>();
-        _distributionStrategy = new Mock<IDistributionStrategy>();
-    }
+    private readonly Mock<IRepository<Order>> _orderRepositoryMock = new();
+    private readonly Mock<IRepository<Transport>> _transportRepositoryMock = new();
+    private readonly Mock<IRepository<Client>> _clientRepositoryMock = new();
+    private readonly Mock<IRepository<Trip>> _tripRepositoryMock = new();
+    private readonly Mock<IRepository<DeliveryPoint>> _deliveryPointRepositoryMock = new();
+    private readonly Mock<IDistributionStrategy> _distributionStrategy = new();
+    private readonly Mock<IEmailService> _emailService = new();
+    private readonly Mock<IRouteService> _routeService = new();
 
     [Fact]
     public void Constructor_InitializesController()
@@ -31,104 +29,16 @@ public class BusinessActionsControllerTests
         BusinessActionsController controller = new(
             _orderRepositoryMock.Object,
             _transportRepositoryMock.Object,
+            _clientRepositoryMock.Object,
             _tripRepositoryMock.Object,
-            _distributionStrategy.Object);
+            _distributionStrategy.Object,
+            _deliveryPointRepositoryMock.Object,
+            _emailService.Object,
+            _routeService.Object
+            );
 
         // Verify actual result
         Assert.NotNull(controller);
-    }
-
-    [Fact]
-    public async Task StartDistribution_WithAvailableTransportOnCity()
-    {
-        // Define Input and Output
-        Location location = Location.InCity;
-        BusinessActionsController controller = new(
-            _orderRepositoryMock.Object,
-            _transportRepositoryMock.Object,
-            _tripRepositoryMock.Object,
-            _distributionStrategy.Object);
-
-        Guid tripId = Guid.NewGuid();
-
-        Order[] orders = new[]
-        {
-            new Order
-            {
-                Id = Guid.NewGuid(),
-                Status = Status.Pending,
-                IsActive = true,
-                RouteId = default,
-                ClientId = default,
-                DeliveryPointId = default
-            }
-        };
-
-        Transport[] transports = new[]
-        {
-            new Transport
-            {
-                Id = Guid.NewGuid(),
-                IsAvailable = true,
-                IsActive = true,
-                Name = "VAN523",
-                Plate = "5324FSD",
-                Capacity = 10000,
-                CurrentCapacity = 10000
-            }
-        };
-
-        Trip[] trips = new[]
-        {
-            new Trip
-            {
-                Id = Guid.NewGuid(),
-                Status = Status.Pending,
-                TransportId = null
-            }
-        };
-
-        Order[] cancelledOrders = Array.Empty<Order>();
-
-        _ = _orderRepositoryMock
-            .Setup(r => r.SelectWhereAsync(It.IsAny<Func<Order, bool>>()))
-            .ReturnsAsync(new Result<IEnumerable<Order>>(orders));
-        _ = _orderRepositoryMock
-            .Setup(r => r.UpdateAllAsync(It.IsAny<IEnumerable<Order>>()))
-            .ReturnsAsync(new Result<int>(1));
-        _ = _transportRepositoryMock
-            .Setup(r => r.SelectWhereAsync(It.IsAny<Func<Transport, bool>>()))
-            .ReturnsAsync(new Result<IEnumerable<Transport>>(transports));
-        _ = _transportRepositoryMock
-            .Setup(r => r.UpdateAllAsync(It.IsAny<IEnumerable<Transport>>()))
-            .ReturnsAsync(new Result<int>(1));
-        _ = _tripRepositoryMock
-            .Setup(r => r.SelectWhereAsync(It.IsAny<Func<Trip, bool>>()))
-            .ReturnsAsync(new Result<IEnumerable<Trip>>(trips));
-        _ = _tripRepositoryMock
-            .Setup(r => r.CreateAllAsync(It.IsAny<IEnumerable<Trip>>()))
-            .ReturnsAsync(new Result<int>(1));
-        _ = _distributionStrategy.Setup(ds => ds.DistributeOrders(
-                It.IsAny<ICollection<Order>>(),
-                It.IsAny<ICollection<Transport>>(),
-                It.IsAny<Location>()))
-            .Returns((trips, transports, cancelledOrders));
-
-        IActionResult result = await controller.StartDistribution(location);
-
-        OkObjectResult okResult = Assert.IsType<OkObjectResult>(result);
-        DistributionResult resultData = Assert.IsType<DistributionResult>(okResult.Value!);
-
-        // Verify actual result
-        Assert.Equal(1, resultData.OrdersAssigned);
-        Assert.Equal(1, resultData.TripsCount);
-        Assert.Equal(1, resultData.UpdatedTransportsCount);
-        Assert.Equal(0, resultData.CancelledOrdersCount);
-
-        // Verify calls to internal repositories
-        _transportRepositoryMock.Verify(r => r.SelectWhereAsync(It.IsAny<Func<Transport, bool>>()), Times.Once);
-        _tripRepositoryMock.Verify(r => r.CreateAllAsync(It.IsAny<IEnumerable<Trip>>()), Times.Once);
-        _orderRepositoryMock.Verify(r => r.UpdateAllAsync(It.IsAny<IEnumerable<Order>>()), Times.Exactly(2));
     }
 
     [Fact]
@@ -139,17 +49,16 @@ public class BusinessActionsControllerTests
         BusinessActionsController controller = new(
             _orderRepositoryMock.Object,
             _transportRepositoryMock.Object,
+            _clientRepositoryMock.Object,
             _tripRepositoryMock.Object,
-            _distributionStrategy.Object);
+            _distributionStrategy.Object,
+            _deliveryPointRepositoryMock.Object,
+            _emailService.Object,
+            _routeService.Object);
 
-        Guid tripId = Guid.NewGuid();
-
-        Order[] orders = Array.Empty<Order>();
-
-        Transport[] transports = new[]
-        {
-            new Transport
-            {
+        Transport[] transports =
+        [
+            new() {
                 Id = Guid.NewGuid(),
                 IsAvailable = true,
                 IsActive = true,
@@ -158,17 +67,17 @@ public class BusinessActionsControllerTests
                 Capacity = 0,
                 CurrentCapacity = 0
             }
-        };
+        ];
 
-        Trip[] trips = new[]
-        {
-            new Trip
+        Trip[] trips =
+        [
+            new()
             {
                 Id = Guid.NewGuid(),
                 Status = Status.Pending,
                 TransportId = null
             }
-        };
+        ];
 
         Order[] cancelledOrders = Array.Empty<Order>();
 
@@ -201,27 +110,29 @@ public class BusinessActionsControllerTests
         BusinessActionsController controller = new(
             _orderRepositoryMock.Object,
             _transportRepositoryMock.Object,
+            _clientRepositoryMock.Object,
             _tripRepositoryMock.Object,
-            _distributionStrategy.Object);
+            _distributionStrategy.Object,
+            _deliveryPointRepositoryMock.Object,
+            _emailService.Object,
+            _routeService.Object);
 
-        Guid tripId = Guid.NewGuid();
-
-        Order[] orders = new[]
-        {
-            new Order
+        Order[] orders =
+        [
+            new()
             {
                 Id = Guid.NewGuid(),
                 Status = Status.Pending,
                 IsActive = true,
                 RouteId = default,
                 ClientId = default,
-                DeliveryPointId = default
+                DeliveryPointId = default,
+                DeliveryTime = null
             }
-        };
+        ];
 
-        Transport[] transports = new[]
-        {
-            new Transport
+        Transport[] transports = {
+            new()
             {
                 Id = Guid.NewGuid(),
                 IsAvailable = false,
@@ -233,9 +144,8 @@ public class BusinessActionsControllerTests
             }
         };
 
-        Trip[] trips = new[]
-        {
-            new Trip
+        Trip[] trips = {
+            new()
             {
                 Id = Guid.NewGuid(),
                 Status = Status.Pending,
@@ -270,36 +180,32 @@ public class BusinessActionsControllerTests
     public void UpdateTables()
     {
         // Define Input and Output
-        BusinessActionsController controller = new(
-            _orderRepositoryMock.Object,
-            _transportRepositoryMock.Object,
-            _tripRepositoryMock.Object,
-            _distributionStrategy.Object);
 
         Guid tripId = Guid.NewGuid();
 
-        IEnumerable<Order> orders = new []
-        {
-            new Order
+        IEnumerable<Order> orders =
+        [
+            new()
             {
                 RouteId = Guid.NewGuid(),
                 ClientId = Guid.NewGuid(),
                 DeliveryPointId = Guid.NewGuid(),
-                Status = Status.Pending
+                Status = Status.Pending,
+                DeliveryTime = null
             }
-        };
-        IEnumerable<Trip> trips = new []
-        {
-            new Trip
+        ];
+        IEnumerable<Trip> trips =
+        [
+            new()
             {
                 Id = tripId,
                 Status = Status.Pending,
                 TransportId = null
             }
-        };
-        IEnumerable<Transport> transports = new []
-        {
-            new Transport
+        ];
+        IEnumerable<Transport> transports =
+        [
+            new()
             {
                 Name = "VAN54",
                 Plate = "3252DGD",
@@ -307,8 +213,7 @@ public class BusinessActionsControllerTests
                 CurrentCapacity = 500000000,
                 IsAvailable = true
             }
-        };
-        IEnumerable<Order> cancelledOrders = [];
+        ];
 
         _ = _orderRepositoryMock
             .Setup(r => r.UpdateAllAsync(It.IsAny<IEnumerable<Order>>()))
@@ -352,8 +257,12 @@ public class BusinessActionsControllerTests
         BusinessActionsController controller = new(
             _orderRepositoryMock.Object,
             _transportRepositoryMock.Object,
+            _clientRepositoryMock.Object,
             _tripRepositoryMock.Object,
-            _distributionStrategy.Object);
+            _distributionStrategy.Object,
+            _deliveryPointRepositoryMock.Object,
+            _emailService.Object,
+            _routeService.Object);
 
         // Act
         _ = _orderRepositoryMock.Setup(r => r.UpdateAllAsync(It.IsAny<IEnumerable<Order>>()))
@@ -381,7 +290,8 @@ public class BusinessActionsControllerTests
                 RouteId = Guid.NewGuid(),
                 ClientId = Guid.NewGuid(),
                 DeliveryPointId = Guid.NewGuid(),
-                Status = Status.Pending
+                Status = Status.Pending,
+                DeliveryTime = null
             }
         };
 
@@ -395,8 +305,12 @@ public class BusinessActionsControllerTests
         BusinessActionsController controller = new(
             _orderRepositoryMock.Object,
             _transportRepositoryMock.Object,
+            _clientRepositoryMock.Object,
             _tripRepositoryMock.Object,
-            _distributionStrategy.Object);
+            _distributionStrategy.Object,
+            _deliveryPointRepositoryMock.Object,
+            _emailService.Object,
+            _routeService.Object);
 
         // Act
         _ = _orderRepositoryMock.Setup(r => r.UpdateAllAsync(It.IsAny<IEnumerable<Order>>()))

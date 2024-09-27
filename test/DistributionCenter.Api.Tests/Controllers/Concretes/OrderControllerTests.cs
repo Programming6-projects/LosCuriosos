@@ -41,6 +41,7 @@ public class OrderControllerTests
                 ClientId = Guid.NewGuid(),
                 DeliveryPointId = Guid.NewGuid(),
                 Status = Status.Pending,
+                DeliveryTime = DateTime.Now,
             };
         Client client =
             new()
@@ -90,6 +91,7 @@ public class OrderControllerTests
                 ClientId = Guid.NewGuid(),
                 DeliveryPointId = Guid.NewGuid(),
                 Status = Status.Pending,
+                DeliveryTime = null,
             };
 
         _ = _orderRepositoryMock.Setup(repo => repo.GetByIdAsync(orderId)).ReturnsAsync(order);
@@ -119,7 +121,8 @@ public class OrderControllerTests
             Id = Guid.NewGuid(),
             ClientId = Guid.NewGuid(),
             Status = Status.Pending,
-            DeliveryPointId = Guid.NewGuid()
+            DeliveryPointId = Guid.NewGuid(),
+            DeliveryTime = DateTime.Now
         };
         OkObjectResult okResult = new(order);
 
@@ -165,7 +168,8 @@ public class OrderControllerTests
             Id = Guid.NewGuid(),
             ClientId = createOrderDto.ClientId,
             DeliveryPointId = createOrderDto.DeliveryPointId,
-            Status = Status.Pending
+            Status = Status.Pending,
+            DeliveryTime = DateTime.Now
         };
 
         _ = _orderRepositoryMock
