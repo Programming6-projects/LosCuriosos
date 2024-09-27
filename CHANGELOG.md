@@ -2,6 +2,20 @@
 
 
 
+# [1.7.0](https://github.com/Programming6-projects/LosCuriosos/compare/v1.6.0...v1.7.0) (2024-09-27)
+
+
+### Bug Fixes
+
+* fIX NAME ([0873c6d](https://github.com/Programming6-projects/LosCuriosos/commit/0873c6dec272fbd058e5975a07e723dc460e2943))
+* **hot fix:** solve problems related to delivery point validation and Trip management ([300c8df](https://github.com/Programming6-projects/LosCuriosos/commit/300c8dfba181347d18e665ce2d92b7175fddd98f))
+
+
+### Features
+
+* adding multiply tests to improve coverage ([19e5bb5](https://github.com/Programming6-projects/LosCuriosos/commit/19e5bb5c955219f0011825d2f743469d74a420b3))
+* improve the coverage to complete 90% and in branch 82% ([578990d](https://github.com/Programming6-projects/LosCuriosos/commit/578990d1013ff52d605d173d376b2aedb488ad16))
+
 # [1.6.0](https://github.com/Programming6-projects/LosCuriosos/compare/v1.5.0...v1.6.0) (2024-09-27)
 
 
