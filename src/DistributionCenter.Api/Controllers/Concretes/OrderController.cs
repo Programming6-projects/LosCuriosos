@@ -44,7 +44,7 @@ public class OrderController(
         if (!clientResult.IsSuccess) return this.ErrorsResponse(clientResult.Errors);
 
         Client client = clientResult.Value;
-        OrderDto orderDto = new() { OrderId = order.Id, OrderStatus = order.Status, TimeToDeliver = order.DeliveryTime!.Value };
+        OrderDto orderDto = new() { OrderId = order.Id, OrderStatus = order.Status, TimeToDeliver = DateTime.MinValue};
 
         IMessage message = NotificationFactory.CreateMessage(orderDto);
         _ = Task.Run(() => emailService.SendEmailAsync(client.Email, message));
