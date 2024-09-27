@@ -22,11 +22,11 @@ INSERT INTO strike (id, description, transport_id) VALUES
 ('f703575b-bb2c-4f7f-b2ff-ab06f4c5d369', 'The Transport was behind schedule 12/09/24', '5e278c18-8041-4014-9fa7-5f8c72e20d8b');
 
 INSERT INTO delivery_point (id, latitude, longitude) VALUES
-('e4eadcca-bd02-4f94-aae0-dd469300aa75', -16.500000, -68.150000),
-('ca1d0420-defd-40fc-8e35-d1190ecc50f5', -17.393511, -66.145981),
-('3cefbb06-e2e2-48f0-a765-3eb98e696dca', -19.033320, -65.262740),
-('1404d8ab-092a-467d-9faa-491e7156e806', -17.783327, -63.182129),
-('6b13b84c-6d92-4736-8fb6-d63ec45408dc', -18.478333, -66.486944);
+('e4eadcca-bd02-4f94-aae0-dd469300aa75', -16.499927, -68.149987),
+('ca1d0420-defd-40fc-8e35-d1190ecc50f5', -17.392442, -66.146213),
+('3cefbb06-e2e2-48f0-a765-3eb98e696dca', -19.033349, -65.262781),
+('1404d8ab-092a-467d-9faa-491e7156e806', -17.783368, -63.182643),
+('6b13b84c-6d92-4736-8fb6-d63ec45408dc', -18.481899, -66.484528);
 
 INSERT INTO client_order (id, route_id, client_id, delivery_point_id, delivery_time) VALUES
 ('cfe6ef50-da1b-4173-8f7a-45e9307956dc', '907a1ffa-1075-46b1-ab0c-b97809967002','c1d3e678-9b6f-47e1-b0b6-a5f11e7e67a1', 'e4eadcca-bd02-4f94-aae0-dd469300aa75', NULL),
