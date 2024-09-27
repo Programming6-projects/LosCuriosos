@@ -5,7 +5,7 @@ using Bases;
 public class OrderProduct : BaseEntity
 {
     public required Guid ProductId { get; set; }
-    public required Guid OrderId { get; set; }
+    public Guid OrderId { get; set; } = Guid.Empty;
     public required int Quantity { get; set; }
-    public required Product Product { get; set; }
+    public Product Product { get; set; } = null!;
 }

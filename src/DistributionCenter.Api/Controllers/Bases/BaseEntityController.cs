@@ -20,7 +20,7 @@ public abstract class BaseEntityController<TEntity, TCreateDto, TUpdateDto>(IRep
     protected IRepository<TEntity> Repository { get; } = repository;
 
     [HttpPost]
-    public async Task<IActionResult> Create(TCreateDto request)
+    public virtual async Task<IActionResult> Create(TCreateDto request)
     {
         Result validateResult = request.Validate();
 
@@ -37,7 +37,7 @@ public abstract class BaseEntityController<TEntity, TCreateDto, TUpdateDto>(IRep
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetById([FromRoute] [Required] Guid id)
+    public virtual async Task<IActionResult> GetById([FromRoute] [Required] Guid id)
     {
         Result<TEntity> result = await Repository.GetByIdAsync(id);
 
@@ -45,7 +45,7 @@ public abstract class BaseEntityController<TEntity, TCreateDto, TUpdateDto>(IRep
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> Update([FromRoute] [Required] Guid id, TUpdateDto request)
+    public virtual async Task<IActionResult> Update([FromRoute] [Required] Guid id, TUpdateDto request)
     {
         Result validateResult = request.Validate();
 
@@ -69,7 +69,7 @@ public abstract class BaseEntityController<TEntity, TCreateDto, TUpdateDto>(IRep
     }
 
     [HttpPatch("{id}/disable")]
-    public async Task<IActionResult> Disable([FromRoute] [Required] Guid id)
+    public virtual async Task<IActionResult> Disable([FromRoute] [Required] Guid id)
     {
         Result<TEntity> searchEntity = await Repository.GetByIdAsync(id);
 

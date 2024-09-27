@@ -44,6 +44,14 @@ public static class ApplicationBuilderConfiguration
                 { typeof(Order), new OrderTable(_.GetRequiredService<IDbConnectionFactory<IDbConnection>>()) },
                 { typeof(Trip), new TripTable(_.GetRequiredService<IDbConnectionFactory<IDbConnection>>()) },
                 { typeof(Strike), new StrikeTable(_.GetRequiredService<IDbConnectionFactory<IDbConnection>>()) },
+                {
+                    typeof(OrderProduct),
+                    new OrderProductTable(_.GetRequiredService<IDbConnectionFactory<IDbConnection>>())
+                },
+                {
+                    typeof(DeliveryPoint),
+                    new DeliveryPointTable(_.GetRequiredService<IDbConnectionFactory<IDbConnection>>())
+                },
             }
         ));
 
@@ -58,6 +66,7 @@ public static class ApplicationBuilderConfiguration
         _ = services.AddScoped<IRepository<Trip>, TripRepository>();
         _ = services.AddScoped<IRepository<Transport>, TransportRepository>();
         _ = services.AddScoped<IRepository<Strike>, StrikeRepository>();
+        _ = services.AddScoped<IRepository<DeliveryPoint>, DeliveryPointRepository>();
 
         return services;
     }

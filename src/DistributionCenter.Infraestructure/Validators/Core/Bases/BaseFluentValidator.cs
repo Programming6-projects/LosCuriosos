@@ -28,6 +28,26 @@ public abstract class BaseFluentValidator<T> : IFluentValidator<T>
         return (IValidationBuilder<TValue>)value;
     }
 
+    protected IValidationBuilder<IEnumerable<TItem>> RuleForEach<TItem>(Expression<Func<T, IEnumerable<TItem>>> expression, IFluentValidator<TItem> itemValidator)
+    {
+        ArgumentNullException.ThrowIfNull(expression, nameof(expression));
+
+        string fieldName = expression.Body.ToString().Split('.').Last();
+
+        return RuleFor(expression).AddRule(items =>
+            {
+                foreach (TItem? item in items)
+                {
+                    Result result = itemValidator.Validate(item);
+                    if (!result.IsSuccess)
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }, $"One or more items in {fieldName} are invalid.");
+    }
+
     public Result Validate(T value)
     {
         ArgumentNullException.ThrowIfNull(value, nameof(value));
