@@ -1,10 +1,10 @@
 namespace DistributionCenter.Infraestructure.Tests.DTOs.Concretes.Orders;
 
 using Commons.Results;
+using DistributionCenter.Infraestructure.DTOs.Concretes.OrderProducts;
+using DistributionCenter.Infraestructure.DTOs.Concretes.Orders;
 using Domain.Entities.Concretes;
 using Domain.Entities.Enums;
-using Infraestructure.DTOs.Concretes.OrderProducts;
-using Infraestructure.DTOs.Concretes.Orders;
 
 public class UpdateOrderDtoTests
 {
@@ -21,11 +21,7 @@ public class UpdateOrderDtoTests
                 DeliveryPointId = Guid.NewGuid(),
                 Status = Status.Pending,
             };
-        UpdateOrderDto dto =
-            new()
-            {
-                Status = "Cancelled",
-            };
+        UpdateOrderDto dto = new() { Status = "Cancelled" };
 
         // Execute actual operation
         Order updatedOrder = dto.FromEntity(order);
@@ -67,31 +63,33 @@ public class UpdateOrderDtoTests
     [Fact]
     public void FromEntity_ShouldUpdateOrderStatus_WhenStatusIsValid()
     {
-        Order order = new ()
-        {
-            Status = Status.Pending,
-            ClientId = Guid.NewGuid(),
-            DeliveryPointId = Guid.NewGuid()
-        };
-        UpdateOrderDto dto = new () { Status = "Shipped" };
+        Order order =
+            new()
+            {
+                Status = Status.Pending,
+                ClientId = Guid.NewGuid(),
+                DeliveryPointId = Guid.NewGuid(),
+            };
+        UpdateOrderDto dto = new() { Status = "Delivered" };
 
         Order updatedOrder = dto.FromEntity(order);
 
         // Assert
-        Assert.Equal(Status.Shipped, updatedOrder.Status);
+        Assert.Equal(Status.Delivered, updatedOrder.Status);
     }
 
     [Fact]
     public void FromEntity_ShouldNotUpdateStatus_WhenStatusIsNull()
     {
         Status originalStatus = Status.Pending;
-        Order order = new ()
-        {
-            Status = originalStatus,
-            ClientId = Guid.NewGuid(),
-            DeliveryPointId = Guid.NewGuid()
-        };
-        UpdateOrderDto dto = new () { Status = null };
+        Order order =
+            new()
+            {
+                Status = originalStatus,
+                ClientId = Guid.NewGuid(),
+                DeliveryPointId = Guid.NewGuid(),
+            };
+        UpdateOrderDto dto = new() { Status = null };
 
         Order updatedOrder = dto.FromEntity(order);
 
@@ -104,31 +102,25 @@ public class UpdateOrderDtoTests
     {
         Guid productId1 = Guid.NewGuid();
         Guid productId2 = Guid.NewGuid();
-        Order order = new ()
-        {
-            Products = new List<OrderProduct>
+        Order order =
+            new()
             {
-                new ()
+                Products = new List<OrderProduct>
                 {
-                    ProductId = productId1,
-                    Quantity = 2
+                    new() { ProductId = productId1, Quantity = 2 },
+                    new() { ProductId = productId2, Quantity = 3 },
                 },
-                new ()
-                {
-                    ProductId = productId2,
-                    Quantity = 3
-                }
-            },
-            ClientId = default,
-            DeliveryPointId = default
-        };
-        UpdateOrderDto dto = new ()
-        {
-            Products = new List<UpdateOrderProductDto>
+                ClientId = default,
+                DeliveryPointId = default,
+            };
+        UpdateOrderDto dto =
+            new()
             {
-                new () { ProductId = productId1, Quantity = 5 }
-            }
-        };
+                Products = new List<UpdateOrderProductDto>
+                {
+                    new() { ProductId = productId1, Quantity = 5 },
+                },
+            };
 
         Order updatedOrder = dto.FromEntity(order);
 
@@ -142,26 +134,24 @@ public class UpdateOrderDtoTests
     {
         Guid productId1 = Guid.NewGuid();
         Guid productIdNotInOrder = Guid.NewGuid();
-        Order order = new ()
-        {
-            Products = new List<OrderProduct>
+        Order order =
+            new()
             {
-                new()
+                Products = new List<OrderProduct>
                 {
-                    ProductId = productId1,
-                    Quantity = 2
-                }
-            },
-            ClientId = Guid.NewGuid(),
-            DeliveryPointId = Guid.NewGuid()
-        };
-        UpdateOrderDto dto = new ()
-        {
-            Products = new List<UpdateOrderProductDto>
+                    new() { ProductId = productId1, Quantity = 2 },
+                },
+                ClientId = Guid.NewGuid(),
+                DeliveryPointId = Guid.NewGuid(),
+            };
+        UpdateOrderDto dto =
+            new()
             {
-                new () { ProductId = productIdNotInOrder, Quantity = 5 }
-            }
-        };
+                Products = new List<UpdateOrderProductDto>
+                {
+                    new() { ProductId = productIdNotInOrder, Quantity = 5 },
+                },
+            };
 
         Order updatedOrder = dto.FromEntity(order);
 
@@ -173,14 +163,15 @@ public class UpdateOrderDtoTests
     [Fact]
     public void Validate_ShouldReturnSuccessResult()
     {
-        UpdateOrderDto dto = new ()
-        {
-            Status = "Shipped",
-            Products = new List<UpdateOrderProductDto>
+        UpdateOrderDto dto =
+            new()
             {
-                new () { ProductId = Guid.NewGuid(), Quantity = 1 }
-            }
-        };
+                Status = "Shipped",
+                Products = new List<UpdateOrderProductDto>
+                {
+                    new() { ProductId = Guid.NewGuid(), Quantity = 1 },
+                },
+            };
 
         Result result = dto.Validate();
 
