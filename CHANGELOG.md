@@ -2,6 +2,47 @@
 
 
 
+# [1.6.0](https://github.com/Programming6-projects/LosCuriosos/compare/v1.5.0...v1.6.0) (2024-09-27)
+
+
+### Bug Fixes
+
+* **cancelled order message:** this a bug fix, now the 4 statusses of an order are working ([7385e45](https://github.com/Programming6-projects/LosCuriosos/commit/7385e4576b53600dd371390cb87f23003b802867))
+* **docker:** fix docker postgres data path ([4662481](https://github.com/Programming6-projects/LosCuriosos/commit/46624818fe599d9cc70b0136070da3244670c6e2))
+* fix bug when pay all the strikes the transport can be available again ([f4d4cc4](https://github.com/Programming6-projects/LosCuriosos/commit/f4d4cc4dcbb3d5cb80cebf22f687405aff3da3ef))
+* remove comments ([4cde140](https://github.com/Programming6-projects/LosCuriosos/commit/4cde1407b3bb89315b83461f96bd6086d86f50e0))
+* **service:** fix service for the integration ([44c41ef](https://github.com/Programming6-projects/LosCuriosos/commit/44c41efaaff2dd23dc63d99755120d62828384ff))
+* solve ishues related with test units ([5974748](https://github.com/Programming6-projects/LosCuriosos/commit/5974748ddbf2a7196db0dfa3d1c61135fc05dfed))
+* solve merge conflicts ([f68bc3f](https://github.com/Programming6-projects/LosCuriosos/commit/f68bc3f748691846965dcfb3a11752b01d330472))
+* update create and update validators for product ([4198ec1](https://github.com/Programming6-projects/LosCuriosos/commit/4198ec1b148551676a30c023487f27ba8307f593))
+
+
+### Features
+
+* add endpoint to start distribution logic ([d458837](https://github.com/Programming6-projects/LosCuriosos/commit/d45883735be5e9c35007d734b68333705ae669de))
+* add strike endpoints ([0562da2](https://github.com/Programming6-projects/LosCuriosos/commit/0562da251aa15bd628d9f8207568aee284360a35))
+* add three strike disable transport and pay strikes endpoint ([c0c96e8](https://github.com/Programming6-projects/LosCuriosos/commit/c0c96e8addc6a3c2ba8d9693ff40b329253914c3))
+* add time estimation into route ([ef744ea](https://github.com/Programming6-projects/LosCuriosos/commit/ef744eafa40e1edd7026202df7748ac3a7e4e1e9))
+* adding controller fo delivery point and update business action controller to manage service ([e4ac46f](https://github.com/Programming6-projects/LosCuriosos/commit/e4ac46f0366faa749fceecb05ed8e686d1886d9e))
+* adding the function to send the email when the order is accepted, rejected and in shipment ([ebf1968](https://github.com/Programming6-projects/LosCuriosos/commit/ebf19683c63411872f1405251f7e22d9b120b097))
+* **api:** finish adding optimal route service integration to our project ([cbfd07a](https://github.com/Programming6-projects/LosCuriosos/commit/cbfd07a38208671fced00450c5c736da440243e8))
+* **application:** update all application classes for use the service ([5841b79](https://github.com/Programming6-projects/LosCuriosos/commit/5841b791f683591a60b820de80f6607730ff79c5))
+* **delivery:** add delivery point endpoints ([f3d504d](https://github.com/Programming6-projects/LosCuriosos/commit/f3d504d2c58a9aea6f60ae4ee4cf2c4d0d726920))
+* **domain:** update entities for managing all services ([5452978](https://github.com/Programming6-projects/LosCuriosos/commit/5452978b4b27e2cad19e97f5009a861beee62aab))
+* finish implementation of features ([5d0e1d8](https://github.com/Programming6-projects/LosCuriosos/commit/5d0e1d8492c1c1953ddd9313b960078dc2aef6cf))
+* implement missing GetAllJsonQuery on base file tables ([c76d954](https://github.com/Programming6-projects/LosCuriosos/commit/c76d9541f99817a72d73397b8598f7f87397f83f))
+* improve controller to call the status ([b344f37](https://github.com/Programming6-projects/LosCuriosos/commit/b344f376c245e8c33794fb2c2378e8d0ce503e8e))
+* **infraestructure:** update dtos and validators ([9c1f0fc](https://github.com/Programming6-projects/LosCuriosos/commit/9c1f0fc2d12fd76c9a7c2c9fbc148a6b91ec1fea))
+* modifying persistence data updating with data necessary ([055e923](https://github.com/Programming6-projects/LosCuriosos/commit/055e923f9d3275f39c2cc24809733f7844faaefe))
+* **order:** add order and order product ([8c4f74b](https://github.com/Programming6-projects/LosCuriosos/commit/8c4f74b2d92101f17fd48aaa2f764db33580eb85))
+* **order:** add order enpoints ([0e8f312](https://github.com/Programming6-projects/LosCuriosos/commit/0e8f312c7280506df932d098d754564dd20e8db3))
+* refactor and finish update of test ([539c280](https://github.com/Programming6-projects/LosCuriosos/commit/539c280e813aaaf204d8d7d534db5028bc3a3677))
+* **services:** update al services to fix some ishues ([7419a93](https://github.com/Programming6-projects/LosCuriosos/commit/7419a93571dba7d129508c551a1099ff0d81b1e9))
+* update  and fix concretes of transport validator ([409e8a6](https://github.com/Programming6-projects/LosCuriosos/commit/409e8a63047d1218cdfdaaa8b12b8d6e104216c1))
+* update and fix concretes of client validator ([0d40d00](https://github.com/Programming6-projects/LosCuriosos/commit/0d40d00f45a4cf41bc8aa70320fe30b4ef600eee))
+* update geopint dto and persistence data to fix and ishue ([29df483](https://github.com/Programming6-projects/LosCuriosos/commit/29df48300b4a27e74a02166061f93410e269919f))
+* update persistence data after make distribution ([573ba45](https://github.com/Programming6-projects/LosCuriosos/commit/573ba45859e60e8af84e5814fb352ba91b63ffeb))
+
 # [1.5.0](https://github.com/Programming6-projects/LosCuriosos/compare/v1.4.0...v1.5.0) (2024-09-23)
 
 
