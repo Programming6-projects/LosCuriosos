@@ -7,8 +7,8 @@ using Validators.Core.Concretes.DeliveryPoint;
 
 public class CreateDeliveryPointDto : ICreateDto<DeliveryPoint>
 {
-    public required double Latitude { get; init; }
-    public required double Longitude { get; init; }
+    public required double Latitude { get; set; }
+    public required double Longitude { get; set; }
 
     public DeliveryPoint ToEntity()
     {
