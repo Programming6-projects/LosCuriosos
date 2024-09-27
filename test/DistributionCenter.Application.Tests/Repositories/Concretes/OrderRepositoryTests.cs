@@ -4,6 +4,7 @@ using Application.Contexts.Interfaces;
 using Application.Repositories.Concretes;
 using Commons.Results;
 using Domain.Entities.Concretes;
+using Domain.Entities.Enums;
 
 public class OrderRepositoryTests
 {
@@ -30,7 +31,13 @@ public class OrderRepositoryTests
     [Fact]
     public async Task CreateAsync_OrderCreationSuccess_ReturnsOrder()
     {
-        Order order = new() { ClientId = Guid.NewGuid(), DeliveryPointId = Guid.NewGuid() };
+        Order order = new()
+        {
+            ClientId = Guid.NewGuid(),
+            DeliveryPointId = Guid.NewGuid(),
+            DeliveryTime = DateTime.Now,
+            Status = Status.Pending
+        };
         Result createResult = Result.Ok();
         _ = _contextMock.Setup(c => c.SetTable<Order>().Create(order).ExecuteAsync()).ReturnsAsync(createResult);
 
@@ -44,7 +51,13 @@ public class OrderRepositoryTests
     [Fact]
     public async Task UpdateAsync_OrderUpdateSuccess_ReturnsOrder()
     {
-        Order order = new() { ClientId = Guid.NewGuid(), DeliveryPointId = Guid.NewGuid() };
+        Order order = new()
+        {
+            ClientId = Guid.NewGuid(),
+            DeliveryPointId = Guid.NewGuid(),
+            DeliveryTime = DateTime.Now,
+            Status = Status.Pending
+        };
 
         Result updateResult = Result.Ok();
 

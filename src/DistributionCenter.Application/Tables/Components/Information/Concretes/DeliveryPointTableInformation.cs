@@ -4,17 +4,14 @@ using Bases;
 
 public class DeliveryPointTableInformation : BaseEntityTableInformation
 {
-    public DeliveryPointTableInformation()
-        : base() { }
+    protected override string ObtainTableName()
+    {
+        return "delivery_point";
+    }
 
     protected override string ObtainGetByIdFields()
     {
         return "latitude AS Latitude, longitude AS Longitude";
-    }
-
-    protected override string ObtainTableName()
-    {
-        return "delivery_point";
     }
 
     protected override string ObtainCreateFields()

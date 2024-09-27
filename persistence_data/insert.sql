@@ -3,7 +3,7 @@ INSERT INTO client (id, name, last_name, email) VALUES
 ('a2b6e412-4b7e-45c9-a78e-58f0e4e54b2d', 'Miguel', 'Romero', 'mikyromesa100503@gmail.com'),
 ('b3f7d489-5b9f-42ea-bc6b-691d98c983a2', 'Karina', 'Aguirre', 'manuel_patty@hotmail.com'),
 ('d4e8f594-6c3f-46ea-abc6-792f09d9c8b3', 'Jorge', 'Heredia', 'morales.patty.manuel@gmail.com'),
-('e5f96224-7d8e-48ea-bf7b-893fa0e0b9b4', 'Jefersson', 'Coronel', 'mikyromesa100503@gmail.com');
+('e5f96224-7d8e-48ea-bf7b-893fa0e0b9b4', 'Jefersson', 'Coronel', 'jefersoncoronel700@gmail.com');
 
 INSERT INTO route (id, transport_id) VALUES
 ('907a1ffa-1075-46b1-ab0c-b97809967002', 'eca2e142-95e6-4f36-ae9b-6b0ff4eb63bc'),
@@ -22,18 +22,18 @@ INSERT INTO strike (id, description, transport_id) VALUES
 ('f703575b-bb2c-4f7f-b2ff-ab06f4c5d369', 'The Transport was behind schedule 12/09/24', '5e278c18-8041-4014-9fa7-5f8c72e20d8b');
 
 INSERT INTO delivery_point (id, latitude, longitude) VALUES
-('e4eadcca-bd02-4f94-aae0-dd469300aa75', -16.500000, -68.150000),
-('ca1d0420-defd-40fc-8e35-d1190ecc50f5', -17.393511, -66.145981),
-('3cefbb06-e2e2-48f0-a765-3eb98e696dca', -19.033320, -65.262740),
-('1404d8ab-092a-467d-9faa-491e7156e806', -17.783327, -63.182129),
-('6b13b84c-6d92-4736-8fb6-d63ec45408dc', -18.478333, -66.486944);
+('e4eadcca-bd02-4f94-aae0-dd469300aa75', -16.499927, -68.149987),
+('ca1d0420-defd-40fc-8e35-d1190ecc50f5', -17.392442, -66.146213),
+('3cefbb06-e2e2-48f0-a765-3eb98e696dca', -19.033349, -65.262781),
+('1404d8ab-092a-467d-9faa-491e7156e806', -17.783368, -63.182643),
+('6b13b84c-6d92-4736-8fb6-d63ec45408dc', -18.481899, -66.484528);
 
-INSERT INTO client_order (id, route_id, client_id, delivery_point_id) VALUES
-('cfe6ef50-da1b-4173-8f7a-45e9307956dc', '907a1ffa-1075-46b1-ab0c-b97809967002','c1d3e678-9b6f-47e1-b0b6-a5f11e7e67a1', 'e4eadcca-bd02-4f94-aae0-dd469300aa75'),
-('135df060-afd2-4c50-8fd8-30742f048b62', '907a1ffa-1075-46b1-ab0c-b97809967002', 'a2b6e412-4b7e-45c9-a78e-58f0e4e54b2d', 'ca1d0420-defd-40fc-8e35-d1190ecc50f5'),
-('aad9f084-8043-498a-87ef-ce2c2fe76ded', '907a1ffa-1075-46b1-ab0c-b97809967002', 'b3f7d489-5b9f-42ea-bc6b-691d98c983a2', '3cefbb06-e2e2-48f0-a765-3eb98e696dca'),
-('561d618f-46c2-4bee-b55e-ee23ddc3290b', 'd8a4c1ec-f80b-4e30-8c8e-8ce5cfe8c41a','d4e8f594-6c3f-46ea-abc6-792f09d9c8b3', '1404d8ab-092a-467d-9faa-491e7156e806'),
-('439bac98-f558-491d-8ee4-5ce9f2486195', 'd8a4c1ec-f80b-4e30-8c8e-8ce5cfe8c41a','e5f96224-7d8e-48ea-bf7b-893fa0e0b9b4', '6b13b84c-6d92-4736-8fb6-d63ec45408dc');
+INSERT INTO client_order (id, route_id, client_id, delivery_point_id, delivery_time) VALUES
+('cfe6ef50-da1b-4173-8f7a-45e9307956dc', '907a1ffa-1075-46b1-ab0c-b97809967002','c1d3e678-9b6f-47e1-b0b6-a5f11e7e67a1', 'e4eadcca-bd02-4f94-aae0-dd469300aa75', NULL),
+('135df060-afd2-4c50-8fd8-30742f048b62', '907a1ffa-1075-46b1-ab0c-b97809967002', 'a2b6e412-4b7e-45c9-a78e-58f0e4e54b2d', 'ca1d0420-defd-40fc-8e35-d1190ecc50f5', NULL),
+('aad9f084-8043-498a-87ef-ce2c2fe76ded', '907a1ffa-1075-46b1-ab0c-b97809967002', 'b3f7d489-5b9f-42ea-bc6b-691d98c983a2', '3cefbb06-e2e2-48f0-a765-3eb98e696dca', NULL),
+('561d618f-46c2-4bee-b55e-ee23ddc3290b', 'd8a4c1ec-f80b-4e30-8c8e-8ce5cfe8c41a','d4e8f594-6c3f-46ea-abc6-792f09d9c8b3', '1404d8ab-092a-467d-9faa-491e7156e806', NULL),
+('439bac98-f558-491d-8ee4-5ce9f2486195', 'd8a4c1ec-f80b-4e30-8c8e-8ce5cfe8c41a','e5f96224-7d8e-48ea-bf7b-893fa0e0b9b4', '6b13b84c-6d92-4736-8fb6-d63ec45408dc', NULL);
 
 INSERT INTO product (id, name, description, weight_gr) VALUES
 ('3842f419-4c13-4880-827b-e784d9ad0b07', 'Pepsi', 'A popular carbonated soft drink', 500),

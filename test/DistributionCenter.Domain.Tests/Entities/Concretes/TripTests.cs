@@ -16,6 +16,7 @@ public class TripTests
                 ClientId = Guid.NewGuid(),
                 DeliveryPointId = Guid.NewGuid(),
                 Status = Status.Pending,
+                DeliveryTime = null,
             };
 
         Trip entity =

@@ -1,5 +1,6 @@
 namespace DistributionCenter.Services.Routes.Concretes;
 
+using System.Globalization;
 using System.Text.Json;
 using DistributionCenter.Services.Localization.Commons;
 using DistributionCenter.Commons.Results;
@@ -11,14 +12,16 @@ public class DeliveryRouteService(HttpClient httpClient, string mapboxAccessToke
 {
     private const string BaseUrl = "https://api.mapbox.com/optimized-trips/v1/mapbox/driving/";
 
-    public async Task<Result<IReadOnlyList<WayPointDto>>> GetOptimalRoute(GeoPoint startPoint, IReadOnlyList<GeoPoint> geoPoints, DateTime startTime)
+    public async Task<Result<IReadOnlyList<WayPointDto>>> GetOptimalRoute(GeoPoint startPoint,
+        IReadOnlyList<GeoPoint> geoPoints, DateTime startTime)
     {
         string url = BuildUrl(startPoint, geoPoints);
         HttpResponseMessage response = await SendRequest(url);
 
         if (!response.IsSuccessStatusCode)
         {
-            return Error.Unauthorized(description: $"Invalid token or API request failed. Status code: {response.StatusCode}");
+            return Error.Unauthorized(
+                description: $"Invalid token or API request failed. Status code: {response.StatusCode}");
         }
 
         string jsonResponse = await response.Content.ReadAsStringAsync();
@@ -30,7 +33,7 @@ public class DeliveryRouteService(HttpClient httpClient, string mapboxAccessToke
         List<GeoPoint> allPoints = new() { startPoint };
         allPoints.AddRange(geoPoints);
 
-        string coordinates = string.Join(";", allPoints.Select(p => $"{p.Longitude},{p.Latitude}"));
+        string coordinates = string.Join(";", allPoints.Select(p => $"{p.Longitude.ToString(CultureInfo.CurrentCulture).Replace(',','.')},{p.Latitude.ToString(CultureInfo.CurrentCulture).Replace(',','.')}"));
         return $"{BaseUrl}{coordinates}?access_token={mapboxAccessToken}&geometries=geojson&source=first&destination=last&annotations=duration";
     }
 
@@ -60,13 +63,15 @@ public class DeliveryRouteService(HttpClient httpClient, string mapboxAccessToke
             tripsElement.GetArrayLength() == 0 ||
             !tripsElement[0].TryGetProperty("legs", out JsonElement legsElement))
         {
-            return Error.NotFound(description: $"No waypoints or route data found in the response. Response: {jsonResponse}");
+            return Error.NotFound(
+                description: $"No waypoints or route data found in the response. Response: {jsonResponse}");
         }
 
         return ParseWaypointsWithDurations(waypointsElement, legsElement, startTime);
     }
 
-    private static Result<IReadOnlyList<WayPointDto>> ParseWaypointsWithDurations(JsonElement waypointsElement, JsonElement legsElement, DateTime startTime)
+    private static Result<IReadOnlyList<WayPointDto>> ParseWaypointsWithDurations(JsonElement waypointsElement,
+        JsonElement legsElement, DateTime startTime)
     {
         List<WayPointDto> waypoints = new();
         DateTime currentDeliverTime = startTime;
@@ -104,7 +109,14 @@ public class DeliveryRouteService(HttpClient httpClient, string mapboxAccessToke
             }
         }
 
-        return waypoints.OrderBy(w => w.Priority).ToList();
+        List<WayPointDto> orderedWaypoints = waypoints.OrderBy(w => w.DeliverTime).ToList();
+
+        for (int i = 0; i < orderedWaypoints.Count; i++)
+        {
+            orderedWaypoints[i].Priority = i;
+        }
+
+        return orderedWaypoints;
     }
 
     private static Result<IReadOnlyList<WayPointDto>> HandleNonOkStatus(JsonElement root, string? code)

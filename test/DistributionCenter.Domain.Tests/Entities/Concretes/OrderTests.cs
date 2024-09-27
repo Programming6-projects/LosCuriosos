@@ -16,6 +16,7 @@ public class OrderTests
                 ClientId = expectedClientId,
                 DeliveryPointId = expectedDeliveryPointId,
                 Status = Status.Pending,
+                DeliveryTime = null,
             };
 
         // Execute actual operation
@@ -44,6 +45,7 @@ public class OrderTests
                 RouteId = routeId,
                 DeliveryPointId = deliveryPointId,
                 Status = status,
+                DeliveryTime = null,
             };
         Order order2 =
             new()
@@ -52,6 +54,7 @@ public class OrderTests
                 RouteId = routeId,
                 DeliveryPointId = deliveryPointId,
                 Status = status,
+                DeliveryTime = null,
             };
 
         // Execute actual operation
@@ -72,6 +75,7 @@ public class OrderTests
                 RouteId = new(),
                 DeliveryPointId = new(),
                 Status = Status.Pending,
+                DeliveryTime = null,
             };
         Order order2 =
             new()
@@ -80,6 +84,7 @@ public class OrderTests
                 RouteId = new(),
                 DeliveryPointId = new(),
                 Status = Status.Sending,
+                DeliveryTime = null,
             };
 
         // Execute actual operation
@@ -104,6 +109,7 @@ public class OrderTests
                 RouteId = routeId,
                 DeliveryPointId = deliveryPointId,
                 Status = status,
+                DeliveryTime = null,
             };
         Order order2 =
             new()
@@ -112,6 +118,7 @@ public class OrderTests
                 RouteId = routeId,
                 DeliveryPointId = deliveryPointId,
                 Status = status,
+                DeliveryTime = null,
             };
 
         // Execute actual operation
@@ -133,6 +140,7 @@ public class OrderTests
                 RouteId = new(),
                 DeliveryPointId = new(),
                 Status = Status.Pending,
+                DeliveryTime = null,
             };
 
         // Execute actual operation
@@ -153,6 +161,7 @@ public class OrderTests
                 RouteId = new(),
                 DeliveryPointId = new(),
                 Status = Status.Pending,
+                DeliveryTime = null,
             };
         Order order2 =
             new()
@@ -161,6 +170,7 @@ public class OrderTests
                 RouteId = new(),
                 DeliveryPointId = new(),
                 Status = Status.Sending,
+                DeliveryTime = null,
             };
 
         // Execute actual operation

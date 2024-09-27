@@ -20,6 +20,7 @@ public class UpdateOrderDtoTests
                 ClientId = clientId,
                 DeliveryPointId = Guid.NewGuid(),
                 Status = Status.Pending,
+                DeliveryTime = null,
             };
         UpdateOrderDto dto = new() { Status = "Cancelled" };
 
@@ -47,6 +48,7 @@ public class UpdateOrderDtoTests
                 ClientId = initialClientId,
                 DeliveryPointId = initialDeliveryPointId,
                 Status = status,
+                DeliveryTime = null,
             };
         UpdateOrderDto dto = new();
 
@@ -69,6 +71,7 @@ public class UpdateOrderDtoTests
                 Status = Status.Pending,
                 ClientId = Guid.NewGuid(),
                 DeliveryPointId = Guid.NewGuid(),
+                DeliveryTime = null,
             };
         UpdateOrderDto dto = new() { Status = "Delivered" };
 
@@ -88,6 +91,7 @@ public class UpdateOrderDtoTests
                 Status = originalStatus,
                 ClientId = Guid.NewGuid(),
                 DeliveryPointId = Guid.NewGuid(),
+                DeliveryTime = null,
             };
         UpdateOrderDto dto = new() { Status = null };
 
@@ -107,11 +111,21 @@ public class UpdateOrderDtoTests
             {
                 Products = new List<OrderProduct>
                 {
-                    new() { ProductId = productId1, Quantity = 2 },
-                    new() { ProductId = productId2, Quantity = 3 },
+                    new()
+                    {
+                        ProductId = productId1,
+                        Quantity = 2
+                    },
+                    new()
+                    {
+                        ProductId = productId2,
+                        Quantity = 3
+                    },
                 },
                 ClientId = default,
                 DeliveryPointId = default,
+                DeliveryTime = null,
+                Status = Status.Pending,
             };
         UpdateOrderDto dto =
             new()
@@ -139,10 +153,16 @@ public class UpdateOrderDtoTests
             {
                 Products = new List<OrderProduct>
                 {
-                    new() { ProductId = productId1, Quantity = 2 },
+                    new()
+                    {
+                        ProductId = productId1,
+                        Quantity = 2
+                    },
                 },
                 ClientId = Guid.NewGuid(),
                 DeliveryPointId = Guid.NewGuid(),
+                DeliveryTime = null,
+                Status = Status.Pending,
             };
         UpdateOrderDto dto =
             new()

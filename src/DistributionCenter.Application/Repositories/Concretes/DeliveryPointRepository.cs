@@ -14,9 +14,7 @@ public class DeliveryPointRepository(IContext context, ILocationValidator valida
         Result locationCountry = await validator.IsLocationInCountryAsync(geoPoint);
 
         if (!locationCountry.IsSuccess)
-        {
             return locationCountry.Errors;
-        }
 
         return Result.Ok();
     }
@@ -26,9 +24,7 @@ public class DeliveryPointRepository(IContext context, ILocationValidator valida
         Result locationCountry = await ValidateLocation(new(entity.Latitude, entity.Longitude));
 
         if (!locationCountry.IsSuccess)
-        {
             return locationCountry.Errors;
-        }
 
         return await base.CreateAsync(entity);
     }
@@ -38,9 +34,7 @@ public class DeliveryPointRepository(IContext context, ILocationValidator valida
         Result locationCountry = await ValidateLocation(new(entity.Latitude, entity.Longitude));
 
         if (!locationCountry.IsSuccess)
-        {
             return locationCountry.Errors;
-        }
 
         return await base.UpdateAsync(entity);
     }

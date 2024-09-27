@@ -31,6 +31,7 @@ public class GreedyDistribution(IOrderParser orderParser, ITransportParser trans
                 IsActive = order.Item1.IsActive,
                 CreatedAt = order.Item1.CreatedAt,
                 UpdatedAt = order.Item1.UpdatedAt,
+                DeliveryTime = order.Item1.DeliveryTime,
             };
             trip.Item1.Orders.Add(orderUpdated);
 

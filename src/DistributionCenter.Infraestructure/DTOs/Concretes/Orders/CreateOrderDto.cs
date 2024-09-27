@@ -14,7 +14,13 @@ public class CreateOrderDto : ICreateDto<Order>
 
     public Order ToEntity()
     {
-        Order order = new() { ClientId = ClientId, DeliveryPointId = DeliveryPointId };
+        Order order = new()
+        {
+            ClientId = ClientId,
+            DeliveryPointId = DeliveryPointId,
+            DeliveryTime = null,
+            Status = Status.Pending
+        };
 
         List<OrderProduct> products = [];
 

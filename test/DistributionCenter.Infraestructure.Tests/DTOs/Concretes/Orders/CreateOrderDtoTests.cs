@@ -49,7 +49,7 @@ public class CreateOrderDtoTests
         Order order = dto.ToEntity();
 
         // Assert
-        Assert.Equal(2, order.Products.Count());
+        Assert.Equal(2, order.Products.ToList().Count);
         Assert.Contains(order.Products, p => p.ProductId == product1Id && p.Quantity == 2);
         Assert.Contains(order.Products, p => p.ProductId == product2Id && p.Quantity == 3);
     }

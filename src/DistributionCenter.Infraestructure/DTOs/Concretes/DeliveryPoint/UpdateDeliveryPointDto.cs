@@ -12,8 +12,10 @@ public class UpdateDeliveryPointDto: IUpdateDto<DeliveryPoint>
 
     public DeliveryPoint FromEntity(DeliveryPoint entity)
     {
-        entity.Latitude = Latitude ?? entity.Latitude;
+        ArgumentNullException.ThrowIfNull(entity, nameof(entity));
+
         entity.Longitude = Longitude ?? entity.Longitude;
+        entity.Latitude = Latitude ?? entity.Latitude;
 
         return entity;
     }

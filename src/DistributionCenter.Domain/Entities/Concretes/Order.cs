@@ -8,8 +8,9 @@ public class Order : BaseEntity
     public Guid? RouteId { get; set; }
     public required Guid ClientId { get; set; }
     public required Guid DeliveryPointId { get; set; }
+    public required DateTime? DeliveryTime { get; set; }
+    public required Status Status { get; set; } = Status.Pending;
     public IEnumerable<OrderProduct> Products { get; set; } = [];
-    public Status Status { get; set; } = Status.Pending;
 
     public override bool Equals(object? obj)
     {

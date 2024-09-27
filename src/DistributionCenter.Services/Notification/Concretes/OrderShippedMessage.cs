@@ -1,8 +1,9 @@
 namespace DistributionCenter.Services.Notification.Concretes;
 
+using Dtos;
 using Interfaces;
 
-public class OrderShippedMessage(Guid orderId) : IMessage
+public class OrderShippedMessage(OrderDto orderDto) : IMessage
 {
     public string Subject => "Transport Assigned to Your Order";
 
@@ -25,8 +26,10 @@ public class OrderShippedMessage(Guid orderId) : IMessage
                         <h1>Transport Assigned</h1>
                     </div>
                     <div class='content'>
-                        <p>A transport has been assigned to your order with ID <strong>{orderId}</strong>.</p>
-                        <p>Your order is now on its way!</p>
+                        <p>A transport has been assigned to your order with ID <strong>{orderDto.OrderId}</strong>.</p>
+                        <p>Your order is on its way! and will arrive on {orderDto.TimeToDeliver.Day}-{
+                            orderDto.TimeToDeliver.Month}-{orderDto.TimeToDeliver.Year} at {
+                                orderDto.TimeToDeliver.TimeOfDay.Hours}:{orderDto.TimeToDeliver.TimeOfDay.Minutes} minutes approximately.</p>
                     </div>
                     <div class='footer'>
                         <p>Thank you for your patience.</p>
