@@ -5,7 +5,7 @@ using Domain.Entities.Concretes;
 using Interfaces;
 using Validators.Core.Concretes.DeliveryPoint;
 
-public class UpdateDeliveryPointDto : IUpdateDto<DeliveryPoint>
+public class UpdateDeliveryPointDto: IUpdateDto<DeliveryPoint>
 {
     public double? Latitude { get; set; }
     public double? Longitude { get; set; }

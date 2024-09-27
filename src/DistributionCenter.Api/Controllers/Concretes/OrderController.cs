@@ -18,8 +18,23 @@ public class OrderController(
     IEmailService emailService
 ) : BaseEntityController<Order, CreateOrderDto, UpdateOrderDto>(orderRepository)
 {
+    [HttpPost]
+    public override async Task<IActionResult> Create(CreateOrderDto request)
+    {
+        IActionResult requestResult = await base.Create(request);
+
+        if (requestResult is OkObjectResult okResult && okResult.Value is Order order)
+        {
+            _ = await SendEmailByStatus(order.Id);
+
+            return Ok(order);
+        }
+
+        return requestResult;
+    }
+
     [HttpGet("{id}/status")]
-    public async Task<IActionResult> SendEmailByStatus([FromRoute] [Required] Guid id)
+    public async Task<IActionResult> SendEmailByStatus([FromRoute][Required] Guid id)
     {
         Result<Order> orderResult = await Repository.GetByIdAsync(id);
         if (!orderResult.IsSuccess) return this.ErrorsResponse(orderResult.Errors);
@@ -29,7 +44,7 @@ public class OrderController(
         if (!clientResult.IsSuccess) return this.ErrorsResponse(clientResult.Errors);
 
         Client client = clientResult.Value;
-        OrderDto orderDto = new() { OrderId = order.Id, OrderStatus = order.Status, TimeToDeliver = order.DeliveryTime };
+        OrderDto orderDto = new() { OrderId = order.Id, OrderStatus = order.Status, TimeToDeliver = order.DeliveryTime!.Value };
 
         IMessage message = NotificationFactory.CreateMessage(orderDto);
         _ = Task.Run(() => emailService.SendEmailAsync(client.Email, message));

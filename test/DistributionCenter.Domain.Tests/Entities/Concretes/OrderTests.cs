@@ -19,7 +19,7 @@ public class OrderTests
             };
 
         // Execute actual operation
-        Guid routeId = entity.RouteId;
+        Guid? routeId = entity.RouteId;
         Guid clientId = entity.ClientId;
         Guid deliveryPointId = entity.DeliveryPointId;
 

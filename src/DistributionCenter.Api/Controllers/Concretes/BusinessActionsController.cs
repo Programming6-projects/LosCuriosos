@@ -190,7 +190,7 @@ public class BusinessActionsController(
         {
             OrderId = order.Id,
             OrderStatus = order.Status,
-            TimeToDeliver = order.DeliveryTime
+            TimeToDeliver = order.DeliveryTime!.Value
         };
 
         IMessage message = NotificationFactory.CreateMessage(orderDto);
