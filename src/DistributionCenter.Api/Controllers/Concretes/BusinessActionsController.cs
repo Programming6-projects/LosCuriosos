@@ -117,6 +117,7 @@ public class BusinessActionsController(
         return rowsAffected;
     }
 
+    [NonAction]
     private async Task<IEnumerable<Trip>> GetOrdersOrderedTrips(IEnumerable<Trip> trips)
     {
         List<Trip> orderedTrips = new();
@@ -130,6 +131,7 @@ public class BusinessActionsController(
         return orderedTrips;
     }
 
+    [NonAction]
     private async Task<Trip?> CreateOrderedTrip(Trip trip)
     {
         Result<IReadOnlyList<WayPointDto>> wayPointsResult = await GetOrdersOrderByCloserLocationToUpdateTrip(trip);
@@ -147,6 +149,7 @@ public class BusinessActionsController(
         };
     }
 
+    [NonAction]
     private async Task<Dictionary<GeoPoint, Order>> CreateGeoPointToOrderMap(ICollection<Order> orders)
     {
         Dictionary<GeoPoint, Order> geoPointToOrderMap = new();
@@ -164,6 +167,7 @@ public class BusinessActionsController(
         return geoPointToOrderMap;
     }
 
+    [NonAction]
     private List<Order> OrderOrders(IReadOnlyList<WayPointDto> wayPoints, Dictionary<GeoPoint, Order> geoPointToOrderMap)
     {
         List<Order> orderedOrders = new();
@@ -181,6 +185,7 @@ public class BusinessActionsController(
         return orderedOrders;
     }
 
+    [NonAction]
     private async Task SendNotificationOfUpdateOrders(Order order)
     {
         Result<Client> clientResult = await clientRepository.GetByIdAsync(order.ClientId);
@@ -197,6 +202,7 @@ public class BusinessActionsController(
         _ = Task.Run(() => emailService.SendEmailAsync(client.Email, message));
     }
 
+    [NonAction]
     private async Task<Result<IReadOnlyList<WayPointDto>>> GetOrdersOrderByCloserLocationToUpdateTrip(
         Trip trip)
     {

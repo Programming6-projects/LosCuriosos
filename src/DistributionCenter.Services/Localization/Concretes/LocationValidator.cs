@@ -16,7 +16,7 @@ public class LocationValidator(HttpClient httpClient, string mapboxAccessToken) 
 
     public async Task<Result> IsLocationInCountryAsync(GeoPoint point)
     {
-        Uri url = new($"{BaseUrl}geocoding/v5/mapbox.places/{point.Longitude},{point.Latitude}.json?access_token={_accessToken}");
+        Uri url = new($"{BaseUrl}geocoding/v5/mapbox.places/{point.Longitude.ToString(System.Globalization.CultureInfo.InvariantCulture)},{point.Latitude.ToString(System.Globalization.CultureInfo.InvariantCulture)}.json?access_token={_accessToken}");
 
         HttpResponseMessage response = await _httpClient.GetAsync(url);
 

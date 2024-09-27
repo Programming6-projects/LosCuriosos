@@ -119,4 +119,135 @@ public class TransportRepositoryTests
         Assert.False(result.IsSuccess);
         Assert.Contains(result.Errors, error => error.Code == "UPDATE_FAILED");
     }
+
+
+    [Fact]
+    public async Task GetByIdAsync_ReturnsTransportWithNoStrikes_WhenNoStrikesExist()
+    {
+        // Arrange
+        Mock<IQuery<Transport>> queryTransport = new();
+        _ = queryTransport.Setup(q => q.ExecuteAsync()).ReturnsAsync(_transport);
+        _ = _transportTableMock.Setup(table => table.GetById(_transport.Id)).Returns(queryTransport.Object);
+
+        Mock<IQuery<IEnumerable<Strike>>> queryStrikes = new();
+        _ = queryStrikes.Setup(q => q.ExecuteAsync()).ReturnsAsync(new List<Strike>());
+        _ = _strikeTableMock.Setup(table => table.GetAll()).Returns(queryStrikes.Object);
+
+        // Act
+        Result<Transport> result = await _transportRepository.GetByIdAsync(_transport.Id);
+
+        // Assert
+        Assert.True(result.IsSuccess);
+        Assert.Equal(_transport, result.Value);
+        Assert.Empty(result.Value.Strikes);
+    }
+
+    [Fact]
+    public async Task GetByIdAsync_ReturnsError_WhenStrikeQueryFails()
+    {
+        // Arrange
+        Mock<IQuery<Transport>> queryTransport = new();
+        _ = queryTransport.Setup(q => q.ExecuteAsync()).ReturnsAsync(_transport);
+        _ = _transportTableMock.Setup(table => table.GetById(_transport.Id)).Returns(queryTransport.Object);
+
+        Mock<IQuery<IEnumerable<Strike>>> queryStrikes = new();
+        _ = queryStrikes.Setup(q => q.ExecuteAsync()).ReturnsAsync(Error.Unexpected("STRIKE_QUERY_FAILED"));
+        _ = _strikeTableMock.Setup(table => table.GetAll()).Returns(queryStrikes.Object);
+
+        // Act
+        Result<Transport> result = await _transportRepository.GetByIdAsync(_transport.Id);
+
+        // Assert
+        Assert.False(result.IsSuccess);
+        Assert.Contains(result.Errors, error => error.Code == "STRIKE_QUERY_FAILED");
+    }
+
+    [Fact]
+    public async Task UpdateAsync_ReturnsTransportWithUpdatedStrikes_WhenUpdateIsSuccessful()
+    {
+        // Arrange
+        List<Strike> updatedStrikes =
+        [
+            new() { TransportId = _transport.Id, Description = "Updated Strike 1" },
+            new() { TransportId = _transport.Id, Description = "Updated Strike 2" },
+            new() { TransportId = _transport.Id, Description = "New Strike 3" },
+        ];
+
+        Mock<ICommand> updateTransportCommand = new();
+        _ = updateTransportCommand.Setup(command => command.ExecuteAsync()).ReturnsAsync(Result.Ok());
+        _ = _transportTableMock.Setup(table => table.Update(_transport)).Returns(updateTransportCommand.Object);
+
+        Mock<IQuery<IEnumerable<Strike>>> queryStrikes = new();
+        _ = queryStrikes.Setup(q => q.ExecuteAsync()).ReturnsAsync(updatedStrikes);
+        _ = _strikeTableMock.Setup(table => table.GetAll()).Returns(queryStrikes.Object);
+
+        // Act
+        Result<Transport> result = await _transportRepository.UpdateAsync(_transport);
+
+        // Assert
+        Assert.True(result.IsSuccess);
+        Assert.Equal(_transport, result.Value);
+        Assert.Equal(updatedStrikes, result.Value.Strikes);
+        Assert.Equal(3, result.Value.Strikes.Count());
+    }
+
+    [Fact]
+    public async Task UpdateAsync_ReturnsError_WhenStrikeQueryFailsAfterUpdate()
+    {
+        // Arrange
+        Mock<ICommand> updateTransportCommand = new();
+        _ = updateTransportCommand.Setup(command => command.ExecuteAsync()).ReturnsAsync(Result.Ok());
+        _ = _transportTableMock.Setup(table => table.Update(_transport)).Returns(updateTransportCommand.Object);
+
+        Mock<IQuery<IEnumerable<Strike>>> queryStrikes = new();
+        _ = queryStrikes.Setup(q => q.ExecuteAsync()).ReturnsAsync(Error.Unexpected("STRIKE_QUERY_FAILED"));
+        _ = _strikeTableMock.Setup(table => table.GetAll()).Returns(queryStrikes.Object);
+
+        // Act
+        Result<Transport> result = await _transportRepository.UpdateAsync(_transport);
+
+        // Assert
+        Assert.False(result.IsSuccess);
+        Assert.Contains(result.Errors, error => error.Code == "STRIKE_QUERY_FAILED");
+    }
+
+    [Fact]
+    public async Task GetByIdAsync_ReturnsTransportWithCorrectStrikes_WhenMultipleTransportsExist()
+    {
+        // Arrange
+        Transport anotherTransport = new()
+        {
+            Id = Guid.NewGuid(),
+            Name = "Another Truck",
+            Capacity = 15,
+            CurrentCapacity = 15,
+            Plate = "98765ZYX",
+            IsAvailable = true,
+        };
+
+        List<Strike> allStrikes =
+        [
+            new() { TransportId = _transport.Id, Description = "Strike 1 for Transport 1" },
+            new() { TransportId = _transport.Id, Description = "Strike 2 for Transport 1" },
+            new() { TransportId = anotherTransport.Id, Description = "Strike 1 for Transport 2" },
+            new() { TransportId = anotherTransport.Id, Description = "Strike 2 for Transport 2" },
+        ];
+
+        Mock<IQuery<Transport>> queryTransport = new();
+        _ = queryTransport.Setup(q => q.ExecuteAsync()).ReturnsAsync(_transport);
+        _ = _transportTableMock.Setup(table => table.GetById(_transport.Id)).Returns(queryTransport.Object);
+
+        Mock<IQuery<IEnumerable<Strike>>> queryStrikes = new();
+        _ = queryStrikes.Setup(q => q.ExecuteAsync()).ReturnsAsync(allStrikes);
+        _ = _strikeTableMock.Setup(table => table.GetAll()).Returns(queryStrikes.Object);
+
+        // Act
+        Result<Transport> result = await _transportRepository.GetByIdAsync(_transport.Id);
+
+        // Assert
+        Assert.True(result.IsSuccess);
+        Assert.Equal(_transport, result.Value);
+        Assert.Equal(2, result.Value.Strikes.Count());
+        Assert.All(result.Value.Strikes, strike => Assert.Equal(_transport.Id, strike.TransportId));
+    }
 }
