@@ -11,6 +11,8 @@ public class UpdateOrderDto : IUpdateDto<Order>
     public Guid? RouteId { get; set; }
     public Guid? ClientId { get; set; }
     public Guid? DeliveryPointId { get; set; }
+    public DateTime? DeliveryTime { get; set; }
+
     public string? Status { get; init; }
 
     public Order FromEntity(Order entity)
@@ -19,6 +21,7 @@ public class UpdateOrderDto : IUpdateDto<Order>
 
         entity.RouteId = RouteId ?? entity.RouteId;
         entity.ClientId = ClientId ?? entity.ClientId;
+        entity.DeliveryTime = DeliveryTime ?? entity.DeliveryTime;
         entity.DeliveryPointId = DeliveryPointId ?? entity.DeliveryPointId;
 
         _ = Enum.TryParse(Status, true, out Status parseStatus);
