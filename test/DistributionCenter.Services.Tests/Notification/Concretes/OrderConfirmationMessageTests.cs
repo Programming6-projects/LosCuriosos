@@ -1,12 +1,20 @@
 namespace DistributionCenter.Services.Tests.Notification.Concretes;
 
+using DistributionCenter.Services.Notification.Dtos;
+using Xunit;
+
 public class OrderConfirmationMessageTests
 {
     [Fact]
     public void GetMessage_ReturnsExpectedMessage()
     {
         // Arrange
-        Guid orderId = Guid.NewGuid();
+        OrderDto order = new()
+        {
+            OrderId = Guid.NewGuid(),
+            OrderStatus = Domain.Entities.Enums.Status.Pending,
+            TimeToDeliver = DateTime.Now
+        };
         string expectedMessage =
             $@"
             <html>
@@ -25,7 +33,7 @@ public class OrderConfirmationMessageTests
                         <h1>Order Confirmation</h1>
                     </div>
                     <div class='content'>
-                        <p>Your order with ID <strong>{orderId}</strong> has been received and is being processed.</p>
+                        <p>Your order with ID <strong>{order.OrderId}</strong> has been received and is being processed.</p>
                     </div>
                     <div class='footer'>
                         <p>Thank you for choosing us!</p>
@@ -33,7 +41,8 @@ public class OrderConfirmationMessageTests
                 </div>
             </body>
             </html>";
-        OrderConfirmationMessage message = new(orderId);
+
+        OrderConfirmationMessage message = new(order);
 
         // Act
         string result = message.GetMessage();
@@ -46,8 +55,13 @@ public class OrderConfirmationMessageTests
     public void Subject_ReturnsExpectedSubject()
     {
         // Arrange
-        Guid orderId = Guid.NewGuid();
-        OrderConfirmationMessage message = new(orderId);
+        OrderDto order = new()
+        {
+            OrderId = Guid.NewGuid(),
+            OrderStatus = Domain.Entities.Enums.Status.Pending,
+            TimeToDeliver = DateTime.Now
+        };
+        OrderConfirmationMessage message = new(order);
 
         // Act
         string result = message.Subject;

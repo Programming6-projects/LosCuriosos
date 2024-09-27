@@ -1,5 +1,9 @@
 namespace DistributionCenter.Services.Tests.Notification.Concretes;
 
+using DistributionCenter.Services.Notification.Dtos;
+using Domain.Entities.Enums;
+using Xunit;
+
 public class OrderShippedMessageTests
 {
     [Fact]
@@ -7,6 +11,14 @@ public class OrderShippedMessageTests
     {
         // Arrange
         Guid orderId = Guid.NewGuid();
+        DateTime deliveryTime = new(2024, 10, 1, 14, 30, 0);
+        OrderDto order = new()
+        {
+            OrderId = orderId,
+            TimeToDeliver = deliveryTime,
+            OrderStatus = Status.Sending
+        };
+
         string expectedMessage =
             $@"
             <html>
@@ -26,7 +38,7 @@ public class OrderShippedMessageTests
                     </div>
                     <div class='content'>
                         <p>A transport has been assigned to your order with ID <strong>{orderId}</strong>.</p>
-                        <p>Your order is now on its way!</p>
+                        <p>Your order is on its way! and will arrive on {deliveryTime.Day}-{deliveryTime.Month}-{deliveryTime.Year} at {deliveryTime.Hour}:{deliveryTime.Minute} minutes approximately.</p>
                     </div>
                     <div class='footer'>
                         <p>Thank you for your patience.</p>
@@ -34,13 +46,14 @@ public class OrderShippedMessageTests
                 </div>
             </body>
             </html>";
-        OrderShippedMessage message = new(orderId);
+
+        OrderShippedMessage message = new(order);
 
         // Act
         string result = message.GetMessage();
 
         // Assert
-        Assert.Equal(expectedMessage, result);
+        Assert.Equal(expectedMessage.Trim(), result.Trim());
     }
 
     [Fact]
@@ -48,7 +61,13 @@ public class OrderShippedMessageTests
     {
         // Arrange
         Guid orderId = Guid.NewGuid();
-        OrderShippedMessage message = new(orderId);
+        OrderDto order = new()
+        {
+            OrderId = orderId,
+            OrderStatus = Status.Pending,
+            TimeToDeliver = DateTime.Now
+        };
+        OrderShippedMessage message = new(order);
 
         // Act
         string result = message.Subject;

@@ -22,7 +22,7 @@ public class GreedyDistributionTests
         // Define Input and Output
         List<Order> orders =
         [
-            new Order
+            new()
             {
                 RouteId = Guid.NewGuid(),
                 ClientId = Guid.NewGuid(),
@@ -44,8 +44,9 @@ public class GreedyDistributionTests
                     },
                 ],
                 Status = Status.Pending,
+                DeliveryTime = null,
             },
-            new Order
+            new()
             {
                 RouteId = Guid.NewGuid(),
                 ClientId = Guid.NewGuid(),
@@ -67,12 +68,13 @@ public class GreedyDistributionTests
                     },
                 ],
                 Status = Status.Pending,
+                DeliveryTime = null,
             }
         ];
 
         List<Transport> transports =
         [
-            new Transport
+            new()
             {
                 Name = "Transport 1",
                 Plate = "Plate 1",
@@ -103,11 +105,11 @@ public class GreedyDistributionTests
             }, t)));
 
         // Execute Actual Operation
-        (IEnumerable<Trip> Trips, IEnumerable<Transport> UpdatedTransports, IEnumerable<Order> CancelledOrders) =
+        (IEnumerable<Trip> trips, IEnumerable<Transport> UpdatedTransports, IEnumerable<Order> CancelledOrders) =
             _distribution.DistributeOrders(orders, transports, Location.InCity);
 
         // Verify Actual Result
-        _ = Assert.Single(Trips);
+        _ = Assert.Single(trips);
         _ = Assert.Single(UpdatedTransports);
         Assert.Empty(CancelledOrders);
 

@@ -2,6 +2,7 @@ namespace DistributionCenter.Services.Tests.Notification;
 
 using DistributionCenter.Domain.Entities.Enums;
 using DistributionCenter.Services.Notification.Interfaces;
+using DistributionCenter.Services.Notification.Dtos;
 using Xunit;
 
 public class NotificationFactoryTests
@@ -14,26 +15,35 @@ public class NotificationFactoryTests
     public void CreateMessage_ReturnsExpectedMessageType(Status status, Type expectedType)
     {
         // Arrange
-        Guid orderId = Guid.NewGuid();
+        OrderDto order = new()
+        {
+            OrderId = Guid.NewGuid(),
+            OrderStatus = status,
+            TimeToDeliver = DateTime.Now
+        };
 
         // Act
-        IMessage message = NotificationFactory.CreateMessage(status, orderId);
+        IMessage message = NotificationFactory.CreateMessage(order);
 
         // Assert
         Assert.IsType(expectedType, message);
     }
 
     [Fact]
-    public void CreateMessage_ThrowsArgumentOutOfRangeException_ForUnsupportedStatus()
+    public void CreateMessage_ReturnsNull_ForUnsupportedStatus()
     {
         // Arrange
-        Guid orderId = Guid.NewGuid();
-        Status unsupportedStatus = (Status)999;
+        OrderDto order = new()
+        {
+            OrderId = Guid.NewGuid(),
+            OrderStatus = (Status)999,
+            TimeToDeliver = DateTime.Now
+        };
 
-        // Act & Assert
-        ArgumentOutOfRangeException exception = Assert.Throws<ArgumentOutOfRangeException>(
-            () => NotificationFactory.CreateMessage(unsupportedStatus, orderId)
-        );
-        Assert.Equal("Unsupported order status: 999 (Parameter 'status')", exception.Message);
+        // Act
+        IMessage message = NotificationFactory.CreateMessage(order);
+
+        // Assert
+        Assert.Null(message);
     }
 }
