@@ -1,7 +1,5 @@
 namespace DistributionCenter.Domain.Tests.Entities.Concretes;
 
-using DistributionCenter.Domain.Entities.Concretes;
-
 public class StrikeTests
 {
     [Fact]

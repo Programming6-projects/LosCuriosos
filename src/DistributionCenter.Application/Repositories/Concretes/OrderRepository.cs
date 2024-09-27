@@ -3,7 +3,6 @@ namespace DistributionCenter.Application.Repositories.Concretes;
 using Bases;
 using Commons.Results;
 using Contexts.Interfaces;
-using Domain.Entities.Concretes;
 
 public class OrderRepository(IContext context) : BaseRepository<Order>(context)
 {

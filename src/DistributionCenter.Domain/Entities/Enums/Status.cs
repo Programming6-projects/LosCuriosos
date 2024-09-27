@@ -8,7 +8,7 @@ public enum Status
     Pending,
 
     [Description("Processing")]
-    Shipped,
+    Sending,
 
     [Description("Delivered")]
     Delivered,

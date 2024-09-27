@@ -107,8 +107,8 @@ public class GreedyDistributionTests
             _distribution.DistributeOrders(orders, transports, Location.InCity);
 
         // Verify Actual Result
-        Assert.Equal(2, Trips.Count());
-        Assert.Equal(2, UpdatedTransports.Count());
+        _ = Assert.Single(Trips);
+        _ = Assert.Single(UpdatedTransports);
         Assert.Empty(CancelledOrders);
 
         _orderParserMock.Verify(parser => parser.Parse(orders), Times.Once);

@@ -4,7 +4,6 @@ using System.Data;
 using Constants;
 using Contexts.Concretes;
 using Contexts.Interfaces;
-using Domain.Entities.Concretes;
 using Repositories.Concretes;
 using Repositories.Interfaces;
 using Tables.Connections.Dapper.Concretes;

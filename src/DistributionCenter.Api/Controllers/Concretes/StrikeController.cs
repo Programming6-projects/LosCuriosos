@@ -6,7 +6,6 @@ using DistributionCenter.Api.Controllers.Extensions;
 using DistributionCenter.Application.Repositories.Interfaces;
 using DistributionCenter.Commons.Results;
 using DistributionCenter.Domain.Entities.Concretes;
-using DistributionCenter.Infraestructure.DTOs.Concretes.Strikes;
 using Microsoft.AspNetCore.Mvc;
 
 [Route("api/strikes")]

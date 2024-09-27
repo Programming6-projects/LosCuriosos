@@ -1,7 +1,6 @@
 namespace DistributionCenter.Application.Tests.Tables.Components.QueryCommands.Concretes.File.Bases;
 
 using System.Collections.ObjectModel;
-using Application.Tables.Components.QueryCommands.Concretes.File.Bases;
 using Application.Tables.Connections.File.Interfaces;
 using Commons.Errors;
 using Commons.Errors.Interfaces;

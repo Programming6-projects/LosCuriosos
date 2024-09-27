@@ -14,7 +14,7 @@ public class TransportParserTests
             {
                 Name = "Van 1A",
                 Plate = "34ABC123",
-                Capacity = 50000,
+                Capacity = 7000000,
                 CurrentCapacity = 30000,
                 IsAvailable = true,
             },
@@ -22,8 +22,8 @@ public class TransportParserTests
             {
                 Name = "Truck 2B",
                 Plate = "34DEF456",
-                Capacity = 80000,
-                CurrentCapacity = 60000,
+                Capacity = 50000,
+                CurrentCapacity = 4000,
                 IsAvailable = true,
             },
             new Transport
@@ -43,7 +43,7 @@ public class TransportParserTests
 
         // Verify actual Result
         _ = Assert.Single(result);
-        Assert.Equal(30000, result[0].Item2.CurrentCapacity);
+        Assert.Equal(4000, result[0].Item2.CurrentCapacity);
     }
 
     [Fact]
@@ -56,7 +56,7 @@ public class TransportParserTests
             {
                 Name = "Van 1A",
                 Plate = "34ABC123",
-                Capacity = 50000,
+                Capacity = 7000000,
                 CurrentCapacity = 30000,
                 IsAvailable = true,
             },
@@ -85,6 +85,6 @@ public class TransportParserTests
 
         // Verify actual Result
         _ = Assert.Single(result);
-        Assert.Equal(60000, result[0].Item2.CurrentCapacity);
+        Assert.Equal(30000, result[0].Item2.CurrentCapacity);
     }
 }

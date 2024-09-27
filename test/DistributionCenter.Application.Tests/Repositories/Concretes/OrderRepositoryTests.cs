@@ -30,14 +30,9 @@ public class OrderRepositoryTests
     [Fact]
     public async Task CreateAsync_OrderCreationSuccess_ReturnsOrder()
     {
-        Order order = new ()
-        {
-            ClientId = Guid.NewGuid(),
-            DeliveryPointId = Guid.NewGuid()
-        };
+        Order order = new() { ClientId = Guid.NewGuid(), DeliveryPointId = Guid.NewGuid() };
         Result createResult = Result.Ok();
-        _ = _contextMock.Setup(c => c.SetTable<Order>().Create(order).ExecuteAsync())
-            .ReturnsAsync(createResult);
+        _ = _contextMock.Setup(c => c.SetTable<Order>().Create(order).ExecuteAsync()).ReturnsAsync(createResult);
 
         Result<Order> result = await _orderRepository.CreateAsync(order);
 
@@ -49,16 +44,11 @@ public class OrderRepositoryTests
     [Fact]
     public async Task UpdateAsync_OrderUpdateSuccess_ReturnsOrder()
     {
-        Order order = new ()
-        {
-            ClientId = Guid.NewGuid(),
-            DeliveryPointId = Guid.NewGuid()
-        };
+        Order order = new() { ClientId = Guid.NewGuid(), DeliveryPointId = Guid.NewGuid() };
 
         Result updateResult = Result.Ok();
 
-        _ = _contextMock.Setup(c => c.SetTable<Order>().Update(order).ExecuteAsync())
-            .ReturnsAsync(updateResult);
+        _ = _contextMock.Setup(c => c.SetTable<Order>().Update(order).ExecuteAsync()).ReturnsAsync(updateResult);
 
         Result<Order> result = await _orderRepository.UpdateAsync(order);
 

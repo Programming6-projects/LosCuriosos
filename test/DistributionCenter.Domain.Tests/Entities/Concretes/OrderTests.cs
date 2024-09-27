@@ -1,7 +1,5 @@
 namespace DistributionCenter.Domain.Tests.Entities.Concretes;
 
-using Domain.Entities.Concretes;
-
 public class OrderTests
 {
     [Fact]
@@ -81,7 +79,7 @@ public class OrderTests
                 ClientId = new(),
                 RouteId = new(),
                 DeliveryPointId = new(),
-                Status = Status.Shipped,
+                Status = Status.Sending,
             };
 
         // Execute actual operation
@@ -162,7 +160,7 @@ public class OrderTests
                 ClientId = new(),
                 RouteId = new(),
                 DeliveryPointId = new(),
-                Status = Status.Shipped,
+                Status = Status.Sending,
             };
 
         // Execute actual operation
