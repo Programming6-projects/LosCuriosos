@@ -1,4 +1,4 @@
-﻿namespace DistributionCenter.Application.Tests.Tables.Components.Information.Concretes;
+namespace DistributionCenter.Application.Tests.Tables.Components.Information.Concretes;
 
 public class ProductTableInformationTests
 {

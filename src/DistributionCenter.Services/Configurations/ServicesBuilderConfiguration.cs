@@ -10,6 +10,8 @@ using Localization.Concretes;
 using Localization.Interfaces;
 using Notification.Concretes;
 using Notification.Interfaces;
+using Routes.Concretes;
+using Routes.Interfaces;
 
 public static class ServicesBuilderConfiguration
 {
@@ -39,6 +41,11 @@ public static class ServicesBuilderConfiguration
         _ = services.AddScoped<ILocationService>(static _ => new LocationService(
             _.GetRequiredService<ILocationValidator>(),
             _.GetRequiredService<IDistanceCalculator>()
+        ));
+
+        _ = services.AddScoped<IRouteService>(static _ => new DeliveryRouteService(
+            _.GetRequiredService<HttpClient>(),
+            Environment.GetEnvironmentVariable("MAPBOX_TOKEN")!
         ));
 
         _ = services.AddScoped<IOrderParser>(static _ => new OrderParser());

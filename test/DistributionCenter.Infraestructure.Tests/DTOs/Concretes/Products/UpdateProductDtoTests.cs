@@ -22,7 +22,8 @@ public class UpdateProductDtoTests
             new()
             {
                 Name = "Pepsi Zero Personal",
-                Description = "Lorem ipsum dolor bae"
+                Description = "Lorem ipsum dolor bae",
+                Weight = expectedWeight,
             };
 
         // Execute actual operation
@@ -49,7 +50,8 @@ public class UpdateProductDtoTests
         UpdateProductDto dto = new()
         {
             Name = null,
-            Description = null
+            Description = null,
+            Weight = null
         };
 
         // Execute actual operation
@@ -70,14 +72,16 @@ public class UpdateProductDtoTests
             new()
             {
                 Name = "Sh",
-                Description = "or"
+                Description = "or",
+                Weight = null
             };
 
         UpdateProductDto validDto =
             new()
             {
                 Name = "Valid Name 2",
-                Description = "Valid Description"
+                Description = "Valid Description",
+                Weight = null
             };
 
         // Execute actual operation

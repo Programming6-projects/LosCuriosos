@@ -2,27 +2,43 @@ namespace DistributionCenter.Infraestructure.DTOs.Concretes.Orders;
 
 using Commons.Results;
 using Domain.Entities.Concretes;
-using Domain.Entities.Enums;
 using Interfaces;
+using OrderProducts;
 using Validators.Core.Concretes.Orders;
 
 public class CreateOrderDto : ICreateDto<Order>
 {
-    public required Guid RouteId { get; init; }
     public required Guid ClientId { get; init; }
     public required Guid DeliveryPointId { get; init; }
-    public required string Status { get; init; }
+    public required IEnumerable<CreateOrderProductDto> Products { get; init; }
 
     public Order ToEntity()
     {
-        _ = Enum.TryParse(Status, true, out Status parseStatus);
-        return new Order
+        Order order = new()
         {
-            RouteId = RouteId,
             ClientId = ClientId,
-            Status = parseStatus,
             DeliveryPointId = DeliveryPointId,
+            DeliveryTime = null,
+            Status = Status.Pending
         };
+
+        List<OrderProduct> products = [];
+
+        foreach (CreateOrderProductDto product in Products)
+        {
+            OrderProduct orderProduct = new()
+            {
+                OrderId = order.Id,
+                ProductId = product.ProductId,
+                Quantity = product.Quantity,
+            };
+
+            products.Add(orderProduct);
+        }
+
+        order.Products = products;
+
+        return order;
     }
 
     public Result Validate()

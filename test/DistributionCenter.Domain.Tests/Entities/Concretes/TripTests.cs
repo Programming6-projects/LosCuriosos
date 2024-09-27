@@ -1,7 +1,5 @@
 namespace DistributionCenter.Domain.Tests.Entities.Concretes;
 
-using Domain.Entities.Concretes;
-
 public class TripTests
 {
     [Fact]
@@ -18,6 +16,7 @@ public class TripTests
                 ClientId = Guid.NewGuid(),
                 DeliveryPointId = Guid.NewGuid(),
                 Status = Status.Pending,
+                DeliveryTime = null,
             };
 
         Trip entity =

@@ -35,16 +35,17 @@ public class TripControllerTests
         Trip trip = new()
         {
             Id = tripId,
-            Orders = new[]
-            {
+            Orders =
+            [
                 new Order
                 {
                     ClientId = clientId,
-                    Status = Status.Shipped,
+                    Status = Status.Sending,
                     RouteId = default,
-                    DeliveryPointId = default
+                    DeliveryPointId = default,
+                    DeliveryTime = null
                 }
-            },
+            ],
             TransportId = Guid.NewGuid(),
             Status = Status.Pending
         };
@@ -70,16 +71,17 @@ public class TripControllerTests
         Trip trip = new()
         {
             Id = tripId,
-            Orders = new[]
-            {
+            Orders =
+            [
                 new Order
                 {
                     Status = Status.Pending,
                     ClientId = default,
                     RouteId = default,
-                    DeliveryPointId = default
+                    DeliveryPointId = default,
+                    DeliveryTime = null
                 }
-            },
+            ],
             TransportId = Guid.NewGuid(),
             Status = Status.Pending
         };

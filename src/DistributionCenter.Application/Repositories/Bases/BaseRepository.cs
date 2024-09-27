@@ -1,5 +1,6 @@
 namespace DistributionCenter.Application.Repositories.Bases;
 
+using System.Collections.Generic;
 using DistributionCenter.Application.Contexts.Interfaces;
 using DistributionCenter.Application.Repositories.Interfaces;
 using DistributionCenter.Commons.Results;
@@ -17,17 +18,61 @@ public abstract class BaseRepository<T>(IContext context) : IRepository<T>
         return entity.Match(success => entity, errors => errors);
     }
 
-    public async Task<Result<T>> CreateAsync(T entity)
+    public virtual async Task<Result<T>> CreateAsync(T entity)
     {
         Result result = await Context.SetTable<T>().Create(entity).ExecuteAsync();
 
         return result.Match<Result<T>>(() => entity, errors => errors);
     }
 
-    public async Task<Result<T>> UpdateAsync(T entity)
+    public async Task<Result<int>> CreateAllAsync(IEnumerable<T> entities)
+    {
+        int rowsAffected = 0;
+        foreach (T entity in entities)
+        {
+            Result result = await CreateAsync(entity);
+            if (result.IsSuccess)
+            {
+                rowsAffected++;
+            }
+        }
+
+        return rowsAffected;
+    }
+
+    public virtual async Task<Result<T>> UpdateAsync(T entity)
     {
         Result result = await Context.SetTable<T>().Update(entity).ExecuteAsync();
 
         return result.Match<Result<T>>(() => entity, errors => errors);
+    }
+
+    public async Task<Result<int>> UpdateAllAsync(IEnumerable<T> entities)
+    {
+        int rowsAffected = 0;
+        foreach (T entity in entities)
+        {
+            Result result = await UpdateAsync(entity);
+            if (result.IsSuccess)
+            {
+                rowsAffected++;
+            }
+        }
+
+        return rowsAffected;
+    }
+
+    public async Task<Result<IEnumerable<T>>> SelectWhereAsync(Func<T, bool> predicate)
+    {
+        Result<IEnumerable<T>> result = await Context.SetTable<T>().SelectWhere(predicate).ExecuteAsync();
+
+        return result.Match<Result<IEnumerable<T>>>(() => result, errors => errors);
+    }
+
+    public virtual async Task<Result<IEnumerable<T>>> GetAllAsync()
+    {
+        Result<IEnumerable<T>> entities = await Context.SetTable<T>().GetAll().ExecuteAsync();
+
+        return entities.Match(success => entities, errors => errors);
     }
 }

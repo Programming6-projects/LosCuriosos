@@ -5,8 +5,8 @@ using Connections.Dapper.Interfaces;
 using DistributionCenter.Application.Tables.Components.Information.Interfaces;
 using DistributionCenter.Application.Tables.Components.QueryCommands.Concretes.Dapper.Concretes;
 using DistributionCenter.Application.Tables.Components.QueryCommands.Interfaces;
-using Interfaces;
 using DistributionCenter.Domain.Entities.Interfaces;
+using Interfaces;
 
 public abstract class BaseDapperTable<T>(IDbConnectionFactory<IDbConnection> dbConnectionFactory) : ITable<T>
     where T : IEntity
@@ -21,6 +21,25 @@ public abstract class BaseDapperTable<T>(IDbConnectionFactory<IDbConnection> dbC
             id,
             GetInformation().GetByIdFields
         );
+    }
+
+    public IQuery<IEnumerable<T>> GetAll()
+    {
+        return new GetAllDapperQuery<T>(
+            DbConnectionFactory,
+            GetInformation().TableName,
+            GetInformation().GetByIdFields
+        );
+    }
+
+    public IMultipleResponseQuery<T> SelectWhere(Func<T, bool> predicate)
+    {
+        return new SelectGroupDapperQuery<T>(
+            DbConnectionFactory,
+            GetInformation().TableName,
+            GetInformation().GetByIdFields,
+            predicate
+            );
     }
 
     public ICommand Create(T entity)

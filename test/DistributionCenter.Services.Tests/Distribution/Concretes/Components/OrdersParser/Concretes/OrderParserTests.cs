@@ -44,6 +44,7 @@ public class OrderParserTests
                     },
                 ],
                 Status = Status.Pending,
+                DeliveryTime = null,
             },
             new Order
             {
@@ -66,6 +67,7 @@ public class OrderParserTests
                         },
                     },
                 ],
+                DeliveryTime = null,
             },
         ];
 

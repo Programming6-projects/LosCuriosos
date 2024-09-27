@@ -1,7 +1,6 @@
 namespace DistributionCenter.Application.Tests.Tables.Components.QueryCommands.Concretes.File.Bases;
 
 using System.Collections.ObjectModel;
-using Application.Tables.Components.QueryCommands.Concretes.File.Bases;
 using Application.Tables.Connections.File.Interfaces;
 using Commons.Errors;
 using Commons.Errors.Interfaces;
@@ -11,13 +10,13 @@ using Moq.Protected;
 
 public class BaseJsonQueryTests
 {
-    private readonly Mock<BaseJsonQuery<IEntity>> _jsonQuery;
+    private readonly Mock<BaseJsonQuery<IEntity, IEntity>> _jsonQuery;
     private readonly Mock<IFileConnectionFactory<IEntity>> _fileConnectionFactory;
 
     public BaseJsonQueryTests()
     {
         _fileConnectionFactory = new Mock<IFileConnectionFactory<IEntity>>();
-        _jsonQuery = new Mock<BaseJsonQuery<IEntity>>(_fileConnectionFactory.Object) { CallBase = true };
+        _jsonQuery = new Mock<BaseJsonQuery<IEntity, IEntity>>(_fileConnectionFactory.Object) { CallBase = true };
     }
 
     [Fact]

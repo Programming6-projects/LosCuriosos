@@ -7,8 +7,9 @@ using Validators.Core.Concretes.Products;
 
 public class UpdateProductDto : IUpdateDto<Product>
 {
-    public string? Name { get; init; }
-    public string? Description { get; init; }
+    public required string? Name { get; init; }
+    public required string? Description { get; init; }
+    public required int? Weight { get; init; }
 
     public Product FromEntity(Product entity)
     {
@@ -16,6 +17,7 @@ public class UpdateProductDto : IUpdateDto<Product>
 
         entity.Name = Name ?? entity.Name;
         entity.Description = Description ?? entity.Description;
+        entity.Weight = Weight ?? entity.Weight;
 
         return entity;
     }
