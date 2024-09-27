@@ -71,14 +71,7 @@ public class BusinessActionsController(
         IEnumerable<Transport> UpdatedTransports,
         IEnumerable<Order> CancelledOrders) distributionResult)
     {
-        int rowsAffected = 0;
-
         distributionResult.Trips = await GetOrdersOrderedTrips(distributionResult.Trips);
-        foreach (Order order in distributionResult.Trips.ToList()[0].Orders)
-        {
-            Console.WriteLine(order.DeliveryPointId + " " + order.DeliveryTime );
-        }
-
         IEnumerable<Transport> transportsNewStatus = distributionResult.UpdatedTransports.Select(x =>
         {
             x.IsAvailable = false;
@@ -110,11 +103,10 @@ public class BusinessActionsController(
             })
         );
 
-        rowsAffected =
-            transportsAffected.Value
-            + tripAffected.Value
-            + ordersAcceptedAffected.Value
-            + ordersCancelledAffected.Value;
+        int rowsAffected = transportsAffected.Value
+                           + tripAffected.Value
+                           + ordersAcceptedAffected.Value
+                           + ordersCancelledAffected.Value;
 
         return rowsAffected;
     }
@@ -125,54 +117,61 @@ public class BusinessActionsController(
 
         foreach (Trip trip in trips)
         {
-            Result<IReadOnlyList<WayPointDto>> wayPointsResult = await GetOrdersOrderByCloserLocationToUpdateTrip(trip);
-            if (!wayPointsResult.IsSuccess) continue;
-
-            IReadOnlyList<WayPointDto> wayPoints = wayPointsResult.Value;
-            ICollection<Order> listOrders = trip.Orders;
-
-            Console.WriteLine(wayPoints.Count + " = " + listOrders.Count + " qaaaaaa");
-            Dictionary<GeoPoint, Order> geoPointToOrderMap = new();
-
-            foreach (Order order in listOrders)
-            {
-                Result<DeliveryPoint> deliveryPointResult = await deliveryPointRepository.GetByIdAsync(order.DeliveryPointId);
-                if (!deliveryPointResult.IsSuccess) continue;
-
-                Console.WriteLine(deliveryPointResult.Value.Latitude + " hhhhhh");
-                DeliveryPoint deliveryPoint = deliveryPointResult.Value;
-                GeoPoint geoPoint = new(deliveryPoint.Latitude, deliveryPoint.Longitude);
-                geoPointToOrderMap[geoPoint] = order;
-            }
-
-            Console.WriteLine(geoPointToOrderMap.Count + " jajajaja");
-            List<Order> orderedOrders = new();
-            foreach (WayPointDto wayPoint in wayPoints)
-            {
-                Console.WriteLine("Sdasdsadsadsadsadsadsadsadsadasdsa " );
-                if (geoPointToOrderMap.TryGetValue(wayPoint.Point, out Order? matchingOrder))
-                {
-                    Console.WriteLine("1111111111111111111111111111111111111111111");
-                    matchingOrder.DeliveryTime = wayPoint.DeliverTime;
-                    Console.WriteLine(matchingOrder.DeliveryTime + " = " + matchingOrder.DeliveryPointId);
-                    orderedOrders.Add(matchingOrder);
-                }
-            }
-
-            Console.WriteLine(orderedOrders.Count + "Aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-            Trip orderedTrip = new()
-            {
-                Id = trip.Id,
-                TransportId = trip.TransportId,
-                Orders = orderedOrders,
-                Status = Status.Pending,
-            };
-
-            Console.WriteLine("=== " + orderedOrders.Count + " \n\n ===");
-            orderedTrips.Add(orderedTrip);
+            Trip? orderedTrip = await CreateOrderedTrip(trip);
+            if (orderedTrip != null) orderedTrips.Add(orderedTrip);
         }
 
         return orderedTrips;
+    }
+
+    private async Task<Trip?> CreateOrderedTrip(Trip trip)
+    {
+        Result<IReadOnlyList<WayPointDto>> wayPointsResult = await GetOrdersOrderByCloserLocationToUpdateTrip(trip);
+        if (!wayPointsResult.IsSuccess) return null;
+
+        Dictionary<GeoPoint, Order> geoPointToOrderMap = await CreateGeoPointToOrderMap(trip.Orders);
+        List<Order> orderedOrders = OrderOrders(wayPointsResult.Value, geoPointToOrderMap);
+
+        return new Trip
+        {
+            Id = trip.Id,
+            TransportId = trip.TransportId,
+            Orders = orderedOrders,
+            Status = Status.Pending,
+        };
+    }
+
+    private async Task<Dictionary<GeoPoint, Order>> CreateGeoPointToOrderMap(ICollection<Order> orders)
+    {
+        Dictionary<GeoPoint, Order> geoPointToOrderMap = new();
+
+        foreach (Order order in orders)
+        {
+            Result<DeliveryPoint> deliveryPointResult = await deliveryPointRepository.GetByIdAsync(order.DeliveryPointId);
+            if (!deliveryPointResult.IsSuccess) continue;
+
+            DeliveryPoint deliveryPoint = deliveryPointResult.Value;
+            GeoPoint geoPoint = new(deliveryPoint.Latitude, deliveryPoint.Longitude);
+            geoPointToOrderMap.Add(geoPoint, order);
+        }
+
+        return geoPointToOrderMap;
+    }
+
+    private static List<Order> OrderOrders(IReadOnlyList<WayPointDto> wayPoints, Dictionary<GeoPoint, Order> geoPointToOrderMap)
+    {
+        List<Order> orderedOrders = new();
+
+        foreach (WayPointDto wayPoint in wayPoints)
+        {
+            if (geoPointToOrderMap.TryGetValue(wayPoint.Point, out Order? matchingOrder))
+            {
+                matchingOrder.DeliveryTime = wayPoint.DeliverTime;
+                orderedOrders.Add(matchingOrder);
+            }
+        }
+
+        return orderedOrders;
     }
 
     private async Task<Result<IReadOnlyList<WayPointDto>>> GetOrdersOrderByCloserLocationToUpdateTrip(
